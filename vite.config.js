@@ -1,8 +1,15 @@
 import { defineConfig } from 'vite'
 import laravel from 'laravel-vite-plugin'
 import vue from '@vitejs/plugin-vue2'
+import fs from 'fs';
 
 export default defineConfig({
+  server: {
+    https: {
+      // key: fs.readFileSync('./.cert/key.pem'),
+      // cert: fs.readFileSync('./.cert/cert.pem'),
+    }
+  },
   esbuild: {
     minify: false,
     minifySyntax: false

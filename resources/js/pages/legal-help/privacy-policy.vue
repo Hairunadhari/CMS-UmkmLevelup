@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import OpenFormFooter from '../../components/pages/OpenFormFooter.vue'
+import OpenFormFooter from '../../components/pages/Footer.vue'
 import SeoMeta from '../../mixins/seo-meta.js'
 
 export default {

@@ -54,7 +54,7 @@ import store from '~/store'
 import Form from 'vform'
 import {mapGetters, mapState} from 'vuex'
 import Fuse from 'fuse.js'
-import OpenFormFooter from '../../components/pages/OpenFormFooter.vue'
+import OpenFormFooter from '../../components/pages/Footer.vue'
 import OpenCompleteForm from '../../components/open/forms/OpenCompleteForm.vue'
 import Breadcrumb from "../../components/common/Breadcrumb.vue";
 

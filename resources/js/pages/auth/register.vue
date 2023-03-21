@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import OpenFormFooter from '../../components/pages/OpenFormFooter.vue'
+import OpenFormFooter from '../../components/pages/Footer.vue'
 import Testimonials from '../../components/pages/welcome/Testimonials.vue'
 import RegisterForm from './components/RegisterForm.vue'
 import SeoMeta from '../../mixins/seo-meta.js'
