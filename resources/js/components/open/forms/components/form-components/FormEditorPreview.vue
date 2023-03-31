@@ -57,7 +57,7 @@
                             @submitted="previewFormSubmitted=true"
       />
     </div>
-    <p v-if="creating" class=" w-full mt-2 font-normal text-center text-gray-400">Isian Kuisioner tidak akan tersimpan</p>
+    <p v-if="creating" class=" w-full mt-2 font-normal text-center text-gray-400">Isian Kuesioner tidak akan tersimpan</p>
   </div>
 </template>
 

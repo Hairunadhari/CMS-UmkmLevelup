@@ -5,24 +5,24 @@
         <div class="pt-4 pb-0">
           <div class="flex">
             <h2 class="flex-grow text-gray-900">
-              List Kuisioner
+              List Kuesioner
             </h2>
             <v-button v-track.create_form_click :to="{name:'forms.create'}">
               <svg class="w-4 h-4 text-white inline mr-1 -mt-1" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M6.99996 1.1665V12.8332M1.16663 6.99984H12.8333" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
-              Tambah Baru Kuisioner
+              Tambah Baru Kuesioner
             </v-button>
           </div>
-          <small class="flex text-gray-500">Manajement Kuisioner.</small>
+          <small class="flex text-gray-500">Manajement Kuesioner.</small>
         </div>
       </div>
     </div>
     <div class="flex bg-white">
       <div class="w-full md:w-4/5 lg:w-3/5 md:mx-auto md:max-w-4xl px-4">
         <div class="mt-8 pb-0">
-          <text-input v-if="forms.length > 0" class="mb-6" :form="searchForm" name="search" label="Search a kuisioner"
-                placeholder="Name of kuisioner to search"
+          <text-input v-if="forms.length > 0" class="mb-6" :form="searchForm" name="search" label="Search a Kuesioner"
+                placeholder="Name of Kuesioner to search"
           />
           <div v-if="allTags.length > 0" class="mb-6">
             <div v-for="tag in allTags" :key="tag"
@@ -44,7 +44,7 @@
               <svg class="w-4 h-4 text-white inline mr-1 -mt-1" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M6.99996 1.1665V12.8332M1.16663 6.99984H12.8333" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
-              Tambah Baru Kuisioner
+              Tambah Baru Kuesioner
             </v-button>
           </div>
           <div v-else-if="forms.length > 0" class="mb-10">

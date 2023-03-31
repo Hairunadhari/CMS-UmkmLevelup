@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Vinkla\Hashids\Facades\Hashids;
+// use Session;
 
 class PublicFormController extends Controller
 {
@@ -80,6 +81,8 @@ class PublicFormController extends Controller
     {
         $form = $request->form;
         $submissionId = false;
+
+        dd($request->session()->get('id_user'));
 
         if ($form->editable_submissions) {
             $job = new StoreFormSubmissionJob($form, $request->validated());

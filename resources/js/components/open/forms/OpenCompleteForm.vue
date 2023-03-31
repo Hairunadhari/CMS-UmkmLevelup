@@ -198,6 +198,7 @@ export default {
 
       this.loading = true
       this.closeAlert()
+      // console.log(this.$router.currentRoute._value.params)
       form.post('/api/forms/' + this.form.slug + '/answer').then((response) => {
         this.$logEvent('form_submission', {
           workspace_id: this.form.workspace_id,

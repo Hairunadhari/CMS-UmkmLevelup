@@ -194,8 +194,8 @@
         </p>
         <text-area-input v-model="optionsText" :name="field.id+'_options_text'" class="mt-4"
                          @input="onFieldOptionsChange"
-                         label="Set selection options"
-                         help="Add one option per line"
+                         label="Buat pilihan disini :"
+                         help="Menambahkan lebih dari satu pilihan diharapkan menggunakan 'enter'"
         />
         <v-checkbox v-model="field.allow_creation"
                     name="allow_creation" @input="onFieldAllowCreationChange" help=""

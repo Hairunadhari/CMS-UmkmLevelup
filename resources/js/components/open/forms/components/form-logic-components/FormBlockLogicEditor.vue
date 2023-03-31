@@ -111,21 +111,21 @@ export default {
     },
     actionOptions() {
       if (['nf-text', 'nf-code', 'nf-page-break', 'nf-divider', 'nf-image'].includes(this.field.type)) {
-        return [{name: 'Hide Block', value: 'hide-block'}]
+        return [{name: 'Sembunyikan', value: 'hide-block'}]
       }
 
       if (this.field.hidden) {
         return [
-          {name: 'Show Block', value: 'show-block'},
-          {name: 'Require answer', value: 'require-answer'}
+          {name: 'Munculkan', value: 'show-block'},
+          {name: 'Wajib Isi', value: 'require-answer'}
         ]
       } else {
         return [
           {name: 'Hide Block', value: 'hide-block'},
           (this.field.required
-            ? {name: 'Make it optional', value: 'make-it-optional'}
+            ? {name: 'Jadikan Opsional', value: 'make-it-optional'}
             : {
-              name: 'Require answer',
+              name: 'Wajib Isi',
               value: 'require-answer'
             })
         ]

@@ -33,7 +33,7 @@ class FormCreationConfirmationMail extends OpenFormMail implements ShouldQueue
             return $this
                 ->markdown('mail.form.created',[
                 'form' => $this->form,
-            ])->subject('Kuisioneer mu sudah dibuat!');
+            ])->subject('kuesioner mu sudah dibuat!');
         // return '';   
     }
 }

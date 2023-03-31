@@ -29,6 +29,7 @@
     </tr>
     </thead>
     <tbody v-if="data.length > 0" class="n-table-body bg-white dark:bg-notion-dark-light">
+      <!-- <tr><td>test</td></tr> -->
     <tr v-if="$slots.hasOwnProperty('actions')"
         :id="'table-actions-'+tableHash"
         ref="actions-row"

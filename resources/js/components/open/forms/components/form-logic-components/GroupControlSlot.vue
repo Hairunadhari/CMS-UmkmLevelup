@@ -8,10 +8,10 @@
                   name="group-control-slot-rule"
     />
     <v-button class="ml-1 mt-1" color="blue" size="small" :disabled="selectedRule === ''" @click="addRule">
-      Add Condition
+      Tambahkan Kondisi
     </v-button>
     <v-button class="ml-1 mt-1 hidden" color="outline-blue" size="small" @click="groupCtrl.newGroup">
-      Add Group
+      Tambahkan Grup
     </v-button>
   </div>
 </template>

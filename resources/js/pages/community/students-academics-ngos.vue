@@ -20,7 +20,7 @@ export default {
   layout: 'default',
 
   props: {
-    metaTitle: { type: String, default: 'Form Quisioneer builder' },
+    metaTitle: { type: String, default: 'Form kuesioner builder' },
     metaDescription: { type: String, default: 'Description Here.....' }
   },
 

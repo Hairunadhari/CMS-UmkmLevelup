@@ -34,7 +34,7 @@
                     {name:'Tengah',value:'centered'},
                     {name:'Full Penuh',value:'full'},
                   ]"
-                  :form="form" label="Tata Letak" help="akan terlihat ketika Mengembed Kuisioner ini"
+                  :form="form" label="Tata Letak" help="akan terlihat ketika Mengembed Kuesioner ini"
     />
 
     <!-- <image-input name="cover_picture" class="mt-4"

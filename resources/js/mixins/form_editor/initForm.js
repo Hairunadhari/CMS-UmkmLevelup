@@ -4,7 +4,7 @@ export default {
   methods: {
     initForm() {
       this.form = new Form({
-        title: 'Kuisioneer Baru',
+        title: 'kuesioner Baru',
         description: null,
         visibility: 'public',
         workspace_id: this.workspace?.id,

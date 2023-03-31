@@ -11,12 +11,12 @@
     </template>
     <text-input name="title" class="mt-4"
                 :form="form"
-                label="Judul Kuisioner"
+                label="Judul Kuesioner"
                 :required="true"
     />
     <rich-text-area-input name="description"
                           :form="form"
-                          label="Deskripsi Kuisioner"
+                          label="Deskripsi Kuesioner"
                           :required="false"
     />
     <select-input name="tags" label="Penanda" :form="form" class="mt-3 mb-6"

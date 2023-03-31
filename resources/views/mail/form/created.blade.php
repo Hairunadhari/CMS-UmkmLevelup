@@ -1,8 +1,8 @@
 @component('mail::message')
 
-Selamat Kuisionermu "{{$form->title}}" sudah dibuat.
+Selamat Kuesioner "{{$form->title}}" sudah dibuat.
 
-Jika ingin menshare kuisioner ini, berikut link:
+Jika ingin menshare Kuesioner ini, berikut link:
 
 @component('mail::panel')
 {{$form->share_url}}

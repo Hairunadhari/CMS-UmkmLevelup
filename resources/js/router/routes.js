@@ -62,6 +62,7 @@ export default [
   { path: '/', name: 'welcome', component: page('welcome.vue') },
   { path: '/integrations', name: 'integrations', component: page('integrations.vue') },
   { path: '/forms/:slug', name: 'forms.show_public', component: page('forms/show-public.vue') },
+  { path: '/forms/:slug/:id', name: 'forms.show_public_with_id', component: page('forms/show-public.vue') },
 
   // Templates
   { path: '/templates', name: 'templates', component: page('templates/templates.vue') },

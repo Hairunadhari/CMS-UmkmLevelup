@@ -23,7 +23,7 @@
           </a>
           <router-link :to="{name:'home'}"
                        class="text-sm text-gray-600 dark:text-white hover:text-gray-800 cursor-pointer mt-1 mr-8">
-            Quisioneer
+            Kuesioner
           </router-link>
           <a href="#" class="text-sm text-gray-600 dark:text-white hover:text-gray-800 cursor-pointer mt-1"
              @click.prevent="$crisp.push(['do', 'helpdesk:search'])" v-if="hasCrisp"
