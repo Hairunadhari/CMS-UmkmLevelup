@@ -132,7 +132,7 @@
 
       <!--   files Input   -->
       <div
-        class="bg-gray-50 border hover:bg-gray-100 dark:bg-gray-900 rounded-md dark:hover:bg-gray-800 p-2 flex flex-col hidden"
+        class="bg-gray-50 border hover:bg-gray-100 dark:bg-gray-900 rounded-md dark:hover:bg-gray-800 p-2 flex flex-col"
         role="button" @click.prevent="addBlock('files')"
       >
         <div class="mx-auto py-4">

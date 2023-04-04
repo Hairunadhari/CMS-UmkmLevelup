@@ -34,7 +34,8 @@ export default {
 
     computed: {
       share_url () {
-        return (this.extraQueryParam) ? this.form.share_url + '?' + this.extraQueryParam : this.form.share_url + this.extraQueryParam
+        // return (this.extraQueryParam) ? this.form.share_url + '?' + this.extraQueryParam : this.form.share_url + this.extraQueryParam
+        return (this.extraQueryParam) ? "http://localhost:8080/home" + '?' + this.extraQueryParam : "http://localhost:8080/home?href=" +  this.form.share_url + this.extraQueryParam
       }
     },
 

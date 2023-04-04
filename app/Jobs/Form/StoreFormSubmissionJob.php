@@ -17,6 +17,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Vinkla\Hashids\Facades\Hashids;
+use DB;
 
 class StoreFormSubmissionJob implements ShouldQueue
 {
@@ -44,6 +45,7 @@ class StoreFormSubmissionJob implements ShouldQueue
         $this->addHiddenPrefills($formData);
 
         $this->storeSubmission($formData);
+        
 
         $formData["submission_id"] = $this->submissionId;
         FormSubmitted::dispatch($this->form, $formData);
@@ -57,6 +59,7 @@ class StoreFormSubmissionJob implements ShouldQueue
     private function storeSubmission(array $formData)
     {
         // Create or update record
+        $user = DB::table('users')->orderBy('id', 'DESC')->first();
         if ($previousSubmission = $this->submissionToUpdate()) {
             $previousSubmission->data = $formData;
             $previousSubmission->save();
@@ -64,6 +67,7 @@ class StoreFormSubmissionJob implements ShouldQueue
         } else {
             $response = $this->form->submissions()->create([
                 'data' => $formData,
+                'id_user' => $user->id
             ]);
             $this->submissionId = $response->id;
         }

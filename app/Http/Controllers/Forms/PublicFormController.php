@@ -82,8 +82,6 @@ class PublicFormController extends Controller
         $form = $request->form;
         $submissionId = false;
 
-        dd($request->session()->get('id_user'));
-
         if ($form->editable_submissions) {
             $job = new StoreFormSubmissionJob($form, $request->validated());
             $job->handle();
