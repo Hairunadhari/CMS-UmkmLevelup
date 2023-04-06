@@ -19,7 +19,7 @@ class SignedStorageUrlController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
+        // dd($request);
         $this->ensureEnvironmentVariablesAreAvailable($request);
         $bucket = $request->input('bucket') ?: $_ENV['AWS_BUCKET'];
 

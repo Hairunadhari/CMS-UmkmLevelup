@@ -18,9 +18,10 @@
           <a href="#" class="text-sm text-gray-600 dark:text-white hover:text-gray-800 cursor-pointer mt-1 mr-8">
             Home
           </a>
-          <a href="#" class="text-sm text-gray-600 dark:text-white hover:text-gray-800 cursor-pointer mt-1 mr-8">
-            Manajemen
-          </a>
+          <router-link :to="{name:'list-pendaftaran'}"
+                       class="text-sm text-gray-600 dark:text-white hover:text-gray-800 cursor-pointer mt-1 mr-8">
+            List Pendaftaran
+          </router-link>
           <router-link :to="{name:'home'}"
                        class="text-sm text-gray-600 dark:text-white hover:text-gray-800 cursor-pointer mt-1 mr-8">
             Kuesioner

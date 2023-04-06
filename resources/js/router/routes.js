@@ -6,6 +6,7 @@ function page (path) {
 export default [
   // Logged Users
   { path: '/home', name: 'home', component: page('home.vue') },
+  { path: '/list-pendaftaran', name: 'list-pendaftaran', component: page('list-pendaftaran.vue') },
 
   // Forms
   { path: '/forms/create', name: 'forms.create', component: page('forms/create.vue') },
@@ -60,7 +61,6 @@ export default [
 
   // Guest Routes
   { path: '/', name: 'welcome', component: page('welcome.vue') },
-  { path: '/list-pendaftaran', name: 'list-pendaftaran', component: page('list-pendaftaran.vue') },
   { path: '/integrations', name: 'integrations', component: page('integrations.vue') },
   { path: '/forms/:slug', name: 'forms.show_public', component: page('forms/show-public.vue') },
   { path: '/forms/:slug/:id', name: 'forms.show_public_with_id', component: page('forms/show-public.vue') },
