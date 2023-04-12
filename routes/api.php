@@ -133,7 +133,7 @@ Route::group(['middleware' => 'guest:api'], function () {
 Route::prefix('forms')->name('forms.')->group(function () {
     Route::middleware('password-protected-form')->group(function () {
         Route::post('{slug}/answer', [PublicFormController::class, 'answer'])->name('answer');
-        // Route::post('{slug}/answer/', [PublicFormController::class, 'answer'])->name('answer');
+        Route::post('{slug}/answer/{id}', [PublicFormController::class, 'answerWithId'])->name('answerWithId');
 
         // Form content endpoints (user lists, relation lists etc.)
         Route::get('{slug}/users',

@@ -101,6 +101,36 @@ class PublicFormController extends Controller
         ]));
     }
 
+    public function answerWithId(AnswerFormRequest $request, $slug, $id = null)
+    {
+        $form = $request->form;
+        $submissionId = false;
+
+        if ($id != null) {
+            $request->session()->put('idUser', $id);
+        }else{
+            $request->session()->put('idUser', 0);
+        }
+
+        if ($form->editable_submissions) {
+            $job = new StoreFormSubmissionJob($form, $request->validated());
+            $job->handle();
+            $submissionId = Hashids::encode($job->getSubmissionId());
+        }else{
+            StoreFormSubmissionJob::dispatch($form, $request->validated());
+        }
+
+        return $this->success(array_merge([
+            'message' => 'Form submission saved.',
+            'submission_id' => $submissionId
+        ], $request->form->is_pro && $request->form->redirect_url ? [
+            'redirect' => true,
+            'redirect_url' => $request->form->redirect_url
+        ] : [
+            'redirect' => false
+        ]));
+    }
+
     public function fetchSubmission(Request $request, string $slug, string $submissionId)
     {
         $submissionId = ($submissionId) ? Hashids::decode($submissionId) : false;

@@ -150,8 +150,12 @@ export default {
         password: null
       }),
       hidePasswordDisabledMsg: false,
-      submissionId: false
+      submissionId: false,
+      userId: '',
     }
+  },
+  created() {
+    this.userId = this.$route.params.id;
   },
 
   computed: {
@@ -189,7 +193,7 @@ export default {
   },
 
   methods: {
-    submitForm (form, onFailure) {
+    submitForm (form, onFailure, id) {
       if (this.creating) {
         this.submitted = true
         this.$emit('submitted', true)
@@ -199,7 +203,7 @@ export default {
       this.loading = true
       this.closeAlert()
       // console.log(this.$router.currentRoute._value.params)
-      form.post('/api/forms/' + this.form.slug + '/answer').then((response) => {
+      form.post('/api/forms/' + this.form.slug + '/answer' + '/' + this.userId).then((response) => {
         this.$logEvent('form_submission', {
           workspace_id: this.form.workspace_id,
           form_id: this.form.id
@@ -227,6 +231,8 @@ export default {
         this.loading = false
         onFailure()
       })
+
+      // console.log(`User ID: ${this.userId}`);
     },
     restart () {
       this.submitted = false

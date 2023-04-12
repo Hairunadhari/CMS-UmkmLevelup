@@ -11,7 +11,8 @@ class FormSubmission extends Model
     use HasFactory;
 
     protected $fillable = [
-        'data'
+        'data',
+        'id_user'
     ];
 
     protected $casts = [

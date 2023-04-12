@@ -73,7 +73,7 @@ class FormController extends Controller
         return FormResource::collection($forms);
     }
 
-    public function store(StoreFormRequest $request)
+    public function store(StoreFormRequest $request, $id)
     {
         $this->authorize('create', Form::class);
 
