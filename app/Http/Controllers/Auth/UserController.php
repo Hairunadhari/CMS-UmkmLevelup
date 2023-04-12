@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
+// use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use DB;
 
 class UserController extends Controller
 {
@@ -30,4 +32,11 @@ class UserController extends Controller
            'message' => 'User deleted.'
         ]);
     }
+
+    public function getUsers(){
+        $users = DB::table('users')
+        ->join('profil_user','users.id', '=', 'profil_user.id_user')
+        ->get();
+        return response()->json($users);
+    }   
 }

@@ -1,42 +1,18 @@
-<style>
-#table {
-  font-family: Arial, Helvetica, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-}
-
-#table td, #table th {
-  border: 1px solid #ddd;
-  padding: 8px;
-}
-
-#table tr:nth-child(even){background-color: #f2f2f2;}
-
-#table tr:hover {background-color: #ddd;}
-
-#table th {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  text-align: left;
-  background-color: #04AA6D;
-  color: white;
-}
-</style>
-  <template>
+<template>
   <div class="bg-white">
     <div class="flex bg-gray-50 pb-5">
-      <div class="w-full md:w-4/5 lg:w-3/5 md:mx-auto md:max-w-4xl p-4">
+      <div class="w-full md:w-4/5 lg:w-3/5 md:mx-auto md:max-w-6xl p-4">
         <div class="pt-4 pb-0">
           <div class="flex ">
             <h2 class="flex-grow text-gray-900">
               List Pendaftaran
             </h2>
-            <v-button v-track.create_form_click :to="{name:''}">
+           <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"  @click="exportToExcel">
               <svg class="w-4 h-4 text-white inline mr-1 -mt-1" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M23 1.5q.41 0 .7.3.3.29.3.7v19q0 .41-.3.7-.29.3-.7.3H7q-.41 0-.7-.3-.3-.29-.3-.7V18H1q-.41 0-.7-.3-.3-.29-.3-.7V7q0-.41.3-.7Q.58 6 1 6h5V2.5q0-.41.3-.7.29-.3.7-.3zM6 13.28l1.42 2.66h2.14l-2.38-3.87 2.34-3.8H7.46l-1.3 2.4-.05.08-.04.09-.64-1.28-.66-1.29H2.59l2.27 3.82-2.48 3.85h2.16zM14.25 21v-3H7.5v3zm0-4.5v-3.75H12v3.75zm0-5.25V7.5H12v3.75zm0-5.25V3H7.5v3zm8.25 15v-3h-6.75v3zm0-4.5v-3.75h-6.75v3.75zm0-5.25V7.5h-6.75v3.75zm0-5.25V3h-6.75v3Z" fill="white"></path>
               </svg>
               Export Excel
-            </v-button>
+            </button>
           </div>
         </div>
       </div>
@@ -44,64 +20,26 @@
     <div class="flex bg-white">
       <div class="flex-grow w-full md:w-2/5 lg:w-2/5 md:mx-auto md:max-w-6xl px-4">
         <div class="mt-8 pb-0"  style="width: 100%; overflow-x: scroll;">
-            <table id="table" class="table table-bordered table-hovered">
-                <thead><tr>
+          <table ref="table" class="table-auto w-full">
+               <thead><tr>
                   <td>No.</td>
-                  <td>Id user</td>
-                  <td>Nama Lengkap</td>
-                  <td>Provinsi</td>
-                  <td>Kabupaten</td>
-                  <td>Kelurahan</td>
-                  <td>Kecamatan</td>
-                  <td>Alamat lengkap</td>
-                  <td>Nama Usaha</td>
-                  <td>Email usaha</td>
-                  <td>No Telp</td>
-                  <td>No Hp (Paket Data)</td>
-                  <td>Jenis Kelamin</td>
-                  <td>NIK </td>
-                  <td>NIB</td>
-                  <td>Level UMKM</td>
+                  <td>Nama</td>
+                  <td>nama usaha</td>
+                  <td>Level</td>
+                  <td>Email</td>
+                  <td>provinsi</td>
+                  <td>kabupaten</td>
+                  <td>kecamatan</td>
+                  <td>keluarahan</td>
+                  <td>alamat lengkap</td>
+                  <td>email usaha</td>
+                  <td>no telp</td>
+                  <td>no hp</td>
+                  <td>jenis kelamin</td>
+                  <td>nik</td>
+                  <td>nib</td>
                 </tr>
-                </thead>
-                <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>Arifin</td>
-                  <td>Jakarta</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>Jalan</td>
-                  <td>Toko tok</td>
-                  <td>…@gmail.com</td>
-                  <td>62839283289</td>
-                  <td>08238283</td>
-                  <td>Pria</td>
-                  <td>3175823782</td>
-                  <td>2983928</td>
-                  <td>Beginner</td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>2</td>
-                  <td>Test</td>
-                  <td>Bekasi</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>Jalan</td>
-                  <td>Toko tik</td>
-                  <td>…@gmail.com</td>
-                  <td>62839283289</td>
-                  <td>0839283928</td>
-                  <td>Pria</td>
-                  <td>315787232</td>
-                  <td>9824928</td>
-                  <td>Observer</td>
-                </tr>
-              </tbody>
+              </thead>
             </table>
         </div>
       </div>
@@ -115,9 +53,14 @@ import store from '~/store'
 import { mapGetters, mapState } from 'vuex'
 import Fuse from 'fuse.js'
 import Form from 'vform'
+import axios from 'axios'
+import * as XLSX from 'xlsx';
+import $ from 'jquery';
+import 'datatables.net';
 import TextInput from '../components/forms/TextInput.vue'
 import OpenFormFooter from '../components/pages/Footer.vue'
 import ExtraMenu from '../components/pages/forms/show/ExtraMenu.vue'
+import 'datatables.net-dt/css/jquery.dataTables.css';
 
 const loadForms = function () {
   store.commit('open/forms/startLoading')
@@ -147,13 +90,56 @@ export default {
       searchForm: new Form({
         search: ''
       }),
-      selectedTags: []
+      selectedTags: [],
+      users: [],
+      dataTable: null
     }
   },
 
-  mounted () {},
+  mounted () {
+    this.getData();
+  },
 
   methods: {
+    getData() {
+      axios.get('/api/get-users')
+        .then(response => {
+          this.users = response.data;
+          this.initDataTable();
+        })
+        .catch(error => console.error(error));
+    },
+    initDataTable() {
+      this.dataTable = $(this.$refs.table).DataTable({
+        data: this.users,
+        columns: [
+          { data: 'id', className: 'px-4 py-2' },
+          { data: 'nama_pemilik', className: 'px-4 py-2' },
+          { data: 'email', className: 'px-4 py-2' },
+          { data: 'level', className: 'px-4 py-2' },
+          { data: 'id_provinsi', className: 'px-4 py-2' },
+          { data: 'id_kabupaten', className: 'px-4 py-2' },
+          { data: 'id_kecamatan', className: 'px-4 py-2' },
+          { data: 'id_keluarahan', className: 'px-4 py-2' },
+          { data: 'alamat_lengkap', className: 'px-4 py-2' },
+          { data: 'nama_usaha', className: 'px-4 py-2' },
+          { data: 'email_usaha', className: 'px-4 py-2' },
+          { data: 'no_telp', className: 'px-4 py-2' },
+          { data: 'no_hp', className: 'px-4 py-2' },
+          { data: 'jenis_kelamin', className: 'px-4 py-2' },
+          { data: 'nik', className: 'px-4 py-2' },
+          { data: 'nib', className: 'px-4 py-2' },
+
+        ],
+      });
+    },
+    exportToExcel() {
+      const data = this.dataTable.data().toArray();
+      const worksheet = XLSX.utils.json_to_sheet(data);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Users');
+      XLSX.writeFile(workbook, 'users.xlsx');
+    },
     editForm (form) {
       this.selectedForm = form
       this.showEditFormModal = true
