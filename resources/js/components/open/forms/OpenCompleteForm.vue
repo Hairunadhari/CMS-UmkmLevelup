@@ -130,6 +130,7 @@ import { themes } from '~/config/form-themes.js'
 import VButton from '../../common/Button.vue'
 import VTransition from '../../common/transitions/VTransition.vue'
 import FormPendingSubmissionKey from '../../../mixins/forms/form-pending-submission-key.js'
+import Swal from 'sweetalert2';
 
 export default {
   components: { VTransition, VButton, OpenFormButton, OpenForm },
@@ -194,45 +195,54 @@ export default {
 
   methods: {
     submitForm (form, onFailure, id) {
-      if (this.creating) {
-        this.submitted = true
-        this.$emit('submitted', true)
-        return
-      }
+      Swal.fire({
+        title: 'Apakah Anda yakin?',
+        text: "Isian akan kami simpan, dan tidak dapat diubah lagi!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, submit it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          if (this.creating) {
+            this.submitted = true
+            this.$emit('submitted', true)
+            return
+          }
 
-      this.loading = true
-      this.closeAlert()
-      // console.log(this.$router.currentRoute._value.params)
-      form.post('/api/forms/' + this.form.slug + '/answer' + '/' + this.userId).then((response) => {
-        this.$logEvent('form_submission', {
-          workspace_id: this.form.workspace_id,
-          form_id: this.form.id
-        })
+          this.loading = true
+          this.closeAlert()
+          form.post('/api/forms/' + this.form.slug + '/answer' + '/' + this.userId).then((response) => {
+            this.$logEvent('form_submission', {
+              workspace_id: this.form.workspace_id,
+              form_id: this.form.id
+            })
 
-        try {
-          window.localStorage.removeItem(this.formPendingSubmissionKey)
-        } catch (e) {}
+            try {
+              window.localStorage.removeItem(this.formPendingSubmissionKey)
+            } catch (e) {}
 
-        if (response.data.redirect && response.data.redirect_url) {
-          window.location.href = response.data.redirect_url
+            if (response.data.redirect && response.data.redirect_url) {
+              window.location.href = response.data.redirect_url
+            }
+
+            if (response.data.submission_id) {
+              this.submissionId = response.data.submission_id
+            }
+
+            this.loading = false
+            this.submitted = true
+            this.$emit('submitted', true)
+          }).catch((error) => {
+            if (error.response.data && error.response.data.message) {
+              this.alertError(error.response.data.message)
+            }
+            this.loading = false
+            onFailure()
+          })
         }
-
-        if (response.data.submission_id) {
-          this.submissionId = response.data.submission_id
-        }
-
-        this.loading = false
-        this.submitted = true
-        this.$emit('submitted', true)
-      }).catch((error) => {
-        if (error.response.data && error.response.data.message) {
-          this.alertError(error.response.data.message)
-        }
-        this.loading = false
-        onFailure()
       })
-
-      // console.log(`User ID: ${this.userId}`);
     },
     restart () {
       this.submitted = false

@@ -32,7 +32,7 @@
       <form-information/>
       <form-structure/>
       <form-customization/>
-      <!-- <form-about-submission/> -->
+      <form-about-submission/>
       <!-- <form-notifications/> -->
       <!-- <form-security-privacy/> -->
       <!-- <form-custom-code/> -->

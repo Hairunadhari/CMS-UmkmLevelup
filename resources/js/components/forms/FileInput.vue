@@ -24,6 +24,9 @@
             />
           </svg>
         </div>
+        <div v-else-if="form">
+          <a href="{{ form[name] }}" target="_blank" download></a>
+        </div>
         <template v-else>
           <div class="flex-grow h-6 text-gray-600 dark:text-gray-400 truncate" @click.prevent="showUploadModal=true">
             <div>
@@ -35,7 +38,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                       d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                 />
-              </svg>{{ files[0].file.name }}</p>
+              </svg>{{ files[0].file.name }} </p>
               <p v-else><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline mr-2 -mt-1" fill="none"
                              viewBox="0 0 24 24"
                              stroke="currentColor"
@@ -170,12 +173,16 @@ export default {
     showUploadModal: false,
 
     files: [],
+    // valFiles: [],
     uploadDragoverTracking: false,
     uploadDragoverEvent: false,
     loading: false
   }),
 
   computed: {
+    valFiles(){
+      return this.form
+    },
     currentUrl () {
       return this.form[this.name]
     },

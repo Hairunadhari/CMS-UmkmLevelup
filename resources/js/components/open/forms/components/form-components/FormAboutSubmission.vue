@@ -9,19 +9,18 @@
             d="M4.83333 6.08333H9M4.83333 9H11.5M4.83333 14V15.9463C4.83333 16.3903 4.83333 16.6123 4.92436 16.7263C5.00352 16.8255 5.12356 16.8832 5.25045 16.8831C5.39636 16.8829 5.56973 16.7442 5.91646 16.4668L7.90434 14.8765C8.31043 14.5517 8.51347 14.3892 8.73957 14.2737C8.94017 14.1712 9.15369 14.0963 9.37435 14.051C9.62306 14 9.88308 14 10.4031 14H12.5C13.9001 14 14.6002 14 15.135 13.7275C15.6054 13.4878 15.9878 13.1054 16.2275 12.635C16.5 12.1002 16.5 11.4001 16.5 10V5.5C16.5 4.09987 16.5 3.3998 16.2275 2.86502C15.9878 2.39462 15.6054 2.01217 15.135 1.77248C14.6002 1.5 13.9001 1.5 12.5 1.5H5.5C4.09987 1.5 3.3998 1.5 2.86502 1.77248C2.39462 2.01217 2.01217 2.39462 1.77248 2.86502C1.5 3.3998 1.5 4.09987 1.5 5.5V10.6667C1.5 11.4416 1.5 11.8291 1.58519 12.147C1.81635 13.0098 2.49022 13.6836 3.35295 13.9148C3.67087 14 4.05836 14 4.83333 14Z"
             stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
-
-        About Submissions
+        Edit Aksi Simpan
       </h3>
     </template>
 
     <text-input name="submit_button_text" class="mt-4"
                 :form="form"
-                label="Text of Submit Button"
+                label="Ubah button text"
                 :required="true"
     />
 
     <toggle-switch-input name="editable_submissions" :form="form" class="mt-4"
-                label="Allow users to edit their submission"
+                label="Izinkan respondent simpan sementara"
     />
 
     <flat-select-input :form="submissionOptions" name="databaseAction" label="Database Submission Action"
@@ -29,6 +28,7 @@
                     {name:'Create new record (default)', value:'create'},
                     {name:'Update Record (if any)', value:'update'}
                   ]" :required="true" help="Create a new record or update an existing one"
+                  class="hidden"
     >
       <template #selected="{option,optionName}">
         <div class="flex items-center truncate mr-6">
@@ -75,6 +75,7 @@
                     {name:'Show Success page', value:'default'},
                     {name:'Redirect', value:'redirect'}
                   ]" :required="true" help="Show a message, or redirect to a URL"
+                  class="hidden"
     >
       <template #selected="{option,optionName}">
         <div class="flex items-center truncate mr-6">
@@ -107,7 +108,7 @@
     </template>
     <template v-else>
       <pro-tag class="float-right"/>
-      <toggle-switch-input name="re_fillable" :form="form" class="mt-4"
+      <toggle-switch-input name="re_fillable" :form="form" class="mt-4 hidden"
                       label="Allow users to fill the form again"
       />
       <text-input v-if="form.re_fillable" name="re_fill_button_text"
@@ -117,7 +118,7 @@
       />
       <rich-text-area-input name="submitted_text"
                             :form="form"
-                            label="Text After Submission"
+                            label="Kalimat Notifikasi Setelah Submit"
                             :required="false"
       />
       <date-input :with-time="true" name="closes_at"
@@ -125,6 +126,7 @@
                   label="Closing Date"
                   help="If filled, then the form won't accept submissions after the given date"
                   :required="false"
+                  class="hidden"
       />
       <rich-text-area-input v-if="form.closes_at || form.visibility=='closed'" name="closed_text"
                             :form="form"
@@ -136,6 +138,7 @@
                   label="Max. Number of Submissions"
                   help="If filled, the form will only accept X number of submissions"
                   :required="false"
+                  class="hidden"
       />
       <rich-text-area-input v-if="form.max_submissions_count && form.max_submissions_count > 0"
                             name="max_submissions_reached_text"

@@ -24,6 +24,7 @@
     "portal-vue": "^2.1.7",
     "prismjs": "^1.24.1",
     "query-builder-vue": "^1.2.0",
+    "sweetalert2": "^11.7.3",
     "tinymotion": "^0.2.0",
     "vform": "^2.1.1",
     "vt-notifications": "^0.4.1",
