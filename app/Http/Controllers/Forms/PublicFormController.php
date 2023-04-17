@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Forms;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AnswerFormRequest;
+use App\Http\Requests\AnswerFormRequestSimpanSementara;
 use App\Http\Resources\FormResource;
 use App\Jobs\Form\StoreFormSubmissionJob;
 use App\Models\Forms\Form;
@@ -105,6 +106,40 @@ class PublicFormController extends Controller
     {
         $form = $request->form;
         $submissionId = false;
+        $request->session()->put('simpanSementara', false);
+
+        if ($id != null) {
+            $request->session()->put('idUser', $id);
+        }else{
+            $request->session()->put('idUser', 0);
+        }
+
+        if ($form->editable_submissions) {
+            // $request->session()->put('simpanSementara', false);
+            $job = new StoreFormSubmissionJob($form, $request->validated());
+            $job->handle();
+            $submissionId = Hashids::encode($job->getSubmissionId());
+        }else{
+            // $request->session()->put('simpanSementara', false);
+            StoreFormSubmissionJob::dispatch($form, $request->validated());
+        }
+
+        return $this->success(array_merge([
+            'message' => 'Form submission saved.',
+            'submission_id' => $submissionId
+        ], $request->form->is_pro && $request->form->redirect_url ? [
+            'redirect' => true,
+            'redirect_url' => $request->form->redirect_url
+        ] : [
+            'redirect' => false
+        ]));
+    }
+
+    public function simpanSementara(AnswerFormRequestSimpanSementara $request, $slug, $id = null)
+    {
+        $form = $request->form;
+        $submissionId = false;
+        $request->session()->put('simpanSementara', true);
 
         if ($id != null) {
             $request->session()->put('idUser', $id);
@@ -117,6 +152,7 @@ class PublicFormController extends Controller
             $job->handle();
             $submissionId = Hashids::encode($job->getSubmissionId());
         }else{
+            // $request->session()->put('simpanSementara', true);
             StoreFormSubmissionJob::dispatch($form, $request->validated());
         }
 

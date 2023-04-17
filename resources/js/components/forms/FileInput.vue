@@ -25,7 +25,7 @@
           </svg>
         </div>
         <div v-else-if="form">
-          <a href="{{ form[name] }}" target="_blank" download></a>
+          <a href="#" target="_blank" download>{{ form }}</a>
         </div>
         <template v-else>
           <div class="flex-grow h-6 text-gray-600 dark:text-gray-400 truncate" @click.prevent="showUploadModal=true">
@@ -173,7 +173,7 @@ export default {
     showUploadModal: false,
 
     files: [],
-    // valFiles: [],
+    valFiles: [],
     uploadDragoverTracking: false,
     uploadDragoverEvent: false,
     loading: false

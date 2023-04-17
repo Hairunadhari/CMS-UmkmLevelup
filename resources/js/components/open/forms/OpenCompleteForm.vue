@@ -1,7 +1,7 @@
 <template>
   <div v-if="form" class="open-complete-form">
+    <button type="button" @click="submitTemporary" class="rounded float-right mt-2 px-4 pt-2 pb-2 mx-1 bg-emerald-400 text-white">Simpan Sementara</button>
     <h1 v-if="!isHideTitle" class="mb-4 px-2" v-text="form.title" />
-
     <div v-if="isPublicFormPage && form.is_password_protected">
       <p class="form-description mb-4 text-gray-700 dark:text-gray-300 px-2">
         This form is protected by a password.
@@ -83,14 +83,14 @@
            v-html="form.description"
         />
         <open-form v-if="form"
-                     :form="form"
-                     :loading="loading"
-                     :fields="form.properties"
-                     :theme="theme"
-                     @submit="submitForm"
+                   :form="form"
+                   :loading="loading"
+                   :fields="form.properties"
+                   :theme="theme"
+                   @submit="submitForm"
         >
           <template #submit-btn="{submitForm}">
-            <open-form-button :loading="loading" :theme="theme" :color="form.color" class="mt-2 px-8 mx-1"
+            <open-form-button :loading="loading" refs="submitButton" :theme="theme" :color="form.color" class="mt-2 px-8 mx-1"
                                 @click.prevent="submitForm"
             >
               {{ form.submit_button_text }}
@@ -121,6 +121,8 @@
     </transition>
   </div>
 </template>
+<!-- <template>
+</template> -->
 
 <script>
 import Form from 'vform'
@@ -130,22 +132,25 @@ import { themes } from '~/config/form-themes.js'
 import VButton from '../../common/Button.vue'
 import VTransition from '../../common/transitions/VTransition.vue'
 import FormPendingSubmissionKey from '../../../mixins/forms/form-pending-submission-key.js'
-import Swal from 'sweetalert2';
+import Swal from 'sweetalert2'
+import axios from 'axios'
 
 export default {
   components: { VTransition, VButton, OpenFormButton, OpenForm },
+
+  mixins: [FormPendingSubmissionKey],
 
   props: {
     form: { type: Object, required: true },
     creating: { type: Boolean, default: false } // If true, fake form submit
   },
 
-  mixins: [FormPendingSubmissionKey],
-
   data () {
     return {
       loading: false,
       submitted: false,
+      simpanSementara: false,
+      text: 'Isian akan kami simpan, dan tidak dapat diubah lagi!',
       themes: themes,
       passwordForm: new Form({
         password: null
@@ -154,9 +159,6 @@ export default {
       submissionId: false,
       userId: '',
     }
-  },
-  created() {
-    this.userId = this.$route.params.id;
   },
 
   computed: {
@@ -189,60 +191,105 @@ export default {
       return this.form.hide_title || window.location.href.includes('hide_title=true')
     }
   },
+  created() {
+    this.userId = this.$route.params.id;
+  },
 
   mounted () {
   },
 
   methods: {
+    submitTemporary () {
+      this.simpanSementara = true
+      const submitButton = document.querySelector('#submitButton');
+      if (submitButton) {
+        submitButton.click();
+      } else {
+        console.error('Button not found');
+      }
+    },
     submitForm (form, onFailure, id) {
-      Swal.fire({
-        title: 'Apakah Anda yakin?',
-        text: "Isian akan kami simpan, dan tidak dapat diubah lagi!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, submit it!'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          if (this.creating) {
-            this.submitted = true
-            this.$emit('submitted', true)
-            return
+      if (this.simpanSementara === true) {
+        this.loading = true
+        this.closeAlert()
+        form.post('/api/forms/' + this.form.slug + '/simpan-sementara' + '/' + this.userId).then((response) => {
+          this.$logEvent('form_submission', {
+            workspace_id: this.form.workspace_id,
+            form_id: this.form.id
+          })
+
+          try {
+            window.localStorage.removeItem(this.formPendingSubmissionKey)
+          } catch (e) {}
+
+          if (response.data.redirect && response.data.redirect_url) {
+            window.location.href = response.data.redirect_url
           }
 
-          this.loading = true
-          this.closeAlert()
-          form.post('/api/forms/' + this.form.slug + '/answer' + '/' + this.userId).then((response) => {
-            this.$logEvent('form_submission', {
-              workspace_id: this.form.workspace_id,
-              form_id: this.form.id
+          if (response.data.submission_id) {
+            this.submissionId = response.data.submission_id
+          }
+
+          this.loading = false
+          this.submitted = true
+          this.$emit('submitted', true)
+        }).catch((error) => {
+          if (error.response.data && error.response.data.message) {
+            this.alertError(error.response.data.message)
+          }
+          this.loading = false
+          // onFailure()
+        })
+      } else {
+        Swal.fire({
+          title: 'Apakah Anda yakin?',
+          text: 'Isian akan kami simpan, dan tidak dapat diubah lagi!',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, submit it!'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            if (this.creating) {
+              this.submitted = true
+              this.$emit('submitted', true)
+              return
+            }
+
+            this.loading = true
+            this.closeAlert()
+            form.post('/api/forms/' + this.form.slug + '/answer' + '/' + this.userId).then((response) => {
+              this.$logEvent('form_submission', {
+                workspace_id: this.form.workspace_id,
+                form_id: this.form.id
+              })
+
+              try {
+                window.localStorage.removeItem(this.formPendingSubmissionKey)
+              } catch (e) {}
+
+              if (response.data.redirect && response.data.redirect_url) {
+                window.location.href = response.data.redirect_url
+              }
+
+              if (response.data.submission_id) {
+                this.submissionId = response.data.submission_id
+              }
+
+              this.loading = false
+              this.submitted = true
+              this.$emit('submitted', true)
+            }).catch((error) => {
+              if (error.response.data && error.response.data.message) {
+                this.alertError(error.response.data.message)
+              }
+              this.loading = false
+              onFailure()
             })
-
-            try {
-              window.localStorage.removeItem(this.formPendingSubmissionKey)
-            } catch (e) {}
-
-            if (response.data.redirect && response.data.redirect_url) {
-              window.location.href = response.data.redirect_url
-            }
-
-            if (response.data.submission_id) {
-              this.submissionId = response.data.submission_id
-            }
-
-            this.loading = false
-            this.submitted = true
-            this.$emit('submitted', true)
-          }).catch((error) => {
-            if (error.response.data && error.response.data.message) {
-              this.alertError(error.response.data.message)
-            }
-            this.loading = false
-            onFailure()
-          })
-        }
-      })
+          }
+        })
+      }
     },
     restart () {
       this.submitted = false

@@ -42,7 +42,10 @@ class StoreFormSubmissionJob implements ShouldQueue
     public function handle()
     {
         $formData = $this->getFormData();
-        $this->addHiddenPrefills($formData);
+        // if (session('simpanSementara') == true) {
+        // }else{
+            $this->addHiddenPrefills($formData);
+        // }
 
         $this->storeSubmission($formData);
         
@@ -50,6 +53,18 @@ class StoreFormSubmissionJob implements ShouldQueue
         $formData["submission_id"] = $this->submissionId;
         FormSubmitted::dispatch($this->form, $formData);
     }
+
+    // public function handleSimpanSementara()
+    // {
+    //     $formData = $this->getFormData();
+    //     // $this->addHiddenPrefills($formData);
+
+    //     $this->storeSubmission($formData);
+        
+
+    //     $formData["submission_id"] = $this->submissionId;
+    //     FormSubmitted::dispatch($this->form, $formData);
+    // }
 
     public function getSubmissionId()
     {
@@ -65,14 +80,28 @@ class StoreFormSubmissionJob implements ShouldQueue
             $user = DB::table('users')->orderBy('id', 'DESC')->first();
         }
         if ($previousSubmission = $this->submissionToUpdate()) {
+            if (session('simpanSementara') == false) {
+                $previousSubmission->savedSession = 0;
+            }else{
+                $previousSubmission->savedSession = 1;
+            }
             $previousSubmission->data = $formData;
             $previousSubmission->save();
             $this->submissionId = $previousSubmission->id;
         } else {
-            $response = $this->form->submissions()->create([
-                'data' => $formData,
-                'id_user' => $user->id
-            ]);
+            if (session('simpanSementara') != true) {
+                $response = $this->form->submissions()->create([
+                    'data' => $formData,
+                    'savedSession' => 0,
+                    'id_user' => $user->id
+                ]);
+            }else{
+                $response = $this->form->submissions()->create([
+                    'data' => $formData,
+                    'savedSession' => 1,
+                    'id_user' => $user->id
+                ]);
+            }
             $this->submissionId = $response->id;
         }
     }

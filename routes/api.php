@@ -134,6 +134,7 @@ Route::prefix('forms')->name('forms.')->group(function () {
     Route::middleware('password-protected-form')->group(function () {
         Route::post('{slug}/answer', [PublicFormController::class, 'answer'])->name('answer');
         Route::post('{slug}/answer/{id}', [PublicFormController::class, 'answerWithId'])->name('answerWithId');
+        Route::post('{slug}/simpan-sementara/{id}', [PublicFormController::class, 'simpanSementara'])->name('simpanSementara');
 
         // Form content endpoints (user lists, relation lists etc.)
         Route::get('{slug}/users',

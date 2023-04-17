@@ -1,5 +1,5 @@
 <template>
-  <button :type="nativeType" :disabled="loading" :class="`py-${sizes['p-y']} px-${sizes['p-x']} text-${sizes['font']} ${theme.Button.body}`" :style="buttonStyle"
+  <button :type="nativeType" :disabled="loading" :class="`py-${sizes['p-y']} px-${sizes['p-x']} text-${sizes['font']} ${theme.Button.body} ${customClass}`" :id="`${refs}`" :style="buttonStyle"
           class="btn" @click="$emit('click',$event)"
   >
     <template v-if="!loading">
@@ -19,6 +19,16 @@ export default {
     color: {
       type: String,
       required: true
+    },
+
+    refs: {
+      type: String,
+      default: ''
+    },
+
+    customClass: {
+      type: String,
+      default: ''
     },
 
     size: {
