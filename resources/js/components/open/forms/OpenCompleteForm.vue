@@ -1,6 +1,11 @@
 <template>
   <div v-if="form" class="open-complete-form">
-    <button v-if="!submitted" type="button" @click="submitTemporary(form)" class="rounded float-right mt-2 px-4 pt-2 pb-2 mx-1 bg-emerald-400 text-white">Simpan Sementara</button>
+    <!-- <button v-if="!submitted && form.editable_submissions" type="button" @click="submitTemporary(form)" class="rounded float-right mt-2 px-4 pt-2 pb-2 mx-1 ">Simpan Sementara</button> -->
+    <open-form-button  v-if="!submitted && form.editable_submissions" :loading="loading" :theme="theme" :color="form.color" class="px-4 mt-4 mr-4 pt-2 pb-2 mx-1 bg-emerald-400 text-white float-right"
+                       @click="submitTemporary(form)"
+    >
+      Simpan Sementara
+    </open-form-button>
     <h1 v-if="!isHideTitle" class="mb-4 px-2" v-text="form.title" />
     <div v-if="isPublicFormPage && form.is_password_protected">
       <p class="form-description mb-4 text-gray-700 dark:text-gray-300 px-2">

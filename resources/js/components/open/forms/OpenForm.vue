@@ -56,8 +56,8 @@
         {{ previousFieldsPageBreak.previous_btn_text }}
       </open-form-button>
       <slot v-if="isLastPage" name="submit-btn" :submitForm="submitForm"/>
-      <slot name="submit-btn" :submitForm="submitForm" />
-      <open-form-button native-type="button" :color="form.color" :theme="theme" class="mt-2 px-8 mx-1"
+      <!-- <slot name="submit-btn" :submitForm="submitForm" /> -->
+      <open-form-button v-else native-type="button" :color="form.color" :theme="theme" class="mt-2 px-8 mx-1"
                         @click="nextPage"
       >
         {{ currentFieldsPageBreak.next_btn_text }}

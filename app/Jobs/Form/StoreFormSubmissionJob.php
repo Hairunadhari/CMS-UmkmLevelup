@@ -84,6 +84,7 @@ class StoreFormSubmissionJob implements ShouldQueue
             // $user = DB::table('users')->orderBy('id', 'DESC')->first();
         }
         if ($previousSubmission = $this->submissionToUpdate()) {
+            // dd('test');
             if (session('simpanSementara') == false) {
                 $previousSubmission->savedSession = 0;
             }else{
@@ -93,6 +94,7 @@ class StoreFormSubmissionJob implements ShouldQueue
             $previousSubmission->save();
             $this->submissionId = $previousSubmission->id;
         } else {
+            dd('test2');
             if (session('simpanSementara') != true) {
                 $response = $this->form->submissions()->create([
                     'data' => $formData,
