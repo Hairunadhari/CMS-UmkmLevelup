@@ -74,11 +74,12 @@ class StoreFormSubmissionJob implements ShouldQueue
     private function storeSubmission(array $formData)
     {
         // Create or update record
+        $id = 0;
         if (session('idUser') != 0 or session('idUser') != null) {
             $user = DB::table('users')->where('id', session('idUser'))->first();
+            $id = $user->id;
         }
         else{
-            $user->id = 0;
             // $user = DB::table('users')->orderBy('id', 'DESC')->first();
         }
         if ($previousSubmission = $this->submissionToUpdate()) {
@@ -95,10 +96,14 @@ class StoreFormSubmissionJob implements ShouldQueue
                 $response = $this->form->submissions()->create([
                     'data' => $formData,
                     'savedSession' => 0,
-                    'id_user' => $user->id
+                    'id_user' => $id
                 ]);
             }else{
-                
+                $response = $this->form->submissions()->create([
+                    'data' => $formData,
+                    'savedSession' => 1,
+                    'id_user' => $id
+                ]);
             }
             $this->submissionId = $response->id;
         }
