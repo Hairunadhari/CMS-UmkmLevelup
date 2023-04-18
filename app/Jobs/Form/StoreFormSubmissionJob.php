@@ -98,11 +98,7 @@ class StoreFormSubmissionJob implements ShouldQueue
                     'id_user' => $user->id
                 ]);
             }else{
-                $response = $this->form->submissions()->create([
-                    'data' => $formData,
-                    'savedSession' => 1,
-                    'id_user' => $user->id
-                ]);
+                
             }
             $this->submissionId = $response->id;
         }
