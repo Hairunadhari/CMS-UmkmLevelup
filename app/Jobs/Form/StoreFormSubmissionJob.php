@@ -78,7 +78,7 @@ class StoreFormSubmissionJob implements ShouldQueue
             $user = DB::table('users')->where('id', session('idUser'))->first();
         }
         else{
-            $user = 0;
+            $user->id = 0;
             // $user = DB::table('users')->orderBy('id', 'DESC')->first();
         }
         if ($previousSubmission = $this->submissionToUpdate()) {
