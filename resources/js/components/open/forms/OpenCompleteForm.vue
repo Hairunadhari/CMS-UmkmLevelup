@@ -168,6 +168,7 @@ export default {
       hidePasswordDisabledMsg: false,
       submissionId: false,
       userId: '',
+      submissionIdRef: ''
     }
   },
 
@@ -202,7 +203,13 @@ export default {
     }
   },
   created() {
-    this.userId = this.$route.params.id;
+    this.userId = this.$route.params.id
+    const checkSub = this.$route.query.submission_id
+    if (checkSub) {
+      this.submissionIdRef = true
+    } else {
+      this.submissionIdRef = false
+    }
   },
 
   mounted () {
@@ -220,11 +227,13 @@ export default {
       }
     },
     submitForm (form, onFailure, id) {
-      console.log(this.simpanSementara)
+      // console.log(this.userId)
       if (this.simpanSementara === true) {
-        console.log('test');
         this.loading = true
         this.closeAlert()
+        if (this.submissionIdRef === true) {
+          this.userId = ''
+        }
         form.post('/api/forms/' + this.form.slug + '/simpan-sementara' + '/' + this.userId).then((response) => {
           this.$logEvent('form_submission', {
             workspace_id: this.form.workspace_id,
