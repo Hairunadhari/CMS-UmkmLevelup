@@ -219,7 +219,7 @@ export default {
       }
     },
     submitForm (form, onFailure, id) {
-      console.log(this.simpanSementara)
+      console.log(this.userId)
       if (this.simpanSementara === true) {
         console.log('test');
         this.loading = true

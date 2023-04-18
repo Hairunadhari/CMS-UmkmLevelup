@@ -74,10 +74,12 @@ class StoreFormSubmissionJob implements ShouldQueue
     private function storeSubmission(array $formData)
     {
         // Create or update record
-        if (session('idUser') != 0) {
+        if (session('idUser') != 0 or session('idUser') != null) {
             $user = DB::table('users')->where('id', session('idUser'))->first();
-        }else{
-            $user = DB::table('users')->orderBy('id', 'DESC')->first();
+        }
+        else{
+            $user = 0;
+            // $user = DB::table('users')->orderBy('id', 'DESC')->first();
         }
         if ($previousSubmission = $this->submissionToUpdate()) {
             if (session('simpanSementara') == false) {
