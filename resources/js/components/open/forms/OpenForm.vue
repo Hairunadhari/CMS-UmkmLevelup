@@ -22,8 +22,8 @@
                    class="nf-code w-full px-2 mb-3"
                    v-html="field.content"
               />
-              <div v-if="field.type === 'nf-divider'" :id="field.id" :key="field.id" 
-                  class="border-b my-4 w-full mx-2"
+              <div v-if="field.type === 'nf-divider'" :id="field.id" :key="field.id"
+                   class="border-b my-4 w-full mx-2"
               />
               <div v-if="field.type === 'nf-image' && (field.image_block || !isPublicFormPage)" :id="field.id"
                    :key="field.id" class="my-4 w-full px-2"
@@ -42,20 +42,22 @@
     <!-- Captcha -->
     <template v-if="form.use_captcha && isLastPage">
       <div class="mb-3 px-2 mt-2 mx-auto w-max">
-        <vue-hcaptcha ref="hcaptcha" :sitekey="hCaptchaSiteKey" :theme="darkModeEnabled?'dark':'light'"/>
-        <has-error :form="dataForm" field="h-captcha-response"/>
+        <vue-hcaptcha ref="hcaptcha" :sitekey="hCaptchaSiteKey" :theme="darkModeEnabled?'dark':'light'" />
+        <has-error :form="dataForm" field="h-captcha-response" />
       </div>
     </template>
 
     <!--  Submit, Next and previous buttons  -->
     <div class="flex flex-wrap justify-center w-full">
+      <slot name="submit-btn-temporary" :submitForm="submitForm"/>
       <open-form-button v-if="currentFieldGroupIndex>0 && previousFieldsPageBreak && !loading" native-type="button"
                         :color="form.color" :theme="theme" class="mt-2 px-8 mx-1" @click="previousPage"
       >
         {{ previousFieldsPageBreak.previous_btn_text }}
       </open-form-button>
       <slot v-if="isLastPage" name="submit-btn" :submitForm="submitForm"/>
-      <open-form-button v-else native-type="button" :color="form.color" :theme="theme" class="mt-2 px-8 mx-1"
+      <slot name="submit-btn" :submitForm="submitForm" />
+      <open-form-button native-type="button" :color="form.color" :theme="theme" class="mt-2 px-8 mx-1"
                         @click="nextPage"
       >
         {{ currentFieldsPageBreak.next_btn_text }}
@@ -73,13 +75,13 @@ import Form from 'vform'
 import OpenFormButton from './OpenFormButton.vue'
 import clonedeep from 'clone-deep'
 import FormLogicPropertyResolver from '../../../forms/FormLogicPropertyResolver.js'
+import FormPendingSubmissionKey from '../../../mixins/forms/form-pending-submission-key.js'
 
 const VueHcaptcha = () => import('@hcaptcha/vue-hcaptcha')
-import FormPendingSubmissionKey from '../../../mixins/forms/form-pending-submission-key.js'
 
 export default {
   name: 'OpenForm',
-  components: {OpenFormButton, VueHcaptcha},
+  components: { OpenFormButton, VueHcaptcha },
   mixins: [FormPendingSubmissionKey],
   props: {
     form: {
@@ -103,7 +105,7 @@ export default {
       required: true
     }
   },
-  data() {
+  data () {
     return {
       dataForm: null,
       currentFieldGroupIndex: 0,
@@ -119,7 +121,7 @@ export default {
 
   computed: {
     hCaptchaSiteKey: () => window.config.hCaptchaSiteKey,
-    actualFields() {
+    actualFields () {
       return this.fields.filter((field) => {
         return this.showHidden || !this.isFieldHidden[field.id]
       })
@@ -127,7 +129,7 @@ export default {
     /**
      * Create field groups (or Page) using page breaks if any
      */
-    fieldGroups() {
+    fieldGroups () {
       if (!this.actualFields) return []
       const groups = []
       let currentGroup = []
@@ -141,18 +143,18 @@ export default {
       groups.push(currentGroup)
       return groups
     },
-    currentFields() {
+    currentFields () {
       return this.fieldGroups[this.currentFieldGroupIndex]
     },
     /**
      * Returns the page break block for the current group of fields
      */
-    currentFieldsPageBreak() {
+    currentFieldsPageBreak () {
       const block = this.currentFields[this.currentFields.length - 1]
       if (block && block.type === 'nf-page-break') return block
       return null
     },
-    previousFieldsPageBreak() {
+    previousFieldsPageBreak () {
       if (this.currentFieldGroupIndex === 0) return null
       const previousFields = this.fieldGroups[this.currentFieldGroupIndex - 1]
       const block = previousFields[previousFields.length - 1]
@@ -163,10 +165,10 @@ export default {
      * Returns true if we're on the last page
      * @returns {boolean}
      */
-    isLastPage() {
+    isLastPage () {
       return this.currentFieldGroupIndex === (this.fieldGroups.length - 1)
     },
-    fieldComponents() {
+    fieldComponents () {
       return {
         text: 'TextInput',
         number: 'TextInput',
@@ -177,15 +179,16 @@ export default {
         checkbox: 'CheckboxInput',
         url: 'TextInput',
         email: 'TextInput',
-        phone_number: 'TextInput',
+        phone_number: 'TextInput'
       }
     },
-    isPublicFormPage() {
+    isPublicFormPage () {
       return this.$route.name === 'forms.show_public'
     },
-    dataFormValue() {
+    dataFormValue () {
       // For get values instead of Id for select/multi select options
       const data = this.dataForm.data()
+      console.error(data)
       const selectionFields = this.fields.filter((field) => {
         return ['select', 'multi_select'].includes(field.type)
       })
@@ -201,14 +204,14 @@ export default {
       })
       return data
     },
-    isFieldHidden() {
+    isFieldHidden () {
       const fieldsHidden = {}
       this.fields.forEach((field) => {
         fieldsHidden[field.id] = (new FormLogicPropertyResolver(field, this.dataFormValue)).isHidden()
       })
       return fieldsHidden
     },
-    isFieldRequired() {
+    isFieldRequired () {
       const fieldsRequired = {}
       this.fields.forEach((field) => {
         fieldsRequired[field.id] = (new FormLogicPropertyResolver(field, this.dataFormValue)).isRequired()
@@ -220,24 +223,24 @@ export default {
   watch: {
     form: {
       deep: true,
-      handler() {
+      handler () {
         this.initForm()
       }
     },
     fields: {
       deep: true,
-      handler() {
+      handler () {
         this.initForm()
       }
     },
     theme: {
-      handler() {
+      handler () {
         this.formVersionId++
       }
     },
     dataForm: {
       deep: true,
-      handler() {
+      handler () {
         if (this.isPublicFormPage && this.form && this.dataFormValue) {
           try {
             window.localStorage.setItem(this.formPendingSubmissionKey, JSON.stringify(this.dataFormValue))
@@ -245,10 +248,10 @@ export default {
           }
         }
       }
-    },
+    }
   },
 
-  mounted() {
+  mounted () {
     this.initForm()
 
     if (window.location.href.includes('auto_submit=true')) {
@@ -258,10 +261,10 @@ export default {
   },
 
   methods: {
-    submitForm() {
-      if (this.currentFieldGroupIndex !== this.fieldGroups.length - 1) {
-        return
-      }
+    submitForm () {
+      // if (this.currentFieldGroupIndex !== this.fieldGroups.length - 1) {
+      //   return
+      // }
 
       if (this.form.use_captcha) {
         this.dataForm['h-captcha-response'] = document.getElementsByName('h-captcha-response')[0].value
@@ -277,7 +280,7 @@ export default {
     /**
      * If more than one page, show first page with error
      */
-    onSubmissionFailure() {
+    onSubmissionFailure () {
       this.isAutoSubmit = false
       if (this.fieldGroups.length > 1) {
         // Find first mistake and show page
@@ -303,7 +306,7 @@ export default {
         })
       }
     },
-    async getSubmissionData() {
+    async getSubmissionData () {
       if (!this.form || !this.form.editable_submissions || !this.form.submission_id) { return null }
       await this.$store.dispatch('open/records/loadRecord',
         axios.get('/api/forms/' + this.form.slug + '/submissions/' + this.form.submission_id).then((response) => {
@@ -312,7 +315,7 @@ export default {
       )
       return this.$store.getters['open/records/getById'](this.form.submission_id)
     },
-    async initForm() {
+    async initForm () {
       if (this.isPublicFormPage && this.form.editable_submissions) {
         const urlParam = new URLSearchParams(window.location.search)
         if (urlParam && urlParam.get('submission_id')) {
@@ -340,9 +343,9 @@ export default {
               let currentDate = dateObj.getFullYear() + '-' +
                       String(dateObj.getMonth() + 1).padStart(2, '0') + '-' +
                       String(dateObj.getDate()).padStart(2, '0')
-              if(field.with_time === true){
+              if (field.with_time === true) {
                 currentDate += 'T' + String(dateObj.getHours()).padStart(2, '0') + ':' +
-                String(dateObj.getMinutes()).padStart(2, '0');
+                String(dateObj.getMinutes()).padStart(2, '0')
               }
               pendingData[field.id] = currentDate
             }
@@ -382,7 +385,7 @@ export default {
           let currentDate = dateObj.getFullYear() + '-' +
             String(dateObj.getMonth() + 1).padStart(2, '0') + '-' +
             String(dateObj.getDate()).padStart(2, '0')
-          if(field.with_time === true){
+          if (field.with_time === true) {
             currentDate += 'T' + String(dateObj.getHours()).padStart(2, '0') + ':' +
             String(dateObj.getMinutes()).padStart(2, '0')
           }
@@ -390,14 +393,13 @@ export default {
         } else { // Default prefill if any
           formData[field.id] = field.prefill
         }
-
       })
       this.dataForm = new Form(formData)
     },
     /**
      * Get the right input component for the field/options combination
      */
-    getFieldComponents(field) {
+    getFieldComponents (field) {
       if (field.type === 'text' && field.multi_lines) {
         return 'TextAreaInput'
       }
@@ -418,7 +420,7 @@ export default {
       }
       return this.fieldComponents[field.type]
     },
-    getFieldClasses(field) {
+    getFieldClasses (field) {
       if (!field.width || field.width === 'full') return 'w-full px-2'
       else if (field.width === '1/2') {
         return 'w-full sm:w-1/2 px-2'
@@ -435,7 +437,7 @@ export default {
     /**
      * Get the right input component options for the field/options
      */
-    inputProperties(field) {
+    inputProperties (field) {
       const inputProperties = {
         key: field.id,
         name: field.id,
@@ -451,6 +453,7 @@ export default {
       }
 
       if (['select', 'multi_select'].includes(field.type)) {
+        // eslint-disable-next-line no-prototype-builtins
         inputProperties.options = (field.hasOwnProperty(field.type))
           ? field[field.type].options.map(option => {
             return {
@@ -476,19 +479,19 @@ export default {
       } else if (field.type === 'files' || (field.type === 'url' && field.file_upload)) {
         inputProperties.multiple = (field.multiple !== undefined && field.multiple)
         inputProperties.mbLimit = 5
-        inputProperties.accept = (this.form.is_pro && field.allowed_file_types) ? field.allowed_file_types : ""
+        inputProperties.accept = (this.form.is_pro && field.allowed_file_types) ? field.allowed_file_types : ''
       } else if (field.type === 'number' && field.is_rating) {
         inputProperties.numberOfStars = parseInt(field.rating_max_value)
       }
 
       return inputProperties
     },
-    previousPage() {
+    previousPage () {
       this.currentFieldGroupIndex -= 1
       window.scrollTo({ top: 0, behavior: 'smooth' })
       return false
     },
-    nextPage() {
+    nextPage () {
       this.currentFieldGroupIndex += 1
       window.scrollTo({ top: 0, behavior: 'smooth' })
       return false

@@ -12,7 +12,8 @@ class FormSubmission extends Model
 
     protected $fillable = [
         'data',
-        'id_user'
+        'id_user',
+        'savedSession',
     ];
 
     protected $casts = [

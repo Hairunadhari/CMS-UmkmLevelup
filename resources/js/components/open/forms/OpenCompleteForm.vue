@@ -1,6 +1,6 @@
 <template>
   <div v-if="form" class="open-complete-form">
-    <button type="button" @click="submitTemporary" class="rounded float-right mt-2 px-4 pt-2 pb-2 mx-1 bg-emerald-400 text-white">Simpan Sementara</button>
+    <button v-if="!submitted" type="button" @click="submitTemporary(form)" class="rounded float-right mt-2 px-4 pt-2 pb-2 mx-1 bg-emerald-400 text-white">Simpan Sementara</button>
     <h1 v-if="!isHideTitle" class="mb-4 px-2" v-text="form.title" />
     <div v-if="isPublicFormPage && form.is_password_protected">
       <p class="form-description mb-4 text-gray-700 dark:text-gray-300 px-2">
@@ -89,9 +89,16 @@
                    :theme="theme"
                    @submit="submitForm"
         >
+          <template #submit-btn-temporary="{submitForm}">
+            <open-form-button :loading="loading" refs="submitButton" :theme="theme" :color="form.color" class="mt-2 px-8 mx-1 hidden"
+                              @click.prevent="submitForm"
+            >
+              {{ form.submit_button_text }}
+            </open-form-button>
+          </template>
           <template #submit-btn="{submitForm}">
-            <open-form-button :loading="loading" refs="submitButton" :theme="theme" :color="form.color" class="mt-2 px-8 mx-1"
-                                @click.prevent="submitForm"
+            <open-form-button :loading="loading" refs="submitButtonSecond" :theme="theme" :color="form.color" class="mt-2 px-8 mx-1"
+                              @click.prevent="submitForm"
             >
               {{ form.submit_button_text }}
             </open-form-button>
@@ -103,7 +110,7 @@
              target="_blank"
           >
           <!-- Powered by <span class="font-semibold">Form Builder</span> -->
-        </a>
+          </a>
         </p>
       </div>
       <div v-else key="submitted" class="px-2">
@@ -112,7 +119,7 @@
           {{ form.re_fill_button_text }}
         </open-form-button>
         <p v-if="form.editable_submissions && submissionId" class="mt-5">
-          <a target="_parent" :href="form.share_url+'?submission_id='+submissionId" class="text-nt-blue hover:underline">Edit submission</a>
+          <!-- <a target="_parent" :href="childUrl+'?href='+form.share_url+'?submission_id='+submissionId" class="text-nt-blue hover:underline">Ubah Kembali</a> -->
         </p>
         <p v-if="!form.no_branding" class="mt-5">
           <!-- <a target="_parent" href="#" class="text-nt-blue hover:underline">Create your form for free with Form Builder</a> -->
@@ -133,7 +140,8 @@ import VButton from '../../common/Button.vue'
 import VTransition from '../../common/transitions/VTransition.vue'
 import FormPendingSubmissionKey from '../../../mixins/forms/form-pending-submission-key.js'
 import Swal from 'sweetalert2'
-import axios from 'axios'
+// import dotenv from 'dotenv';
+// dotenv.config();
 
 export default {
   components: { VTransition, VButton, OpenFormButton, OpenForm },
@@ -155,6 +163,7 @@ export default {
       passwordForm: new Form({
         password: null
       }),
+      childUrl: '',
       hidePasswordDisabledMsg: false,
       submissionId: false,
       userId: '',
@@ -196,6 +205,7 @@ export default {
   },
 
   mounted () {
+    this.apiUrl = import.meta.env.APP_CHILD
   },
 
   methods: {
@@ -203,13 +213,15 @@ export default {
       this.simpanSementara = true
       const submitButton = document.querySelector('#submitButton');
       if (submitButton) {
-        submitButton.click();
+        submitButton.click()
       } else {
         console.error('Button not found');
       }
     },
     submitForm (form, onFailure, id) {
+      console.log(this.simpanSementara)
       if (this.simpanSementara === true) {
+        console.log('test');
         this.loading = true
         this.closeAlert()
         form.post('/api/forms/' + this.form.slug + '/simpan-sementara' + '/' + this.userId).then((response) => {
