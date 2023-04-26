@@ -191,6 +191,12 @@ class FormSubmissionFormatter
                 } else {
                     $formId = $this->form->id;
                     $field['value'] = collect($data[$field['id']])->map(function ($file) use ($formId) {
+                        if ($file == null) {
+                            return [
+                                'file_url' => '',
+                                'file_name' => '',
+                            ];
+                        }
                         return [
                             'file_url' => route('open.forms.submissions.file', [$formId, $file]),
                             'file_name' => $file,

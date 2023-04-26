@@ -94,7 +94,6 @@ class StoreFormSubmissionJob implements ShouldQueue
             $previousSubmission->save();
             $this->submissionId = $previousSubmission->id;
         } else {
-            dd('test2');
             if (session('simpanSementara') != true) {
                 $response = $this->form->submissions()->create([
                     'data' => $formData,
@@ -136,10 +135,10 @@ class StoreFormSubmissionJob implements ShouldQueue
     private function getFormData()
     {
         $data = $this->submissionData;
+        $cloneData = $data;
         $finalData = [];
 
         $properties = collect($this->form->properties);
-
         // Do required transformation per type (e.g. file uploads)
         foreach ($data as $answerKey => $answerValue) {
             $field = $properties->where('id', $answerKey)->first();
@@ -150,7 +149,20 @@ class StoreFormSubmissionJob implements ShouldQueue
             if (
                 ($field['type'] == 'url' && isset($field['file_upload']) && $field['file_upload'])
                 || $field['type'] == 'files') {
-                if (is_array($answerValue)) {
+                    if (is_array($answerValue)) {
+                    $checkSubmission = $cloneData['submission_id'] ?? null;
+                    if ($checkSubmission) {
+                        $fieldId = $field['id'];
+                        $idForm = Hashids::decode($data['submission_id']);
+                        $check = DB::table('form_submissions')->where('id', $idForm[0])
+                        ->where(function ($query) use ($fieldId) {
+                            $query->where('data', 'not like', '%"'.$fieldId.'":[null]%')
+                                ->orWhere('data', 'not like', '%"'.$fieldId.'":null%');
+                        })->first();
+                        if ($check) {
+                            // dd($answerValue);
+                        }else{}
+                    }else{}
                     $finalData[$field['id']] = [];
                     foreach ($answerValue as $file) {
                         $finalData[$field['id']][] = $this->storeFile($file);
@@ -189,6 +201,7 @@ class StoreFormSubmissionJob implements ShouldQueue
      */
     private function storeFile(?string $value)
     {
+        // dd($value);
         if ($value == null) {
             return null;
         }
@@ -199,7 +212,7 @@ class StoreFormSubmissionJob implements ShouldQueue
         $fileName = PublicFormController::TMP_FILE_UPLOAD_PATH.'/'.$fileNameParser->uuid;
         if (!Storage::disk('s3')->exists($fileName)) {
             // File not found, we skip
-            return null;
+            return $value;
         }
         $newPath = Str::of(PublicFormController::FILE_UPLOAD_PATH)->replace('?', $this->form->id);
         $completeNewFilename = $newPath.'/'.$fileNameParser->getMovedFileName();

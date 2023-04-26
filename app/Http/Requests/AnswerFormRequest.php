@@ -166,13 +166,13 @@ class AnswerFormRequest extends FormRequest
                     return ['array'];
                 }
                 return ['url'];
-            case 'files':
-                $allowedFileTypes = [];
-                if($this->form->is_pro && !empty($property['allowed_file_types'])){
-                    $allowedFileTypes = explode(",", $property['allowed_file_types']);
-                }
-                $this->requestRules[$property['id'].'.*'] = [new StorageFile($this->maxFileSize, $allowedFileTypes)];
-                return ['array'];
+            // case 'files':
+            //     $allowedFileTypes = [];
+            //     if($this->form->is_pro && !empty($property['allowed_file_types'])){
+            //         $allowedFileTypes = explode(",", $property['allowed_file_types']);
+            //     }
+            //     $this->requestRules[$property['id'].'.*'] = [new StorageFile($this->maxFileSize, $allowedFileTypes)];
+            //     return ['array'];
             case 'email':
                 return ['email:filter'];
             case 'date':

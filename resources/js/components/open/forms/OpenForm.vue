@@ -49,13 +49,13 @@
 
     <!--  Submit, Next and previous buttons  -->
     <div class="flex flex-wrap justify-center w-full">
-      <slot name="submit-btn-temporary" :submitForm="submitForm"/>
+      <slot name="submit-btn-temporary" :submitForm="submitForm" />
       <open-form-button v-if="currentFieldGroupIndex>0 && previousFieldsPageBreak && !loading" native-type="button"
                         :color="form.color" :theme="theme" class="mt-2 px-8 mx-1" @click="previousPage"
       >
         {{ previousFieldsPageBreak.previous_btn_text }}
       </open-form-button>
-      <slot v-if="isLastPage" name="submit-btn" :submitForm="submitForm"/>
+      <slot v-if="isLastPage" name="submit-btn" :submitForm="submitForm" />
       <!-- <slot name="submit-btn" :submitForm="submitForm" /> -->
       <open-form-button v-else native-type="button" :color="form.color" :theme="theme" class="mt-2 px-8 mx-1"
                         @click="nextPage"

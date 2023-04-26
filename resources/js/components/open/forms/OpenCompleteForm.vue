@@ -1,8 +1,8 @@
 <template>
   <div v-if="form" class="open-complete-form">
     <!-- <button v-if="!submitted && form.editable_submissions" type="button" @click="submitTemporary(form)" class="rounded float-right mt-2 px-4 pt-2 pb-2 mx-1 ">Simpan Sementara</button> -->
-    <open-form-button  v-if="!submitted && form.editable_submissions" :loading="loading" :theme="theme" :color="form.color" class="px-4 mt-4 mr-4 pt-2 pb-2 mx-1 bg-emerald-400 text-white float-right"
-                       @click="submitTemporary(form)"
+    <open-form-button v-if="!submitted && form.editable_submissions" :loading="loading" :theme="theme" :color="form.color" class="px-4 mt-4 mr-4 pt-2 pb-2 mx-1 bg-emerald-400 text-white float-right"
+                      @click="submitTemporary(form)"
     >
       Simpan Sementara
     </open-form-button>
@@ -110,6 +110,7 @@
           </template>
         </open-form>
         <p v-if="!form.no_branding" class="text-center w-full mt-2">
+          <div id="form_id" :data-id="form.id" />
           <a href="#"
              class="text-gray-400 hover:text-gray-500 dark:text-gray-600 dark:hover:text-gray-500 cursor-pointer hover:underline text-xs"
              target="_blank"
@@ -146,6 +147,8 @@ import VButton from '../../common/Button.vue'
 import VTransition from '../../common/transitions/VTransition.vue'
 import FormPendingSubmissionKey from '../../../mixins/forms/form-pending-submission-key.js'
 import Swal from 'sweetalert2'
+import Hashids from 'hashids'
+const hashids = new Hashids()
 // import dotenv from 'dotenv';
 // dotenv.config();
 
@@ -207,11 +210,12 @@ export default {
       return this.form.hide_title || window.location.href.includes('hide_title=true')
     }
   },
-  created() {
+  created () {
     this.userId = this.$route.params.id
     const checkSub = this.$route.query.submission_id
     if (checkSub) {
       this.submissionIdRef = true
+      this.userId = hashids.decode(checkSub)
     } else {
       this.submissionIdRef = false
     }
@@ -224,11 +228,11 @@ export default {
   methods: {
     submitTemporary () {
       this.simpanSementara = true
-      const submitButton = document.querySelector('#submitButton');
+      const submitButton = document.querySelector('#submitButton')
       if (submitButton) {
         submitButton.click()
       } else {
-        console.error('Button not found');
+        console.error('Button not found')
       }
     },
     submitForm (form, onFailure, id) {
@@ -249,9 +253,10 @@ export default {
             window.localStorage.removeItem(this.formPendingSubmissionKey)
           } catch (e) {}
 
-          if (response.data.redirect && response.data.redirect_url) {
-            window.location.href = response.data.redirect_url
-          }
+          // if (response.data.redirect && response.data.redirect_url) {
+            // window.location.href = response.data.redirect_url
+            // window.top.location.href = "https://demo.umkmlevelup.id/home";
+          // }
 
           if (response.data.submission_id) {
             this.submissionId = response.data.submission_id
@@ -296,9 +301,10 @@ export default {
                 window.localStorage.removeItem(this.formPendingSubmissionKey)
               } catch (e) {}
 
-              if (response.data.redirect && response.data.redirect_url) {
-                window.location.href = response.data.redirect_url
-              }
+              // if (response.data.redirect && response.data.redirect_url) {
+                // window.location.href = response.data.redirect_url
+                // window.top.location.href = "https://demo.umkmlevelup.id/home";
+              // }
 
               if (response.data.submission_id) {
                 this.submissionId = response.data.submission_id

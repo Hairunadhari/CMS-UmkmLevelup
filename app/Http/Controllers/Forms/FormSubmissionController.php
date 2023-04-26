@@ -49,7 +49,7 @@ class FormSubmissionController extends Controller
         );
     }
 
-    public function submissionFile($id, $fileName)
+    public function submissionFile($id, $fileName = null)
     {
         $form = Form::findOrFail((int) $id);
         $this->authorize('view', $form);
