@@ -27,7 +27,7 @@
         <template v-else-if="currentUrl !== null">
           <div :class="{ invisible: !hasDataFile }" class="flex-grow h-6 text-gray-600 dark:text-gray-400 truncate">
             <div>
-              <a :href="'/api/open/forms/'+idForm+'/submissions/file/' + currentUrl[0]" target="_blank" rel="noreferrer">{{ currentUrl[0] }}</a>
+              <a :href="'/api/forms/public/'+idForm+'/submissions/file/' + currentUrl[0]" target="_blank" rel="noreferrer">{{ currentUrl[0] }}</a>
             </div>
           </div>
           <div :class="{ invisible: !hasDataFile }">

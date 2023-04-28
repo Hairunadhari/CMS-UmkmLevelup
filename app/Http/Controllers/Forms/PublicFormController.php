@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Vinkla\Hashids\Facades\Hashids;
+use DB;
 // use Session;
 
 class PublicFormController extends Controller
@@ -110,6 +111,44 @@ class PublicFormController extends Controller
 
         if ($id != null) {
             $request->session()->put('idUser', $id);
+        }else{
+            $request->session()->put('idUser', 0);
+        }
+
+        if ($form->editable_submissions) {
+            // $request->session()->put('simpanSementara', false);
+            $job = new StoreFormSubmissionJob($form, $request->validated());
+            $job->handle();
+            $submissionId = Hashids::encode($job->getSubmissionId());
+        }else{
+            // $request->session()->put('simpanSementara', false);
+            StoreFormSubmissionJob::dispatch($form, $request->validated());
+        }
+
+        return $this->success(array_merge([
+            'message' => 'Form submission saved.',
+            'submission_id' => $submissionId
+        ], $request->form->is_pro && $request->form->redirect_url ? [
+            'redirect' => true,
+            'redirect_url' => $request->form->redirect_url
+        ] : [
+            'redirect' => false
+        ]));
+    }
+
+    public function answerWithFormId(AnswerFormRequest $request, $slug, $id = null)
+    {
+        $form = $request->form;
+        $submissionId = false;
+        $request->session()->put('simpanSementara', false);
+
+        if ($id != null) {
+            $checkForm = DB::table('form_submissions')->where('id', $id)->first();
+            if ($checkForm) {
+                $request->session()->put('idUser', $checkForm->id_user);
+            }else{
+                $request->session()->put('idUser', 0);
+            }
         }else{
             $request->session()->put('idUser', 0);
         }

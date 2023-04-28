@@ -176,6 +176,7 @@ export default {
       hidePasswordDisabledMsg: false,
       submissionId: false,
       userId: '',
+      urlAnswer: '',
       submissionIdRef: ''
     }
   },
@@ -216,7 +217,9 @@ export default {
     if (checkSub) {
       this.submissionIdRef = true
       this.userId = hashids.decode(checkSub)
+      this.urlAnswer = 'answerWithFormId'
     } else {
+      this.urlAnswer = 'answer'
       this.submissionIdRef = false
     }
   },
@@ -291,7 +294,7 @@ export default {
 
             this.loading = true
             this.closeAlert()
-            form.post('/api/forms/' + this.form.slug + '/answer' + '/' + this.userId).then((response) => {
+            form.post('/api/forms/' + this.form.slug + '/' + this.urlAnswer + '/' + this.userId).then((response) => {
               this.$logEvent('form_submission', {
                 workspace_id: this.form.workspace_id,
                 form_id: this.form.id

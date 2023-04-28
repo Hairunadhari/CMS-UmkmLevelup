@@ -134,8 +134,10 @@ Route::prefix('forms')->name('forms.')->group(function () {
     Route::middleware('password-protected-form')->group(function () {
         Route::post('{slug}/answer', [PublicFormController::class, 'answer'])->name('answer');
         Route::post('{slug}/answer/{id}', [PublicFormController::class, 'answerWithId'])->name('answerWithId');
+        Route::post('{slug}/answerWithFormId/{id}', [PublicFormController::class, 'answerWithFormId'])->name('answerWithFormId');
         Route::post('{slug}/simpan-sementara/{id}', [PublicFormController::class, 'simpanSementara'])->name('simpanSementara');
         Route::post('{slug}/simpan-sementara', [PublicFormController::class, 'simpanSementara'])->name('simpanSementara');
+        Route::get('public/{id}/submissions/file/{filename}', [FormSubmissionController::class, 'submissionFile'])->name('public.submissions.file');
 
         // Form content endpoints (user lists, relation lists etc.)
         Route::get('{slug}/users',
