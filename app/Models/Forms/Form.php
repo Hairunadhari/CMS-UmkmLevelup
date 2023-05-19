@@ -216,6 +216,11 @@ class Form extends Model
         return $this->belongsTo(User::class, 'creator_id');
     }
 
+    public function responden()
+    {
+        return $this->belongsTo(User::class, 'id_user');
+    }
+
     public function submissions()
     {
         return $this->hasMany(FormSubmission::class);

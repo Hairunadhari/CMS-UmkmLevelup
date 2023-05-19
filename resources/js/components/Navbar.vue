@@ -26,16 +26,16 @@
                        class="text-sm text-gray-600 dark:text-white hover:text-gray-800 cursor-pointer mt-1 mr-8">
             Kuesioner
           </router-link>
-          <a href="#" class="text-sm text-gray-600 dark:text-white hover:text-gray-800 cursor-pointer mt-1"
+          <!-- <a href="#" class="text-sm text-gray-600 dark:text-white hover:text-gray-800 cursor-pointer mt-1"
              @click.prevent="$crisp.push(['do', 'helpdesk:search'])" v-if="hasCrisp"
           >
             Help
-          </a>
-          <a :href="helpUrl" class="text-sm text-gray-600 dark:text-white hover:text-gray-800 cursor-pointer mt-1"
+          </a> -->
+          <!-- <a :href="helpUrl" class="text-sm text-gray-600 dark:text-white hover:text-gray-800 cursor-pointer mt-1"
              target="_blank" v-else
           >
             Help
-          </a>
+          </a> -->
         </div>
         <div v-if="showAuth" class="hidden md:block pl-5 border-gray-300 border-r h-5"></div>
         <div v-if="showAuth" class="block">

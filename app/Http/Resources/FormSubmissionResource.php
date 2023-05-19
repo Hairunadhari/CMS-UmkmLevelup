@@ -19,6 +19,7 @@ class FormSubmissionResource extends JsonResource
         $this->addTimestamp();
 
         return [
+            'name' => $this->name,
             'data' => $this->data,
             'form_id' => $this->form_id,
             'id' => $this->id,

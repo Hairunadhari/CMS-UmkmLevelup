@@ -10,6 +10,7 @@ use App\Service\Forms\FormSubmissionFormatter;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
+use DB;
 
 class FormSubmissionController extends Controller
 {
@@ -21,9 +22,18 @@ class FormSubmissionController extends Controller
     public function submissions(string $id)
     {
         $form = Form::findOrFail((int) $id);
+        // $form = Form::where('id', (int) $id)->firstOrFail();
         $this->authorize('view', $form);
 
-        return FormSubmissionResource::collection($form->submissions()->paginate(100));
+        // DB::enableQueryLog();
+        return 
+        FormSubmissionResource::collection(
+            $form->submissions()
+            ->join('users', 'users.id', '=', 'form_submissions.id_user')
+            ->select('form_submissions.*', 'users.name')
+            ->where('users.aktif', 1)
+            ->paginate(100));
+        // dd(DB::getQueryLog());
     }
 
     public function export(string $id)

@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+// use App\Http\Controllers\SuperLoginController;
+// use App\Http\Controllers\LogoutController;
+// use App\Http\Controllers\SetLevelController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,8 +21,27 @@ Route::post(
     [\App\Http\Controllers\Webhook\StripeController::class, 'handleWebhook']
 )->name('cashier.webhook');
 
+Route::group(['middleware' => ['guest']], function() {  
+    Route::get('/login', [\App\Http\Controllers\SuperLoginController::class, 'index'])->name("login");
+    Route::post('/process-login', [\App\Http\Controllers\SuperLoginController::class, 'submitLogin'])->name('process-login');
+});
+
+// Route::group(['middleware' => ['auth']], function() {
+    Route::get('/set-level', [\App\Http\Controllers\SetLevelController::class, 'index'])->name("/set-level");
+    Route::post('/add-level', [\App\Http\Controllers\SetLevelController::class, 'addLevel'])->name("/add-level");
+    Route::get('/set-logic/{id}', [\App\Http\Controllers\SetLevelController::class, 'setLogic'])->name("/set-logic/{id}");
+    Route::post('/add-logic', [\App\Http\Controllers\SetLevelController::class, 'addLogic'])->name("/add-logic");
+    Route::get('/kuesioner-unverif', [\App\Http\Controllers\KuesionerController::class, 'unVerif'])->name("/kuesioner-unverif");
+    Route::get('/kuesioner-verif', [\App\Http\Controllers\KuesionerController::class, 'verif'])->name("/kuesioner-verif");
+    Route::get('/logout', [\App\Http\Controllers\SuperLoginController::class, 'logout'])->name("logout");
+    Route::post('/submit-verif', [\App\Http\Controllers\KuesionerController::class, 'doVerif'])->name("/submit-verif");
+
+// });
+
+
+
 Route::post(
     '/vapor/signed-storage-url',
     [\App\Http\Controllers\Content\SignedStorageUrlController::class, 'store']
 )->middleware([]);
-Route::get('/sitemap.xml', [\App\Http\Controllers\SitemapController::class, 'getSitemap'])->name('sitemap');
+// Route::get('/sitemap.xml', [\App\Http\Controllers\SitemapController::class, 'getSitemap'])->name('sitemap');

@@ -121,9 +121,16 @@ export default {
 
       // check if form properties already has a created_at column
       let hasCreatedAt = false
+      let hasName = false
       this.form.properties.forEach((property) => {
         if (property.id === 'created_at') {
           hasCreatedAt = true
+        }
+      })
+
+      this.form.properties.forEach((property) => {
+        if (property.id === 'name') {
+          hasName = true
         }
       })
 
@@ -134,6 +141,18 @@ export default {
           "name": "Created at",
           "id": "created_at",
           "type": "date",
+          "width": 140,
+        })
+        this.$set(this.form, 'properties', columns)
+      }
+
+      if (!hasName) {
+        // Add a "created at" column
+        const columns = clonedeep(this.form.properties)
+        columns.push({
+          "name": "Name",
+          "id": "name",
+          "type": "text",
           "width": 140,
         })
         this.$set(this.form, 'properties', columns)

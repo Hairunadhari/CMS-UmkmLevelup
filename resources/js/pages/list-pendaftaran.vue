@@ -19,15 +19,16 @@
     </div>
     <div class="flex bg-white">
       <div class="flex-grow w-full md:w-2/5 lg:w-2/5 md:mx-auto md:max-w-6xl px-4">
-        <div class="mt-8 pb-0"  style="width: 100%; overflow-x: scroll;">
+        <div class="mt-8 pb-0"  style="width: 100%; overflow-x: none;">
           <table ref="table" class="table-auto w-full">
                <thead><tr>
-                  <td>No.</td>
+                  <!-- <td>No.</td> -->
                   <td>Nama</td>
                   <td>nama usaha</td>
-                  <td>Level</td>
                   <td>Email</td>
-                  <td>provinsi</td>
+                  <td>Level</td>
+                  <td>Aksi</td>
+                  <!-- <td>provinsi</td>
                   <td>kabupaten</td>
                   <td>kecamatan</td>
                   <td>keluarahan</td>
@@ -37,7 +38,7 @@
                   <td>no hp</td>
                   <td>jenis kelamin</td>
                   <td>nik</td>
-                  <td>nib</td>
+                  <td>nib</td> -->
                 </tr>
               </thead>
             </table>
@@ -113,22 +114,22 @@ export default {
       this.dataTable = $(this.$refs.table).DataTable({
         data: this.users,
         columns: [
-          { data: 'id', className: 'px-4 py-2' },
-          { data: 'nama_pemilik', className: 'px-4 py-2' },
+          // { data: 'id', className: 'px-4 py-2' },
+          { data: 'name', className: 'px-4 py-2' },
+          { data: 'nama_usaha', className: 'px-4 py-2' },
           { data: 'email', className: 'px-4 py-2' },
           { data: 'level', className: 'px-4 py-2' },
-          { data: 'id_provinsi', className: 'px-4 py-2' },
-          { data: 'id_kabupaten', className: 'px-4 py-2' },
-          { data: 'id_kecamatan', className: 'px-4 py-2' },
-          { data: 'id_keluarahan', className: 'px-4 py-2' },
-          { data: 'alamat_lengkap', className: 'px-4 py-2' },
-          { data: 'nama_usaha', className: 'px-4 py-2' },
-          { data: 'email_usaha', className: 'px-4 py-2' },
-          { data: 'no_telp', className: 'px-4 py-2' },
-          { data: 'no_hp', className: 'px-4 py-2' },
-          { data: 'jenis_kelamin', className: 'px-4 py-2' },
-          { data: 'nik', className: 'px-4 py-2' },
-          { data: 'nib', className: 'px-4 py-2' },
+          // { data: 'nama_provinsi', className: 'px-4 py-2' },
+          // { data: 'nama_kabupaten', className: 'px-4 py-2' },
+          // { data: 'nama_kecamatan', className: 'px-4 py-2' },
+          // { data: 'nama_kelurahan', className: 'px-4 py-2' },
+          // { data: 'alamat_lengkap', className: 'px-4 py-2' },
+          // { data: 'email_usaha', className: 'px-4 py-2' },
+          // { data: 'no_telp', className: 'px-4 py-2' },
+          // { data: 'no_hp', className: 'px-4 py-2' },
+          // { data: 'jenis_kelamin', className: 'px-4 py-2' },
+          // { data: 'nik', className: 'px-4 py-2' },
+          // { data: 'nib', className: 'px-4 py-2' },
 
         ],
       });
@@ -204,3 +205,95 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+		/*Overrides for Tailwind CSS */
+
+		/*Form fields*/
+		.dataTables_wrapper select,
+		.dataTables_wrapper .dataTables_filter input {
+			color: #4a5568;
+			/*text-gray-700*/
+			padding-left: 1rem;
+			/*pl-4*/
+			padding-right: 1rem;
+			/*pl-4*/
+			padding-top: .5rem;
+			/*pl-2*/
+			padding-bottom: .5rem;
+			/*pl-2*/
+			line-height: 1.25;
+			/*leading-tight*/
+			border-width: 2px;
+			/*border-2*/
+			border-radius: .25rem;
+			border-color: #edf2f7;
+			/*border-gray-200*/
+			background-color: #edf2f7;
+			/*bg-gray-200*/
+		}
+
+		/*Row Hover*/
+		table.dataTable.hover tbody tr:hover,
+		table.dataTable.display tbody tr:hover {
+			background-color: #ebf4ff;
+			/*bg-indigo-100*/
+		}
+
+		/*Pagination Buttons*/
+		.dataTables_wrapper .dataTables_paginate .paginate_button {
+			font-weight: 700;
+			/*font-bold*/
+			border-radius: .25rem;
+			/*rounded*/
+			border: 1px solid transparent;
+			/*border border-transparent*/
+		}
+
+		/*Pagination Buttons - Current selected */
+		.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+			color: #fff !important;
+			/*text-white*/
+			box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06);
+			/*shadow*/
+			font-weight: 700;
+			/*font-bold*/
+			border-radius: .25rem;
+			/*rounded*/
+			background: #667eea !important;
+			/*bg-indigo-500*/
+			border: 1px solid transparent;
+			/*border border-transparent*/
+		}
+
+		/*Pagination Buttons - Hover */
+		.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+			color: #fff !important;
+			/*text-white*/
+			box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06);
+			/*shadow*/
+			font-weight: 700;
+			/*font-bold*/
+			border-radius: .25rem;
+			/*rounded*/
+			background: #667eea !important;
+			/*bg-indigo-500*/
+			border: 1px solid transparent;
+			/*border border-transparent*/
+		}
+
+		/*Add padding to bottom border */
+		table.dataTable.no-footer {
+			border-bottom: 1px solid #e2e8f0;
+			/*border-b-1 border-gray-300*/
+			margin-top: 0.75em;
+			margin-bottom: 0.75em;
+		}
+
+		/*Change colour of responsive icon*/
+		table.dataTable.dtr-inline.collapsed>tbody>tr>td:first-child:before,
+		table.dataTable.dtr-inline.collapsed>tbody>tr>th:first-child:before {
+			background-color: #667eea !important;
+			/*bg-indigo-500*/
+		}
+</style>

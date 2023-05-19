@@ -283,7 +283,7 @@ export default {
           showCancelButton: true,
           confirmButtonColor: '#3085d6',
           cancelButtonColor: '#d33',
-          confirmButtonText: 'Yes, submit it!'
+          confirmButtonText: 'Ya, Simpan!'
         }).then((result) => {
           if (result.isConfirmed) {
             if (this.creating) {

@@ -6,12 +6,15 @@ function page (path) {
 export default [
   // Logged Users
   { path: '/home', name: 'home', component: page('home.vue') },
+  { path: '/set-form-submission', name: 'set-form-submission', component: page('set-form-submission.vue') },
   { path: '/list-pendaftaran', name: 'list-pendaftaran', component: page('list-pendaftaran.vue') },
 
   // Forms
   { path: '/forms/create', name: 'forms.create', component: page('forms/create.vue') },
   { path: '/forms/create/guest', name: 'forms.create.guest', component: page('forms/create-guest.vue') },
   { path: '/forms/:slug/edit', name: 'forms.edit', component: page('forms/edit.vue') },
+  // { path: '/forms/:slug/setLevel', name: 'forms.setLevel', component: page('forms/set-level.vue') },
+  
   {
     path: '/forms/:slug/show',
     component: page('forms/show/index.vue'),
@@ -43,7 +46,7 @@ export default [
   },
 
   // Auth Routes
-  { path: '/login', name: 'login', component: page('auth/login.vue') },
+  { path: '/login-kuesioner', name: 'login', component: page('auth/login.vue') },
   { path: '/register', name: 'register', component: page('auth/register.vue') },
   { path: '/password/reset', name: 'password.request', component: page('auth/password/email.vue') },
   { path: '/password/reset/:token', name: 'password.reset', component: page('auth/password/reset.vue') },
