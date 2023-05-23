@@ -41,8 +41,8 @@ Route::redirect('/', '/login');
     Route::post('/submit-verif', [\App\Http\Controllers\KuesionerController::class, 'doVerif'])->name("/submit-verif");
     Route::get('/verif-page/{id}/{level}', [\App\Http\Controllers\KuesionerController::class, 'verification'])->name("verif-page/{id}/{level}");
     Route::get('/detail-data/{id}/{level}', [\App\Http\Controllers\KuesionerController::class, 'detailData'])->name("detail-data/{id}/{level}");
-    Route::post('/import', [\App\Http\Controllers\KuesionerController::class, 'detailData'])->name("import");
-    Route::post('/import', 'ImportController@import')->name('import');
+    Route::get('/import-data', [\App\Http\Controllers\ImportController::class, 'index'])->name("import-data");
+    Route::post('/import', [\App\Http\Controllers\ImportController::class, 'detailData'])->name("import");
 // });
 
 

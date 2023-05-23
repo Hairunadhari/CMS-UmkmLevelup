@@ -32,11 +32,17 @@
                     <a class="nav-link"
                         href="{{url('set-level')}}"><i class="fas fa-tags"></i> <span>Setting Level</span></a>
                 </li>
+
+                <li class="{{ Request::is('import-data') ? 'active' : '' }}">
+                    <a class="nav-link"
+                        href="{{url('import-data')}}"><i class="fas fa-upload"></i> <span>Import Data</span></a>
+                </li>
             
                 <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
                     <a class="nav-link"
                         href="#"><i class="fas fa-user"></i> <span>User</span></a>
                 </li>
+
                 <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
                     <a class="nav-link"
                         href="#"><i class="fas fa-cogs"></i> <span>Hak Akses</span></a>
