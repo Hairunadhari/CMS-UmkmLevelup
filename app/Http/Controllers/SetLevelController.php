@@ -39,7 +39,8 @@ class SetLevelController extends Controller
             'name' => $request->nama,
             'id_level' => $request->level,
             'id_form' => 6,
-            'logic' => '[]'
+            'logic' => '[]',
+            'created_at' => date("Y-m-d")
         ]);
         return redirect('set-level');
     }

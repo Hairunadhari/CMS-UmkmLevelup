@@ -49,8 +49,8 @@
                                       <td class="text-center">{{$value->name}}</td>
                                       <td class="text-center">{{$value->level}}</td>
                                       <td class="text-center">
-                                        <a class="btn btn-warning btn-sm" href="set-logic/{{$value->id}}">Logic</a> &nbsp;
-                                        <button type="button" class="btn btn-danger btn-sm" href="delete/{{$value->id}}"><i class="fa fa-times"></i></button>
+                                        <a class="btn btn-warning btn-sm" href="set-logic/{{$value->id}}"><i class="fa fa-edit"></i> Set Logic</a> &nbsp;
+                                        <button type="button" class="btn btn-danger btn-sm" href="delete/{{$value->id}}"><i class="fa fa-times"></i> Hapus</button>
                                       </td>
                                   </tr>
                                 @empty
@@ -91,9 +91,9 @@
                       <select class="form-control" name="level" id="level" required>
                           <option value="">-- Pilih --</option>
                           <option value="1">Beginner</option>
-                          <option value="2">Adapter</option>
-                          <option value="3">Observer</option>
-                          <option value="4">Legend</option>
+                          <option value="2">Observer</option>
+                          <option value="3">Adopter</option>
+                          <option value="4">Leader</option>
                       </select>
                       <div id="levelHelp" class="form-text"></div>
                   </div>

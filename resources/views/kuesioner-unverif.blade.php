@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Setting Level')
+@section('title', 'Kuesioner unverif')
 
 @push('style')
 <style>
@@ -37,15 +37,16 @@
             {{-- </div> --}}
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-striped table-md" id="table-1">
+                    <table class="table table-striped table-sm" id="table">
                       <thead>
                         <tr>
                           <th class="text-center" scope="col">#</th>
                           <th class="text-center" scope="col">Nama Bisnis</th>
                           <th class="text-center" scope="col">Nama</th>
-                          <th class="text-center" scope="col">Form</th>
+                          {{-- <th class="text-center" scope="col">Form</th> --}}
                           <th class="text-center" scope="col">Submit?</th>
-                          <th class="text-center" scope="col">Id Lvl</th>
+                          <th class="text-center" scope="col">Use?</th>
+                          {{-- <th class="text-center" scope="col">Id Lvl</th> --}}
                           <th class="text-center" scope="col">Level</th>
                           <th class="text-center" scope="col">Aksi</th>
                         </tr>
@@ -53,18 +54,19 @@
                       <tbody>
                         @forelse ($data as $key => $value)
                           <tr>
-                            <td>{{$key + 1}}</td>
+                            <td>{{$value->id_submit}}</td>
                             <td>{{$value->nama_usaha}}</td>
                             <td>{{$value->name}}</td>
-                            <td>{{$value->title}}</td>
+                            {{-- <td>{{$value->title}}</td> --}}
                             <td>{!! $value->savedSession == 1 ? '<span class="badge badge-warning badge-sm"><i class="fa fa-times"></i></span>' : '<span class="badge badge-success badge-sm"><i class="fa fa-check"></i></span>' !!}</td>
-                            <td>{{$value->id_level}}</td>
+                            <td></td>
+                            {{-- <td>{{$value->id_level}}</td> --}}
                             <td>{{$value->level}}</td>
-                            <td>{!! $value->savedSession == 0 ? '<button type="button" class="btn btn-sm btn-primary doVerif" data-id="'.$value->id_user.'" data-name="'.$value->name.'">Verifikasi</button>' : '' !!}</td>
+                            <td>{!! $value->savedSession == 0 ? '<a type="button" target="_blank" href="verif-page/'.$value->id.'/'.urlencode(base64_encode($value->level)).'" class="btn btn-sm btn-primary"><i class="fa fa-sign-in"></i> Verif</a>' : '' !!} </td>
                           </tr>
                         @empty
                           <tr>
-                              <td colspan="6">Tidak Ada Data</td>
+                              <td colspan="7">Tidak Ada Data</td>
                           </tr>
                         @endforelse
                       </tbody>
@@ -97,9 +99,9 @@
                 <select class="form-control select2" name="level" id="level" required>
                     <option value="">-- Pilih --</option>
                     <option value="1">Beginner</option>
-                    <option value="2">Adapter</option>
-                    <option value="3">Observer</option>
-                    <option value="4">Legend</option>
+                    <option value="2">Observer</option>
+                    <option value="3">Adopter</option>
+                    <option value="4">Leader</option>
                 </select>
                 <div id="levelHelp" class="form-text"></div>
             </div>

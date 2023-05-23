@@ -43,16 +43,23 @@ class SuperLoginController extends Controller
         try {
             if ($this->guard()->attempt($credentials)) {
                 $request->session()->regenerate();
+
+                // dd()
+                if ($this->guard()->user()->id_role == 2 or $this->guard()->user()->id_role == 3) {
+                    $request->session()->put('name', $this->guard()->user()->name);
+                    $request->session()->put('id_user', $this->guard()->user()->id);
+                    $request->session()->put('id_role', $this->guard()->user()->id_role);
+                    
+                    if($this->guard()->user()->id_role == 2){
+                        return redirect()->route('/dashboard'); 
+                    }else{
+                        return redirect()->route('/kuesioner-unverif'); 
+                    }
+                }else{
+                    return redirect('login');
+                }
                 
-                $request->session()->put('name', $this->guard()->user()->name);
-                $request->session()->put('id_user', $this->guard()->user()->id);
-                return redirect()->route('/set-level'); 
             }
-            
-            $request->session()->flash('alert', [
-                'type' => 'error',
-                'message' => 'Email / Password anda salah.',
-            ]);
         } catch (\Throwable $th) {
             $request->session()->flash('alert', [
                 'type' => 'error',
@@ -61,10 +68,6 @@ class SuperLoginController extends Controller
         }
         
         return redirect('login');
-
-        // return back()->withErrors([
-        //     'email' => 'The provided credentials do not match our records.',
-        // ]);
     }
     
     public function logout(Request $request)

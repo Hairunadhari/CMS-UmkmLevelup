@@ -63,7 +63,7 @@ export default [
   { path: '/discount-students-academics-ngos', name: 'discount-community', component: page('community/students-academics-ngos.vue') },
 
   // Guest Routes
-  { path: '/', name: 'welcome', component: page('welcome.vue') },
+  // { path: '/', name: 'welcome', component: page('welcome.vue') },
   { path: '/integrations', name: 'integrations', component: page('integrations.vue') },
   { path: '/forms/:slug', name: 'forms.show_public', component: page('forms/show-public.vue') },
   { path: '/forms/:slug/:id', name: 'forms.show_public_with_id', component: page('forms/show-public.vue') },

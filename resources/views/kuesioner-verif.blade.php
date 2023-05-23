@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Setting Level')
+@section('title', 'Kuesioner Verif')
 
 @push('style')
 <style>
@@ -22,32 +22,30 @@
   <div class="main-content">
     <section class="section">
       <div class="section-header">
-        <h1 style="width:87%">Kuesioner - Unverified</h1>
+        <h1 style="width:87%">Kuesioner - Verified</h1>
         <div class="float-right">
           {{-- <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#tambahData"><i class="fa fa-plus"></i> Tambah Data</button> --}}
         </div>
       </div>
 
       <div class="section-body">
-        <h2 class="section-title">List Kuesioner - Unverified</h2>
-        <p class="section-lead">List daftar responden yang sudah mengisi kuesioner dengan status unverif.</p>
+        <h2 class="section-title">List Kuesioner - Verified</h2>
+        <p class="section-lead">List daftar responden yang sudah mengisi kuesioner dengan status verified.</p>
         <div class="card">
             {{-- <div class="card-header"> --}}
                 {{-- <h4>Set Level</h4> --}}
             {{-- </div> --}}
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-striped table-md" id="table-1">
+                    <table class="table table-striped table-sm" id="table-1">
                       <thead>
                         <tr>
                           <th class="text-center" scope="col">#</th>
                           <th class="text-center" scope="col">Nama Bisnis</th>
                           <th class="text-center" scope="col">Nama</th>
                           <th class="text-center" scope="col">Form</th>
-                          {{-- <th class="text-center" scope="col">Submit?</th> --}}
-                          {{-- <th class="text-center" scope="col">Id Lvl</th> --}}
                           <th class="text-center" scope="col">Level Final</th>
-                          {{-- <th class="text-center" scope="col">Aksi</th> --}}
+                          <th class="text-center" scope="col">Aksi</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -57,10 +55,8 @@
                             <td>{{$value->nama_usaha}}</td>
                             <td>{{$value->name}}</td>
                             <td>{{$value->title}}</td>
-                            {{-- <td>{!! $value->savedSession == 1 ? '<span class="badge badge-warning badge-sm"><i class="fa fa-times"></i></span>' : '<span class="badge badge-success badge-sm"><i class="fa fa-check"></i></span>' !!}</td> --}}
-                            {{-- <td>{{$value->id_level}}</td> --}}
                             <td>{{$value->level}}</td>
-                            {{-- <td>{!! $value->savedSession == 0 ? '<button type="button" class="btn btn-sm btn-primary doVerif" data-id="'.$value->id.'" data-name="'.$value->name.'">Verifikasi</button>' : '' !!}</td> --}}
+                            <td><a type="button" target="_blank" href="detail-data/{{$value->id.'/'.urlencode(base64_encode($value->level))}}" class="btn btn-sm btn-dark"><i class="fa fa-search"></i> Detail</a></td>
                           </tr>
                         @empty
                           <tr>

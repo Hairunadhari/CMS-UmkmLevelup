@@ -83,6 +83,7 @@
                                     Harap masukkan password anda
                                 </div>
                             </div>
+                            <input type="hidden" class="hidden" value="2" name="id_role">
 
                             <div class="form-group text-center">
                                 <button type="submit"
