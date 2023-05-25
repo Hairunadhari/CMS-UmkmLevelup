@@ -17,6 +17,10 @@
             @endif
             
             <li class="menu-header">Kuesioner</li>
+            <li class="{{ Request::is('kuesioner-all') ? 'active' : '' }}">
+                <a class="nav-link"
+                    href="{{ url('kuesioner-all') }}"><i class="fa fa-list"></i> <span>List Kuesioner</span></a>
+            </li>
             <li class="{{ Request::is('kuesioner-unverif') ? 'active' : '' }}">
                 <a class="nav-link"
                     href="{{ url('kuesioner-unverif') }}"><i class="fas fa-user-xmark"></i> <span>List - Unverified</span></a>

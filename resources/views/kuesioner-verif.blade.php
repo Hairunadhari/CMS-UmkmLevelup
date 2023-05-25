@@ -13,18 +13,17 @@
     }
 </style>
 <link rel="stylesheet"
-        href="{{ asset('library/datatables/media/css/jquery.dataTables.min.css') }}">
+href="{{ asset('library/datatables/media/css/jquery.dataTables.min.css') }}">
 <link rel="stylesheet"
-        href="https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css">
+href="https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css">
 @endpush
-
 @section('main')
   <div class="main-content">
     <section class="section">
       <div class="section-header">
         <h1 style="width:87%">Kuesioner - Verified</h1>
         <div class="float-right">
-          {{-- <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#tambahData"><i class="fa fa-plus"></i> Tambah Data</button> --}}
+          <a target="_blank" class="btn btn-sm btn-success" href="export-verif"><i class="fa fa-download"></i> Export Excel</a>
         </div>
       </div>
 
@@ -51,12 +50,15 @@
                       <tbody>
                         @forelse ($data as $key => $value)
                           <tr>
-                            <td>{{$key + 1}}</td>
+                            <td class="text-center">{{$key + 1}}</td>
                             <td>{{$value->nama_usaha}}</td>
                             <td>{{$value->name}}</td>
                             <td>{{$value->title}}</td>
-                            <td>{{$value->level}}</td>
-                            <td><a type="button" target="_blank" href="detail-data/{{$value->id.'/'.urlencode(base64_encode($value->level))}}" class="btn btn-sm btn-dark"><i class="fa fa-search"></i> Detail</a></td>
+                            <td class="text-center">{{$value->level}}</td>
+                            <td class="text-center">
+                              <a type="button" target="_blank" href="detail-data/{{$value->id.'/'.urlencode(base64_encode($value->level))}}" class="btn btn-sm btn-dark"><i class="fa fa-search"></i></a>&nbsp; 
+                              <button type="button" data-href="{{url('/')}}/rollback-data/{{$value->id_user}}" class="btn btn-sm btn-danger rollback"><i class="fa fa-reply"></i> Rollback</a>
+                            </td>
                           </tr>
                         @empty
                           <tr>
@@ -113,6 +115,12 @@
 @push('scripts')
 <script src="{{ asset('library/datatables/media/js/jquery.dataTables.min.js') }}"></script>
 <script src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script>
+<script src="
+https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.all.min.js
+"></script>
+<link href="
+https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
+" rel="stylesheet">
 
 <!-- Page Specific JS File -->
 <script src="{{ asset('js/page/modules-datatables.js') }}"></script>
@@ -144,6 +152,25 @@
 
     $(document).ready(function() {
       $('.select2').select2();
+    });
+    
+    $(document).on("click", ".rollback", function() {
+        let href = $(this).attr('data-href');
+        Swal.fire({
+            title: 'Apakah anda yakin?',
+            showDenyButton: true,
+            showCancelButton: false,
+            confirmButtonText: 'Iya',
+            denyButtonText: `Tidak, kembali`,
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                Swal.fire('Data dirollback!', '', 'success')
+                window.location.replace(href);
+            } else if (result.isDenied) {
+                Swal.fire('Aksi rollback dibatalkan', '', 'info')
+            }
+        })
     });
 </script>
 

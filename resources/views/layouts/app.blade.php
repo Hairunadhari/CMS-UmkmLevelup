@@ -29,6 +29,51 @@
 
     @yield('custom-css')
 
+    <style>
+        #data-table tbody tr td {
+          vertical-align: middle;
+        }
+        #data-table thead tr th {
+            vertical-align: middle;
+            text-align: center;
+        }
+        #data-table tbody tr td {
+            vertical-align: middle;
+        }
+        #data-table thead tr th {
+            vertical-align: middle;
+            text-align: center;
+        }
+        .dataTables_length select{
+            outline-color: #6777ef
+        }
+        .dataTables_wrapper .dataTables_filter input{
+            outline-color: #6777ef;
+            outline-offset: unset;
+        -webkit-appearance: auto;
+        }
+        .dataTables_wrapper .dataTables_paginate .paginate_button{
+            margin: 3px 3px !important;
+            padding: 5px 10px !important;
+            outline-color: #6777ef;
+            outline-offset: unset;
+            -webkit-appearance: auto;
+        }
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover{
+            background: linear-gradient(to bottom, #6777ef 0%, #6777ef 100%) !important;
+            border: 1px solid #6777ef !important;
+            color: white !important;
+        }
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover{
+            background: linear-gradient(to bottom, #6777ef 0%, #6777ef 100%) !important;
+            border: 1px solid #6777ef !important;
+            color: white !important;
+        }
+        .swal2-cancel{
+            margin-right: 10px;
+        }
+      </style>  
+
     <!-- Start GA -->
     <script async
         src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
