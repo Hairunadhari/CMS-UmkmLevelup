@@ -66,7 +66,13 @@ class KuesionerController extends Controller
                             }else{}
                         }elseif ($formula['parameter'] == 'true') {
                             if($data_submission[$formula['input_id']] != null || $data_submission[$formula['input_id']] != ''){
+                              if(array_key_exists("val-param", $formula)){
+                                if ($data_submission[$formula['input_id']] == $formula['val-param']) {
+                                  $arr_level[] = $expectedLevel;
+                                }
+                              }else{
                                 $arr_level[] = $expectedLevel;
+                              }
                             }else{}
                         }else{
                         }
@@ -550,7 +556,13 @@ class KuesionerController extends Controller
                             }else{}
                         }elseif ($formula['parameter'] == 'true') {
                             if($data_submission[$formula['input_id']] != null || $data_submission[$formula['input_id']] != ''){
+                              if(array_key_exists("val-param", $formula)){
+                                if ($data_submission[$formula['input_id']] == $formula['val-param']) {
+                                  $arr_level[] = $expectedLevel;
+                                }
+                              }else{
                                 $arr_level[] = $expectedLevel;
+                              }
                             }else{}
                         }else{
                         }

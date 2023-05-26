@@ -37,7 +37,8 @@
                 <tr>
                   <th class="text-center" scope="col">#</th>
                   <th class="text-center" scope="col">Input</th>
-                  <th class="text-center" scope="col">Parameter Output</th>
+                  <th class="text-center" scope="col">Parameter</th>
+                  <th class="text-center" scope="col">Value</th>
                   <th class="text-center" scope="col">Aksi</th>
                 </tr>
               </thead>
@@ -52,7 +53,8 @@
                     <td class="text-center">{{$key + 1}}</td>
                     <td class="text-center">{{$value['name']}}</td>
                     <td class="text-center">{{$value['parameter'] == 'false' ? 'Tidak Terisi' : 'Terisi'}}</td>
-                    <td class="text-center"><a class="btn btn-info text-white" href="#{{$value['input_id']}}">edit</a></td>
+                    <td class="text-center">{{$value['val-param'] ?? ''}}</td>
+                    <td class="text-center"><a class="btn btn-danger text-white delete-logic" data-href="{{url('/')}}/delete-logic/{{$data->id}}/{{$key}}"><i class="fa fa-times"></i> Hapus</a></td>
                   </tr>
                   @endforeach
                   @endif
@@ -97,15 +99,18 @@
                 <div class="mb-3">
                     <label for="parameter" class="form-label">Parameter Output</label>
                     <br>
-                    {{-- <input type="parameter" class="form-control" id="parameter" name="parameter" aria-describedby="parameterHelp" required> --}}
-                    Terisi : <input type="radio" name="parameter" value="true"><br>
-                    Tidak : <input type="radio" name="parameter" value="false">
+                    Terisi : <input type="radio" class="paramTrig" name="parameter" value="true" required><br>
+                    Tidak : <input type="radio" class="paramTrig" name="parameter" value="false">
                     <div id="parameterHelp" class="form-text"></div>
                 </div>
+                <div class="mb-3" id="valParam" style="display: none">
+                  <label for="parameter" class="form-label">Value Parameter :</label>
+                  <input class="form-control" name="valueParam" type="text" />
+                  <div id="parameterHelp" class="form-text"></div>
+              </div>
             </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary">Submit</button>
-                {{-- <button type="button" class="btn btn-primary">Understood</button> --}}
             </div>
         </div>
     </div>
@@ -114,7 +119,59 @@
 @endsection
     @push('scripts')
     <!-- JS Libraies -->
+    <script src="
+    https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.all.min.js
+    "></script>
+    <link href="
+    https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
+    " rel="stylesheet">
+    <!-- Page Specific JS File -->
+
     <script>
+      $(".paramTrig").change(function(){ // bind a function to the change event
+        var select = $(".select2 option:selected" ).text()
+          if( ($(this).is(":checked")) && (select.indexOf("[select]") !== -1) ){ // check if the radio is checked
+              if($(this).val() == 'true'){
+                $('#valParam').attr('style', '')
+                $('#valParam input').val('')
+              }else{
+                $('#valParam input').val('')
+                $('#valParam').attr('style', 'display:none')
+              }
+          }
+      })
+
+      $(".select2").change(function(){ 
+        var select = $(".select2 option:selected" ).text()
+        console.log((select.indexOf("[select]") !== -1));
+          if( ($('.paramTrig:checked').val() == 'true') && (select.indexOf("[select]") !== -1) ){ // check if the radio is checked
+            $('#valParam input').val('')
+            $('#valParam').attr('style', '')
+          }else{
+            $('#valParam input').val('')
+            $('#valParam').attr('style', 'display:none')
+          }
+      })
+
+      $(document).on( "click", ".delete-logic", function() {
+        let href = $(this).attr('data-href');
+            Swal.fire({
+                title: 'Apakah anda yakin ingin menghapus ini?',
+                showDenyButton: true,
+                showCancelButton: false,
+                confirmButtonText: 'Iya',
+                denyButtonText: `Tidak, kembali`,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    Swal.fire('Terhapus!', '', 'success')
+                  window.location.replace(href);
+                } else if (result.isDenied) {
+                    Swal.fire('Aksi hapus dibatalkan', '', 'info')
+                }
+            })
+        });
+
         $(document).ready(function() {
           $('.select2').select2({
             // dropdownParent: $('#tambahData')

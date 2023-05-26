@@ -64,6 +64,9 @@ class SetLevelController extends Controller
         $logic[$count]['input_id'] = $request->input;
         $logic[$count]['name'] = $data_json[$key]['name'].' ['.$data_json[$key]['type'].']';
         $logic[$count]['parameter'] = $request->parameter;
+        if($request->valueParam != ''){
+            $logic[$count]['val-param'] = $request->valueParam;
+        }
 
         $logic = json_encode($logic);
 
@@ -72,5 +75,42 @@ class SetLevelController extends Controller
             'logic' => $logic
          ]);
         return redirect('set-logic/'.$request->id);
+    }
+
+    public function deleteLevel($id = null)
+    {
+        // dd($id);
+        if ($id == null) {
+            return view('404');
+        }
+
+        DB::table('m_logic_level')->where('id', $id)
+        ->update([
+            'aktif' => 0,
+            'updated_at' => date('Y-m-d H:i:s')
+        ]);
+
+        return redirect('set-level');
+    }
+
+    public function deleteLogic($id = null, $key = null)
+    {
+        if ($id == null or $key == null) {
+            return view('404');
+        }
+
+        $data_logic = DB::table('m_logic_level')->where('id', $id)->first();
+        $logic = json_decode($data_logic->logic, true);
+        unset($logic[$key]);
+
+        $logic = json_encode($logic);
+
+        DB::table('m_logic_level')->where('id', $id)
+        ->update([
+            'logic' => $logic,
+            'updated_at' => date('Y-m-d H:i:s')
+        ]);
+
+        return redirect('set-logic/'.$id);
     }
 }

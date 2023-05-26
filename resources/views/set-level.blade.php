@@ -50,7 +50,7 @@
                                       <td class="text-center">{{$value->level}}</td>
                                       <td class="text-center">
                                         <a class="btn btn-warning btn-sm" href="set-logic/{{$value->id}}"><i class="fa fa-edit"></i> Set Logic</a> &nbsp;
-                                        <button type="button" class="btn btn-danger btn-sm" href="delete/{{$value->id}}"><i class="fa fa-times"></i> Hapus</button>
+                                        <button type="button" class="btn btn-danger btn-sm hapus-level" data-href="delete-level/{{$value->id}}"><i class="fa fa-times"></i> Hapus</button>
                                       </td>
                                   </tr>
                                 @empty
@@ -110,6 +110,32 @@
 
 @push('scripts')
     <!-- JS Libraies -->
-
+    <script src="
+    https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.all.min.js
+    "></script>
+    <link href="
+    https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
+    " rel="stylesheet">
     <!-- Page Specific JS File -->
+
+    <script>
+      $(document).on( "click", ".hapus-level", function() {
+        let href = $(this).attr('data-href');
+            Swal.fire({
+                title: 'Apakah anda yakin ingin menghapus ini?',
+                showDenyButton: true,
+                showCancelButton: false,
+                confirmButtonText: 'Iya',
+                denyButtonText: `Tidak, kembali`,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    Swal.fire('Terhapus!', '', 'success')
+                  window.location.replace(href);
+                } else if (result.isDenied) {
+                    Swal.fire('Aksi hapus dibatalkan', '', 'info')
+                }
+            })
+        });
+    </script>
 @endpush

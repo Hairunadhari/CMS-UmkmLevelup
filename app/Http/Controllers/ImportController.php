@@ -21,6 +21,8 @@ class ImportController extends Controller
         $file = $request->file('file');
         $extension = $file->getClientOriginalExtension();
 
+        $arrPenghasilan = array('1 - 5 Juta' => 'a. 1 - 5 juta','5 - 10 Juta' => 'b. 5 - 10 juta','5 - 10 Juta' => 'c. 10 - 20 juta','> 50 Juta' => 'e. > 50 juta',);
+
         try {
             DB::beginTransaction();
             if ($extension == 'xlsx' || $extension == 'xls') {
@@ -31,6 +33,7 @@ class ImportController extends Controller
                 $headers = array_shift($rows);
                 
                 foreach ($rows as $row) {
+                    dd($row);
                     $date = date('Y-m-d H:i:s', $row[1]);
                     $cekUser = DB::table('users')->where('email', $row[5])->first();
                     if ($cekUser == null) {
@@ -80,7 +83,7 @@ class ImportController extends Controller
                     }
 
                     // Form Array Data Submission
-                    $arrayData = json_encode(array_data($row));
+                    $arrayData = json_encode(array_data($row), $arrPenghasilan);
 
                     DB::table('form_submissions')->insert([
                         'id_user' => $id_user,
@@ -106,7 +109,7 @@ class ImportController extends Controller
         return redirect('kuesioner-unverif');
     }
 
-    function array_data($row){
+    function array_data($row, $arrPenghasilan){
         // Cek jika memilih makanan
         $trigMakanan = ($row[15] == 'Makanan' ? true : false);
         $trigMinuman = ($row[15] == 'Minuman' ? true : false);
@@ -120,6 +123,8 @@ class ImportController extends Controller
         $produkPakaian = ($trigPakaian == true ? $row[16] : null);
         $produkKerajinanKulit = ($trigKerajinanKulit == true ? $row[16] : null);
         $produkKerajinanTangan = ($trigKerajinanTangan == true ? $row[16] : null);
+
+        $pendapatan = ($trigKerajinanTangan != '' ? $arrPenghasilan[$row[17]] : null);
         
         $data = array(
             "cc8e0137-5a07-4873-bc54-77e53c7a0b91" => $trigMakanan,
@@ -132,15 +137,15 @@ class ImportController extends Controller
             "7c585f42-2306-4b03-bcfc-7bfe2b0e6532" => $produkKerajinanKulit,
             "cec6436e-431e-4f82-a3bb-11a6af141484" => $trigKerajinanTangan,
             "ef549b93-e1fb-4d54-be5a-7564a58386d6" => $produkKerajinanKulit,
-            "2edce79e-0944-4427-a820-552b8764527b" => "a. 1 - 5 juta",
-            "2a59d9d0-7ed7-4263-8003-b4c2285cb007" => "a. Ultra Mikro",
-            "2ff63fcf-6648-45d8-82af-790dc263cc54" => "1",
-            "86fd1876-8903-4378-b1ad-8ccf9840a802" => "5 tahun",
-            "1a60b8d5-5335-4c75-832f-35bd6b1f42da" => "0",
-            "4f8e2914-4468-4fff-9741-8ae8744f8e25" => "c. sudah tapi hanya whatsapp biasa",
-            "6d7cc3ee-0833-4706-a121-89080d5d778f" => "b. tidak",
-            "da94d901-77d7-44c8-b42f-be0b3d4438bb" => null,
-            "3d35aa20-4505-451b-95f7-ae5a1f4bc742" => "a. Sudah",
+            "2edce79e-0944-4427-a820-552b8764527b" => $pendapatan,
+            "2a59d9d0-7ed7-4263-8003-b4c2285cb007" => $row[18],
+            "2ff63fcf-6648-45d8-82af-790dc263cc54" => $row[19],
+            "86fd1876-8903-4378-b1ad-8ccf9840a802" => $row[20],
+            "1a60b8d5-5335-4c75-832f-35bd6b1f42da" => $row[21],
+            "4f8e2914-4468-4fff-9741-8ae8744f8e25" => $row[22],
+            "6d7cc3ee-0833-4706-a121-89080d5d778f" => $row[23],
+            "da94d901-77d7-44c8-b42f-be0b3d4438bb" => $row[24],
+            "3d35aa20-4505-451b-95f7-ae5a1f4bc742" => $row[25],
             "8285d9a0-e209-4bf4-a858-21c942efc67d" => false,
             "2e5b96c6-efdc-4c1a-a427-f9562d1e255c" => null,
             "c2a98326-3f8f-48f5-8ec3-a4043267ee17" => null,
