@@ -56,6 +56,9 @@ class KuesionerController extends Controller
             if ($logic != null or $logic != '') {
                 $arr_level = [];
                 $data_submission = json_decode($value->data, true);
+                if ($value->data == '{}') {
+                  continue;
+                }
                 foreach ($logic as $data_logic) {
                     $arr_logic = json_decode($data_logic->logic, true);
                     $expectedLevel = $data_logic->id_level;

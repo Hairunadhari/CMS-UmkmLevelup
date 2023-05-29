@@ -59,7 +59,7 @@
                             <td>{{$value->name}}</td>
                             {{-- <td>{{$value->title}}</td> --}}
                             <td>{!! $value->savedSession == 1 ? '<span class="badge badge-warning badge-sm"><i class="fa fa-times"></i></span>' : '<span class="badge badge-success badge-sm"><i class="fa fa-check"></i></span>' !!}</td>
-                            <td>{!! $value->import == 0 ? '<span class="badge badge-dark"><i class="fa fa-desktop"></i> App</span>' : '<span class="badge badge-danger badge-sm"><i class="fa fa-google"></i> G-form</span>' !!}</td>
+                            <td>{!! $value->import == 0 ? '<span class="badge badge-dark"><i class="fa fa-desktop"></i> App</span>' : '<span class="badge badge-danger badge-sm"><i class="fa-brands fa-google-plus-g"></i> form</span>' !!}</td>
                             {{-- <td>{{$value->id_level}}</td> --}}
                             <td>{{$value->level}}</td>
                             <td>{!! $value->savedSession == 0 ? '<a type="button" target="_blank" href="verif-page/'.$value->id.'/'.urlencode(base64_encode($value->level)).'" class="btn btn-sm btn-primary"><i class="fa fa-sign-in"></i> Verif</a>' : '' !!} </td>

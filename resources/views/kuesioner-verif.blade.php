@@ -40,9 +40,9 @@ href="https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css">
                       <thead>
                         <tr>
                           <th class="text-center" scope="col">#</th>
-                          <th class="text-center" scope="col">Nama Bisnis</th>
                           <th class="text-center" scope="col">Nama</th>
-                          <th class="text-center" scope="col">Form</th>
+                          <th class="text-center" scope="col" style="width: 20%">Nama Bisnis</th>
+                          <th class="text-center" scope="col">Use?</th>
                           <th class="text-center" scope="col">Level Final</th>
                           <th class="text-center" scope="col">Aksi</th>
                         </tr>
@@ -51,9 +51,10 @@ href="https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css">
                         @forelse ($data as $key => $value)
                           <tr>
                             <td class="text-center">{{$key + 1}}</td>
-                            <td>{{$value->nama_usaha}}</td>
                             <td>{{$value->name}}</td>
-                            <td>{{$value->title}}</td>
+                            <td>{{$value->nama_usaha}}</td>
+                            {{-- <td>{{$value->title}}</td> --}}
+                            <td>{!! $value->import == 0 ? '<span class="badge badge-dark"><i class="fa fa-desktop"></i> App</span>' : '<span class="badge badge-danger badge-sm"><i class="fa-brands fa-google-plus-g"></i> form</span>' !!}</td>
                             <td class="text-center">{{$value->level}}</td>
                             <td class="text-center">
                               <a type="button" target="_blank" href="detail-data/{{$value->id.'/'.urlencode(base64_encode($value->level))}}" class="btn btn-sm btn-dark"><i class="fa fa-search"></i></a>&nbsp; 
