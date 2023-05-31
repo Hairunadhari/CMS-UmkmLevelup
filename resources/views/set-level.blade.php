@@ -79,15 +79,15 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body">
+          <div class="modal-body pb-0">
                   {{ csrf_field() }}
                   <div class="mb-3">
-                      <label for="nama" class="form-label">Nama</label>
+                      <label for="nama" class="form-label">Nama <span class="text-danger text-bold">*</span></label>
                       <input type="nama" class="form-control" id="nama" name="nama" aria-describedby="namaHelp" required>
                       <div id="namaHelp" class="form-text"></div>
                   </div>
                   <div class="mb-3">
-                      <label for="level" class="form-label">Level</label>
+                      <label for="level" class="form-label">Level <span class="text-danger text-bold">*</span></label>
                       <select class="form-control" name="level" id="level" required>
                           <option value="">-- Pilih --</option>
                           <option value="1">Beginner</option>
@@ -97,8 +97,9 @@
                       </select>
                       <div id="levelHelp" class="form-text"></div>
                   </div>
+                  <hr />
               </div>
-              <div class="modal-footer">
+              <div class="modal-footer pt-1 justify-content-center">
                   <button type="submit" class="btn btn-primary">Submit</button>
                   {{-- <button type="button" class="btn btn-primary">Understood</button> --}}
               </div>

@@ -79,25 +79,25 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body pb-0">
                 {{ csrf_field() }}
                 <input type="hidden" name="id" class="hidden" value="{{$data->id}}">
                 <div class="mb-3">
-                    <label for="input" class="form-label">Input</label>
+                    <label for="input" class="form-label">Input <span class="text-danger text-bold">*</span></label>
                     <select class="select2" name="input" id="input" style="width: 100%" required>
                         <option value="">-- Pilih --</option>
-                        @foreach ($data_json as $item)
+                        @foreach ($data_json as $key => $item)
                             @if ($item['type'] == 'nf-text' || $item['type'] == 'nf-page-break')
                                 @continue
                             @endif
-                            <option value="{{$item['id']}}">{{$item['name']}} <small>[{{$item['type']}}]</small></option>
+                            <option value="{{$item['id']}}" data-key="{{$key}}">{{$item['name']}} <small>[{{$item['type']}}]</small></option>
                         @endforeach
                     </select>
-                    <textarea name="forms" class="hidden" style="display:none">{{$data_form->properties}}</textarea>
+                    <textarea name="forms" id="formJson" class="hidden" style="display:none">{{$data_form->properties}}</textarea>
                     <div id="inputHelp" class="form-text"></div>
                 </div>
                 <div class="mb-3">
-                    <label for="parameter" class="form-label">Parameter Output</label>
+                    <label for="parameter" class="form-label">Parameter Output <span class="text-danger text-bold">*</span></label>
                     <br>
                     Terisi : <input type="radio" class="paramTrig" name="parameter" value="true" required><br>
                     Tidak : <input type="radio" class="paramTrig" name="parameter" value="false">
@@ -105,11 +105,15 @@
                 </div>
                 <div class="mb-3" id="valParam" style="display: none">
                   <label for="parameter" class="form-label">Value Parameter :</label>
-                  <input class="form-control" name="valueParam" type="text" />
+                  <select class="form-control" name="valueParam" >
+                    <option value="">-- Pilih --</option>
+                  </select>
                   <div id="parameterHelp" class="form-text"></div>
               </div>
+              <div class="text-right" style="font-weight:bold"> Note : <span class="text-danger text-bold">*</span> Wajib Isi</div>
+              <hr />
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer pt-1 justify-content-center">
                 <button type="submit" class="btn btn-primary">Submit</button>
             </div>
         </div>
@@ -126,31 +130,42 @@
     https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
     " rel="stylesheet">
     <!-- Page Specific JS File -->
-
+    
     <script>
+      const formJson = JSON.parse($("#formJson").val());
       $(".paramTrig").change(function(){ // bind a function to the change event
-        var select = $(".select2 option:selected" ).text()
-          if( ($(this).is(":checked")) && (select.indexOf("[select]") !== -1) ){ // check if the radio is checked
-              if($(this).val() == 'true'){
-                $('#valParam').attr('style', '')
-                $('#valParam input').val('')
-              }else{
-                $('#valParam input').val('')
-                $('#valParam').attr('style', 'display:none')
-              }
+        var select = $(".select2 option:selected").text()
+        if( ($(this).is(":checked")) && (select.indexOf("[select]") !== -1) ){ // check if the radio is checked
+          if($(this).val() == 'true'){
+            let arrOption = formJson[$(".select2 option:selected").attr('data-key')]['select']['options'];
+            $('#valParam select').html('<option value="">-- Pilih Parameter --</option>')
+            $.each(arrOption, function( index, value ) {
+              $('#valParam select').append('<option value="'+ value['id'] +'">'+ value['name'] +'</option')
+              });
+            $('#valParam').attr('style', '')
+          }else{
+            $('#valParam select').html('<option value="">-- Pilih Parameter --</option>')
+            $('#valParam select').val('').trigger('change')
+            $('#valParam').attr('style', 'display:none')
           }
+        }
       })
 
       $(".select2").change(function(){ 
         var select = $(".select2 option:selected" ).text()
-        console.log((select.indexOf("[select]") !== -1));
-          if( ($('.paramTrig:checked').val() == 'true') && (select.indexOf("[select]") !== -1) ){ // check if the radio is checked
-            $('#valParam input').val('')
-            $('#valParam').attr('style', '')
-          }else{
-            $('#valParam input').val('')
-            $('#valParam').attr('style', 'display:none')
-          }
+        // console.log((select.indexOf("[select]") !== -1));
+        if( ($('.paramTrig:checked').val() == 'true') && (select.indexOf("[select]") !== -1) ){ // check if the radio is checked
+          let arrOption = formJson[$(".select2 option:selected").attr('data-key')]['select']['options'];
+          $('#valParam select').html('<option value="">-- Pilih Parameter --</option>')
+            $.each(arrOption, function( index, value ) {
+              $('#valParam select').append('<option value="'+ value['id'] +'">'+ value['name'] +'</option')
+            });
+          $('#valParam').attr('style', '')
+        }else{
+          $('#valParam select').html('<option value="">-- Pilih Parameter --</option>')
+          $('#valParam select').val('').trigger('change')
+          $('#valParam').attr('style', 'display:none')
+        }
       })
 
       $(document).on( "click", ".delete-logic", function() {
