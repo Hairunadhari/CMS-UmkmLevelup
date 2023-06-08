@@ -49,6 +49,8 @@ class ImportController extends Controller
                     }
                     elseif ($row[67] == 'BEGINNER') {
                         $level = 1;
+                    }elseif ($row[67] == 'NOVICE') {
+                        $level = 5;
                     }else{
                         $level = 0; 
                     }
@@ -261,7 +263,7 @@ class ImportController extends Controller
             "8b14256b-5e34-4a02-9cc5-24dbe4874b80" => ($checkGrabFood == true ? $row[56] : null),
             "ddc27fc7-72a7-419d-9b88-3e09de44663f" => ($checkGrabFood == true ? $row[58] : null),
             "7c7f8de6-c4be-431e-bdb9-ec79e5475b6b" => ($checkGrabFood == true ? $row[59] : null),
-            "3df62c7c-6764-4fc4-bb9f-0110dfbfd056" => ($row[31] == "Ya" ? 'a. ada' : 'b. tidak'),
+            "3df62c7c-6764-4fc4-bb9f-0110dfbfd056" => ($row[31] == "Ada" ? 'a. ada' : 'b. tidak'),
             "9ee7e459-80e2-47fc-a1a1-390621804113" => ($row[32] == "Sudah" ? 'a. sudah' : 'b. belum'),
             "e54a07b2-fbf8-4001-8505-df473e3b5b03" => $checkQRIS,
             "be020e1e-89a0-4fd8-8730-a561c4f88e95" => ($checkQRIS == true ? ($row[34] != '' ? $row[34] : null) : null),

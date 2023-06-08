@@ -16,9 +16,9 @@ class SetLevelController extends Controller
 
     public function __construct(Redirector $redirect)
     {
-        if (!$this->guard()->check() == false) {
-            $redirect->to('/login')->send();
-        }
+        // if (!$this->guard()->check() == false) {
+        //     $redirect->to('/login')->send();
+        // }
     }
 
     public function index()

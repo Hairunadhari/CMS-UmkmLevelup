@@ -96,6 +96,7 @@
                       <label for="inputLevel" class="sr-only">Password</label>
                       <select class="form-control" name="level" id="level" required>
                           <option value="">-- Pilih --</option>
+                          <option value="5">Novice</option>
                           <option value="1">Beginner</option>
                           <option value="2">Observer</option>
                           <option value="3">Adopter</option>

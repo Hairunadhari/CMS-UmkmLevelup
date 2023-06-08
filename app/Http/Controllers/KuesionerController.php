@@ -18,9 +18,9 @@ class KuesionerController extends Controller
 
     public function __construct(Redirector $redirect)
     {
-        if (!$this->guard()->check() == false) {
-            $redirect->to('/login')->send();
-        }
+        // if (!$this->guard()->check() == false) {
+        //     $redirect->to('/login')->send();
+        // }
     }
     
     public function unVerif()
@@ -94,7 +94,7 @@ class KuesionerController extends Controller
                 elseif (in_array(1, $arr_level)) {
                     $level = 'Beginner';
                 }else{
-                    $level = ''; 
+                    $level = 'Novice'; 
                 }
                 // dd(in_array([1,2], $arr_level));
             }
@@ -584,7 +584,7 @@ class KuesionerController extends Controller
                 elseif (in_array(1, $arr_level)) {
                     $level = 'Beginner';
                 }else{
-                    $level = ''; 
+                    $level = 'Novice'; 
                 }
             }
             $value->id_level = implode(', ', $arr_level);  
