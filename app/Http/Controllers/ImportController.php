@@ -150,7 +150,7 @@ class ImportController extends Controller
         $produkKerajinanKulit = ($trigKerajinanKulit == true ? $row[16] : null);
         $produkKerajinanTangan = ($trigKerajinanTangan == true ? $row[16] : null);
 
-        $pendapatan = ($trigKerajinanTangan == true ? ($row[17] != '' ? $arrPenghasilan[$row[17]] : null) : null);
+        $pendapatan = ($row[17] != '' ? $arrPenghasilan[$row[17]] : null);
         $urlWebsite = ($row[23] == 'Ya' ? $row[24] : null);
         
         $checkFacebook = (str_contains($row[26], 'Facebook') ? true : false);
@@ -201,7 +201,7 @@ class ImportController extends Controller
             "da8ee909-8bff-49d9-9514-361713220b18" => $trigKerajinanKulit,
             "7c585f42-2306-4b03-bcfc-7bfe2b0e6532" => $produkKerajinanKulit,
             "cec6436e-431e-4f82-a3bb-11a6af141484" => $trigKerajinanTangan,
-            "ef549b93-e1fb-4d54-be5a-7564a58386d6" => $produkKerajinanKulit,
+            "ef549b93-e1fb-4d54-be5a-7564a58386d6" => $produkKerajinanTangan,
             "2edce79e-0944-4427-a820-552b8764527b" => $pendapatan,
             "2a59d9d0-7ed7-4263-8003-b4c2285cb007" => $row[18],
             "2ff63fcf-6648-45d8-82af-790dc263cc54" => $row[19],
