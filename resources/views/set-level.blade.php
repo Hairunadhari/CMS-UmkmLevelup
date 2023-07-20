@@ -106,7 +106,8 @@
           </div>
       </div>
   </div>
-  </form>
+</form>
+
 @endsection
 
 @push('scripts')

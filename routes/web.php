@@ -50,6 +50,21 @@ Route::redirect('/', '/login');
     Route::get('/rollback-data/{id}', [\App\Http\Controllers\KuesionerController::class, 'rollback'])->name("rollback-data/{id}");
     Route::get('/import-data', [\App\Http\Controllers\ImportController::class, 'index'])->name("import-data");
     Route::post('/import', [\App\Http\Controllers\ImportController::class, 'importData'])->name("import");
+
+    Route::get('/list-kategori-materi', [\App\Http\Controllers\LmsController::class, 'listKategori'])->name("list-kategori-materi");
+    Route::post('/add-kategori', [\App\Http\Controllers\LmsController::class, 'addKategori'])->name("/add-kategori");
+
+    Route::get('/list-materi', [\App\Http\Controllers\LmsController::class, 'listMateri'])->name("list-materi");
+    Route::post('/add-materi', [\App\Http\Controllers\LmsController::class, 'addMateri'])->name("add-materi");
+    
+    Route::get('/sub-materi/{id}/{name}', [\App\Http\Controllers\LmsController::class, 'subMateri'])->name("sub-materi/{id}/{name}");
+    Route::post('/add-sub-materi/{id}/{name}', [\App\Http\Controllers\LmsController::class, 'addSubMateri'])->name("add-sub-materi/{id}/{name}");
+
+    Route::get('/list-pengumuman', [\App\Http\Controllers\LmsController::class, 'listPengumuman'])->name("list-pengumuman");
+    Route::post('/submit-pengumuman', [\App\Http\Controllers\LmsController::class, 'submitPengumuman'])->name("submit-pengumuman");
+    Route::get('/edit-pengumuman/{id}', [\App\Http\Controllers\LmsController::class, 'editPengumuman'])->name("edit-pengumuman/{id}");
+    Route::get('/hapus-pengumuman/{id}', [\App\Http\Controllers\LmsController::class, 'deletePengumuman'])->name("hapus-pengumuman/{id}");
+
     // Route::get('/export-verif', [\App\Http\Controllers\KuesionerController::class, 'exportKuesionerVerif'])->name("export-verif");
 // });
     

@@ -51,7 +51,7 @@
                 </form>
             </div>
         </div>
-        <div class="card">
+        {{-- <div class="card">
           <div class="card-body">
             <strong class="text-dark">Histori Import </strong>
             <hr />
@@ -75,7 +75,7 @@
               </div>
             </div>
           </div>
-      </div>
+        </div> --}}
 
     </section>
     
