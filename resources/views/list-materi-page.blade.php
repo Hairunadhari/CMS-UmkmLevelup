@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'List Materi')
+@section('title', 'List Kategori Materi')
 
 @push('style')
   <style>
@@ -22,17 +22,17 @@
   <div class="main-content">
     <section class="section">
       <div class="section-header">
-        <h1 style="width:87%">List Materi</h1>
+        <h1 style="width:87%">List Kategori Materi</h1>
         <div class="float-right">
           <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#tambahData"><i class="fa fa-plus"></i> Tambah Data</button>
         </div>
       </div>
       <div class="section-body">
-        <h2 class="section-title">Daftar Materi </h2> 
-        <p class="section-lead">Materi yang ditampilkan untuk semua UMKM yang terdaftar di sistem.</p>
+        <h2 class="section-title">Daftar Kategori Materi </h2> 
+        <p class="section-lead">Kategori Materi yang ditampilkan untuk semua UMKM yang terdaftar di sistem.</p>
         <div class="card">
           <div class="card-body">
-            <strong class="text-dark">List Materi </strong>
+            <strong class="text-dark">List Kategori Materi </strong>
             <hr />
             <div class="row">
               <div class="col-12">

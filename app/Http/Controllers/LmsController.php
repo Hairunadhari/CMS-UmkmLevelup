@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Spatie\PdfToImage\Pdf;
 
 class LmsController extends Controller
 {
@@ -71,17 +72,6 @@ class LmsController extends Controller
             $request->validate([
                 'file' => 'required|file|mimes:jpeg,png,pdf|max:2048',
             ]);
-    
-            $file = $request->file('file');
-    
-            // Generate a hashed filename using the original file name and a unique identifier
-            $hashedFileName = Str::random(40) . '.' . $file->getClientOriginalExtension();
-    
-            // Store the file in the storage/app/public directory
-            $filePath = $file->storeAs('data_upload_lms', $hashedFileName, 'public');
-
-            // Create a public URL for the file using the storage link
-            $publicUrl = Storage::disk('public')->url($filePath);
             // dd($publicUrl);    
             $lastId = DB::table('t_sub_materi')->insertGetId([
                 'nama' => $request->title,
@@ -91,9 +81,42 @@ class LmsController extends Controller
                 'created_at' => date("Y-m-d")
             ]);
 
+            $file = $request->file('file');
+    
+            // Generate a hashed filename using the original file name and a unique identifier
+            $hashedFileName = Str::random(40) . '.' . $file->getClientOriginalExtension();
+    
+            // Store the file in the storage/app/public directory
+            $filePath = $file->storeAs('data_upload_lms', $hashedFileName, 'public');
+
+            // Create a public URL for the file using the storage link
+            $publicUrl = Storage::disk('public')->url($filePath);   
+            
+            // $pdfFile = $request->file('file');
+            // $originalFileName = pathinfo($pdfFile->getClientOriginalName(), PATHINFO_FILENAME);
+            // $outputFolder = 'public/data_upload_lms'; // Ganti dengan folder tujuan untuk menyimpan gambar JPG
+
+            // $pdf = new Pdf($pdfFile);
+            // $pages = $pdf->getNumberOfPages();
+
+            // $arrData = [];
+            // for ($pageNumber = 1; $pageNumber <= $pages; $pageNumber++) {
+            //     $outputFileName = Str::random(10).'_'.$originalFileName . '_halaman_' . $pageNumber . '.jpg';
+            //     $pdf->setPage($pageNumber)->saveImage($outputFolder . '/' . $outputFileName);
+            //     $arrData[] = [
+            //         'id_sub_materi' => $lastId,
+            //         'kategori_materi' => 'jpg',
+            //         'file_location' => Storage::disk('public')->url($outputFileName),
+            //         'created_by' => 1,
+            //         'created_at' => date("Y-m-d")
+            //     ];
+            // }
+            // dd($arrData);
+
             DB::table('t_sub_materi_file')->insert([
                 'id_sub_materi' => $lastId,
-                'kategori_materi' => 'PDF',
+                'kategori_materi' => "PDF",
+                'video_url' => null,
                 'file_location' => $publicUrl,
                 'created_by' => 1,
                 'created_at' => date("Y-m-d")

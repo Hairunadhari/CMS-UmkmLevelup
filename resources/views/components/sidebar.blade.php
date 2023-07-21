@@ -38,7 +38,7 @@
                 </li> --}}
                 <li class="{{ Request::is('list-materi') ? 'active' : '' }}">
                     <a class="nav-link"
-                        href="{{url('list-materi')}}"><i class="fas fa-graduation-cap"></i> <span>List Materi</span></a>
+                        href="{{url('list-materi')}}"><i class="fas fa-graduation-cap"></i> <span>List Kategori Materi</span></a>
                 </li>
                 <li class="{{ Request::is('list-pengumuman') ? 'active' : '' }}">
                     <a class="nav-link"
@@ -66,11 +66,11 @@
                         href="#"><i class="fas fa-cogs"></i> <span>Hak Akses</span></a>
                 </li>
                 
-                <li class="menu-header">Konfig & Lain</li>
+                {{-- <li class="menu-header">Konfig & Lain</li>
                 <li class="{{ Request::is('set-level') ? 'active' : '' }}">
                     <a class="nav-link"
                         href="{{url('set-level')}}"><i class="fas fa-wrench"></i> <span>Setting Level</span></a>
-                </li>
+                </li> --}}
 
             @else
                 

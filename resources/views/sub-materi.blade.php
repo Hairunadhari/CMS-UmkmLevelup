@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Tambah Sub Materi')
+@section('title', 'Tambah Materi')
 
 @push('style')
 <style>
@@ -42,13 +42,13 @@
   <div class="main-content">
     <section class="section">
       <div class="section-header">
-        <h1 style="width:80%">Data Sub Materi </h1>
+        <h1 style="width:80%">List Materi </h1>
         <div class="float-right; text-right" style="width: 20%;"><strong><i class="fa fa-bookmark"></i> Materi : </strong> <span class="badge badge-sm badge-dark"> {{$name}} </span></div>
       </div>
 
       <div class="section-body">
-        <h2 class="section-title">Sub Materi </h2> 
-        <p class="section-lead">Materi kecil yang diperlukan untuk membuat Materi menjadi terstruktur dan rapih.</p>
+        <h2 class="section-title">Daftar Materi </h2> 
+        <p class="section-lead">Materi yang diperlukan untuk kategori materi yang sebelumnya.</p>
         <div class="card">
           <div class="card-body">
             <strong class="text-dark">List Materi </strong>
@@ -61,8 +61,8 @@
                     <tr>
                       <th>No</th>
                       <th>Title</th>
-                      <th>Kategori</th>
-                      <th>File / URL</th>
+                      {{-- <th>Kategori</th> --}}
+                      <th>File / Video Materi</th>
                       <th>Deskripsi</th>
                       <th>Tgl</th>
                       <th>Aksi</th>
@@ -73,8 +73,8 @@
                       <tr>
                         <td class="text-center">{{$key + 1}}</td>
                         <td class="text-center">{{$item->nama}}</td>
-                        <td class="text-center">{{'-'}}</td>
-                        <td class="text-center"><img src="{{$item->file_location}}" style="width: 100%; height:50px;" alt="Foto"></td>
+                        {{-- <td class="text-center">{{'-'}}</td> --}}
+                        <td class="text-center"><button class="btn btn-dark btn-sm"><i class="fa fa-search"></i> Lihat</button></td>
                         <td class="text-center">{{$item->deskripsi}}</td>
                         <td class="text-center">{{\Carbon\Carbon::parse($item->created_at)->locale('id')->format('j F Y')}}</td>
                         <td class="text-center"><a href="#" class="btn btn-sm btn-warning"><i class="fa fa-th-list"></i> Edit</a></td>
@@ -117,9 +117,10 @@
                   <textarea class="form-control" rows="5" id="deskripsi" name="deskripsi" aria-describedby="deskripsiHelp" style="height: 100px" required></textarea>
                   <div id="deskripsiHelp" class="form-text"></div>
                 </div>
+                <input type="hidden" class="hidden" name="versi" id="versi" value="PDF">
                 <div class="mb-3">
                   <label for="file" class="form-label">Upload Materi <span class="text-danger text-bold">*</span></label>
-                  <input type="file" class="form-control" id="file" name="file" aria-describedby="fileHelp" required>
+                  <input type="file" class="form-control" id="file" name="file" accept=".pdf" aria-describedby="fileHelp" required>
                   <div id="fileHelp" class="form-text"></div>
                 </div>
                 <hr />
