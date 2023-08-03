@@ -12,7 +12,6 @@ class LmsController extends Controller
 {
     public function index() {
         $d['forms'] = DB::table('forms')->whereNull('forms.deleted_at')->get();
-        dd($d);
         // return view('import-page', $d);
     }
 
@@ -35,19 +34,34 @@ class LmsController extends Controller
     }
 
     public function addKategori(Request $request){
+        if ($request->session()->get('id_user') == null) {
+            $request->session()->flash('alert', [
+                'type' => 'error',
+                'message' => 'Silahkan periksa kembali email password anda.',
+            ]);
+            return redirect('login');
+        }
         DB::table('m_kategori_materi')->insert([
             'nama' => $request->nama,
-            'created_by' => 1,
+            'created_by' => $request->session()->get('id_user'),
             'created_at' => date("Y-m-d")
         ]);
         return redirect('list-kategori-materi');
     }
 
     public function addMateri(Request $request){
+        if ($request->session()->get('id_user') == null) {
+            $request->session()->flash('alert', [
+                'type' => 'error',
+                'message' => 'Silahkan periksa kembali email password anda.',
+            ]);
+            return redirect('login');
+        }
+
         DB::table('m_materi')->insert([
             'nama' => $request->nama,
             'keterangan' => $request->deskripsi,
-            'created_by' => 1,
+            'created_by' => $request->session()->get('id_user'),
             'created_at' => date("Y-m-d")
         ]);
         return redirect('list-materi');
@@ -67,6 +81,13 @@ class LmsController extends Controller
     }
 
     public function addSubMateri(Request $request, $id, $name) {
+        if ($request->session()->get('id_user') == null) {
+            $request->session()->flash('alert', [
+                'type' => 'error',
+                'message' => 'Silahkan periksa kembali email password anda.',
+            ]);
+            return redirect('login');
+        }
         try {
             DB::beginTransaction();
             $request->validate([
@@ -77,7 +98,7 @@ class LmsController extends Controller
                 'nama' => $request->title,
                 'deskripsi' => $request->deskripsi,
                 'id_materi' => $id,
-                'created_by' => 1,
+                'created_by' => $request->session()->get('id_user'),
                 'created_at' => date("Y-m-d")
             ]);
 
@@ -91,34 +112,13 @@ class LmsController extends Controller
 
             // Create a public URL for the file using the storage link
             $publicUrl = Storage::disk('public')->url($filePath);   
-            
-            // $pdfFile = $request->file('file');
-            // $originalFileName = pathinfo($pdfFile->getClientOriginalName(), PATHINFO_FILENAME);
-            // $outputFolder = 'public/data_upload_lms'; // Ganti dengan folder tujuan untuk menyimpan gambar JPG
-
-            // $pdf = new Pdf($pdfFile);
-            // $pages = $pdf->getNumberOfPages();
-
-            // $arrData = [];
-            // for ($pageNumber = 1; $pageNumber <= $pages; $pageNumber++) {
-            //     $outputFileName = Str::random(10).'_'.$originalFileName . '_halaman_' . $pageNumber . '.jpg';
-            //     $pdf->setPage($pageNumber)->saveImage($outputFolder . '/' . $outputFileName);
-            //     $arrData[] = [
-            //         'id_sub_materi' => $lastId,
-            //         'kategori_materi' => 'jpg',
-            //         'file_location' => Storage::disk('public')->url($outputFileName),
-            //         'created_by' => 1,
-            //         'created_at' => date("Y-m-d")
-            //     ];
-            // }
-            // dd($arrData);
 
             DB::table('t_sub_materi_file')->insert([
                 'id_sub_materi' => $lastId,
                 'kategori_materi' => "PDF",
                 'video_url' => null,
                 'file_location' => $publicUrl,
-                'created_by' => 1,
+                'created_by' => $request->session()->get('id_user'),
                 'created_at' => date("Y-m-d")
             ]);
             
@@ -133,33 +133,16 @@ class LmsController extends Controller
     }
 
     public function addPengumuman() {
-        // try {
-        //     DB::table('form_submissions')
-        //     ->insert([
-        //         'id_user' => $id_user,
-        //         'form_id' => $request->id_form,
-        //         'data' => ($arrayData ?? '{}'),
-        //         'savedSession' => 0,
-        //         'import' => 1,
-        //         'created_at' => $date,
-        //         'updated_at' => null,
-        //     ]);
-        // } catch (\Throwable $th) {
-            
-        // }
-
         return view('list-pengumuman-page', $d);
     }
 
     public function deletePengumuman($id) {
         DB::table('notifikasis')->where('id', $id)->update(['final_level' => $level]);
-
         return view('list-pengumuman-page', $d);
     }
 
     public function editPengumuman($id) {
         $d['pengumumanById'] = DB::table('notifikasis')->where('id', $id)->first();
-
         return view('list-pengumuman-page', $d);
     }
 }

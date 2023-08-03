@@ -29,6 +29,11 @@
                 <a class="nav-link"
                     href="{{ url('kuesioner-verif') }}"><i class="fas fa-user-check"></i> <span>List - Verified</span></a>
             </li>
+            <li class="menu-header">Learning Sistem</li>
+            <li class="{{ Request::is('list-materi') ? 'active' : '' }}">
+                <a class="nav-link"
+                    href="{{url('list-materi')}}"><i class="fas fa-graduation-cap"></i> <span>List Kategori Materi</span></a>
+            </li>
             
             @if (Session::get('id_role') == 2)
                 <li class="menu-header">Learning Sistem</li>
@@ -56,7 +61,7 @@
                         href="{{url('import-data')}}"><i class="fas fa-upload"></i> <span>Import Data</span></a>
                 </li>
             
-                <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
+                {{-- <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
                     <a class="nav-link"
                         href="#"><i class="fas fa-user"></i> <span>User</span></a>
                 </li>
@@ -64,7 +69,7 @@
                 <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
                     <a class="nav-link"
                         href="#"><i class="fas fa-cogs"></i> <span>Hak Akses</span></a>
-                </li>
+                </li> --}}
                 
                 {{-- <li class="menu-header">Konfig & Lain</li>
                 <li class="{{ Request::is('set-level') ? 'active' : '' }}">

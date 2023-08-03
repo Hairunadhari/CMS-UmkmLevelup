@@ -45,7 +45,7 @@ class SuperLoginController extends Controller
                 $request->session()->regenerate();
 
                 // dd()
-                if ($this->guard()->user()->id_role == 2 or $this->guard()->user()->id_role == 3) {
+                if ($this->guard()->user()->id_role == 2 or $this->guard()->user()->id_role == 3 or $this->guard()->user()->id_role == 4) {
                     $request->session()->put('name', $this->guard()->user()->name);
                     $request->session()->put('id_user', $this->guard()->user()->id);
                     $request->session()->put('id_role', $this->guard()->user()->id_role);
