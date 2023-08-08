@@ -52,8 +52,10 @@ class SuperLoginController extends Controller
                     
                     if($this->guard()->user()->id_role == 2){
                         return redirect()->route('/dashboard'); 
-                    }else{
+                    }else if ($this->guard()->user()->id_role == 4 or $this->guard()->user()->id_role == 3) {
                         return redirect()->route('/kuesioner-unverif'); 
+                    }else{
+                        return redirect()->route('/list-materi'); 
                     }
                 }else{
                     return redirect('login');

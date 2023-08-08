@@ -44,7 +44,8 @@
     "spatie/pdf-to-image": "^1.2",
     "stevebauman/purify": "^4.0",
     "tymon/jwt-auth": "^1.0.2",
-    "vinkla/hashids": "^10.0"
+    "vinkla/hashids": "^10.0",
+    "yajra/laravel-datatables": "^9.0"
   },
   "require-dev": {
     "barryvdh/laravel-ide-helper": "^2.12",

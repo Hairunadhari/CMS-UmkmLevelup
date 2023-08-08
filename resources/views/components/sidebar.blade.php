@@ -16,6 +16,7 @@
                 
             @endif
             
+            @if (Session::get('id_role') == 4 or Session::get('id_role') == 3 or Session::get('id_role') == 2)
             <li class="menu-header">Kuesioner</li>
             <li class="{{ Request::is('kuesioner-all') ? 'active' : '' }}">
                 <a class="nav-link"
@@ -29,11 +30,15 @@
                 <a class="nav-link"
                     href="{{ url('kuesioner-verif') }}"><i class="fas fa-user-check"></i> <span>List - Verified</span></a>
             </li>
+            @endif
+
+            @if (Session::get('id_role') == 5)
             <li class="menu-header">Learning Sistem</li>
             <li class="{{ Request::is('list-materi') ? 'active' : '' }}">
                 <a class="nav-link"
                     href="{{url('list-materi')}}"><i class="fas fa-graduation-cap"></i> <span>List Kategori Materi</span></a>
             </li>
+            @endif
             
             @if (Session::get('id_role') == 2)
                 <li class="menu-header">Learning Sistem</li>
@@ -48,6 +53,12 @@
                 <li class="{{ Request::is('list-pengumuman') ? 'active' : '' }}">
                     <a class="nav-link"
                         href="{{url('list-pengumuman')}}"><i class="fas fa-bullhorn"></i> <span>Pengumuman</span></a>
+                </li>
+
+                <li class="menu-header">Portal Lama</li>
+                <li class="{{ Request::is('old-portal') ? 'active' : '' }}">
+                    <a class="nav-link"
+                        href="{{url('old-portal')}}"><i class="fas fa-database"></i> <span>List User</span></a>
                 </li>
 
                 <li class="menu-header">Konfig & Lain</li>
