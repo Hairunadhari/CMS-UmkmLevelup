@@ -78,19 +78,19 @@ class M_user_old extends Model
      */
     public function umkm()
     {
-        return $this->belongsTo(m_UMKM::class, 'id', 'id_user')
+        return $this->belongsTo(M_UMKM::class, 'id', 'id_user')
             ->where('status_hapus', 0);
     }
 
     public function wilayah_bina()
     {
-        return $this->belongsTo(m_Wilayah_Binaan::class, 'wilayah_binaan', 'id')
+        return $this->belongsTo(M_Wilayah_Binaan::class, 'wilayah_binaan', 'id')
             ->where('status_aktif', 1);
     }
 
     public function fasilitator()
     {
-        return $this->belongsTo(m_Fasilitator::class, 'nama_fasil', 'id')
+        return $this->belongsTo(M_Fasilitator::class, 'nama_fasil', 'id')
             ->where('status_aktif', 1);
     }
     public function resultQuestion()
