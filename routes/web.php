@@ -59,6 +59,7 @@ Route::redirect('/', '/login');
     
     Route::get('/sub-materi/{id}/{name}', [\App\Http\Controllers\LmsController::class, 'subMateri'])->name("sub-materi/{id}/{name}");
     Route::post('/add-sub-materi/{id}/{name}', [\App\Http\Controllers\LmsController::class, 'addSubMateri'])->name("add-sub-materi/{id}/{name}");
+    Route::get('/approve-materi/{id}/', [\App\Http\Controllers\LmsController::class, 'approve'])->name("approve-materi/{id}");
 
     Route::get('/list-pengumuman', [\App\Http\Controllers\LmsController::class, 'listPengumuman'])->name("list-pengumuman");
     Route::post('/submit-pengumuman', [\App\Http\Controllers\LmsController::class, 'submitPengumuman'])->name("submit-pengumuman");

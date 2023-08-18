@@ -53,9 +53,16 @@
                         <td class="text-center">{{$key + 1}}</td>
                         <td class="text-center">{{$item->nama}}</td>
                         <td class="text-center">{{'-'}}</td>
-                        <td class="text-center">{!! '<span class="badge badge-success"><i class="fa fa-check"></i> Publish</span>' !!}</td>
+                        @if ($item->aktif == 2)
+                          <td class="text-center">{!! '<span class="badge badge-dark"><i class="fa fa-check"></i> Waiting Verification</span>' !!}</td>
+                        @else
+                          <td class="text-center">{!! '<span class="badge badge-success"><i class="fa fa-check"></i> Publish</span>' !!}</td>
+                        @endif
                         <td class="text-center">{{\Carbon\Carbon::parse($item->created_at)->locale('id')->format('j F Y')}}</td>
-                        <td class="text-center"><a href="{{url('sub-materi/'.$item->id.'/'.$item->nama)}}" class="btn btn-sm btn-danger"><i class="fa fa-th-list"></i> Sub Materi</a></td>
+                        <td class="text-center">
+                          <a href="{{url('sub-materi/'.$item->id.'/'.$item->nama)}}" class="btn btn-sm btn-danger"><i class="fa fa-th-list"></i> Sub Materi</a>
+                          {!! ($item->aktif == 2) ? '<a href="'.url("approve-materi").'/'.$item->id.'" class="btn btn-sm btn-primary"><i class="fa fa-arrow-right"></i> Publish</a>' : ''!!}
+                        </td>
                       </tr>
                     @empty
                       <tr>

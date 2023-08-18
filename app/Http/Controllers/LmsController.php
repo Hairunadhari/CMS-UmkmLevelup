@@ -16,15 +16,24 @@ class LmsController extends Controller
     }
 
     public function listKategori() {
-        $d['kategori'] = DB::table('m_kategori_materi')->where('aktif', 1)->get();
-
+        $d['kategori'] = DB::table('m_kategori_materi')->where('aktif', 1)->orWhere('aktif', 2)->get();
+        
         return view('list-kategori-page', $d);
     }
     
     public function listMateri() {
-        $d['materi'] = DB::table('m_materi')->where('aktif', 1)->get();
+        if (session('id_role') == 2 or session('id_role') == 3) {
+            $d['materi'] = DB::table('m_materi')->where('aktif', 1)->orWhere('aktif', 2)->get();
+        }else{
+            $d['materi'] = DB::table('m_materi')->where('created_by', session('id_user'))->where('aktif', 1)->orWhere('aktif', 2)->get();
+        }
 
         return view('list-materi-page', $d);
+    }
+
+    public function approve($id){
+        DB::table('m_materi')->where('id', $id)->update(['aktif' => 1]);
+        return redirect('list-materi');
     }
     
     public function listPengumuman() {
