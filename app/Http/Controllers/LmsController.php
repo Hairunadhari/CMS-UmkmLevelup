@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use DB;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
+use App\Models\User;
 use Spatie\PdfToImage\Pdf;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\Models\UserProgresMateri;
+use Illuminate\Support\Facades\Storage;
+use Yajra\DataTables\Facades\DataTables;
 
 class LmsController extends Controller
 {
@@ -125,7 +128,7 @@ class LmsController extends Controller
             DB::table('t_sub_materi_file')->insert([
                 'id_sub_materi' => $lastId,
                 'kategori_materi' => "PDF",
-                'video_url' => null,
+                'video_url' => $request->video_url,
                 'file_location' => $publicUrl,
                 'created_by' => $request->session()->get('id_user'),
                 'created_at' => date("Y-m-d")
@@ -153,5 +156,65 @@ class LmsController extends Controller
     public function editPengumuman($id) {
         $d['pengumumanById'] = DB::table('notifikasis')->where('id', $id)->first();
         return view('list-pengumuman-page', $d);
+    }
+
+    public function user_progres(){
+        // $data = DB::table('user_progres_materis')
+        // ->select(
+        //     'user_progres_materis.materi_id', 
+        //     'm_materi.nama', 
+        //     'users.name', 
+        //     'users.id', 
+        //     DB::raw('COUNT(user_progres_materis.id) as jumlah_user'),
+        //     DB::raw('COUNT(user_progres_materis.sub_materi_id) as jumlah_sub_materi_user'))
+        // ->leftJoin('users','user_progres_materis.user_id','=','users.id')
+        // ->leftJoin('m_materi','user_progres_materis.materi_id','=','m_materi.id')
+        // ->groupBy('user_progres_materis.materi_id', 'm_materi.nama', 'users.name','users.id')
+        // ->get();
+        // $data->each(function($item){
+        //     $item->total_sub_bdsarkan_materi = DB::table('t_sub_materi')->selectRaw('COUNT(id_materi) as tot')->where('id_materi', $item->materi_id)->count();
+        //     $item->progres = ($item->jumlah_sub_materi_user * 100) / $item->total_sub_bdsarkan_materi;
+        // });
+        // dd($data);
+        if (request()->ajax()) {
+            $data = DB::table('user_progres_materis')
+            ->select(
+                'user_progres_materis.materi_id', 
+                'm_materi.nama', 
+                'users.name', 
+                'users.id', 
+                DB::raw('COUNT(user_progres_materis.id) as jumlah_user'),
+                DB::raw('COUNT(user_progres_materis.sub_materi_id) as jumlah_sub_materi_user'))
+            ->leftJoin('users','user_progres_materis.user_id','=','users.id')
+            ->leftJoin('m_materi','user_progres_materis.materi_id','=','m_materi.id')
+            ->groupBy('user_progres_materis.materi_id', 'm_materi.nama', 'users.name','users.id')
+            ->get();
+            $data->each(function($item){
+                $item->total_sub_bdsarkan_materi = DB::table('t_sub_materi')->selectRaw('COUNT(id_materi) as tot')->where('id_materi', $item->materi_id)->count();
+                $item->progres = ($item->jumlah_sub_materi_user * 100) / $item->total_sub_bdsarkan_materi;
+            });
+            return DataTables::of($data)->make(true);
+        }
+        
+        return view('user-progres');
+    }
+    public function detail_user_progres($id, $materiid){
+        // dd($id,$materiid);
+        $user = User::find($id);
+        $materi = DB::table('m_materi')
+        ->select('nama')
+        ->find($materiid);
+        // dd($materi);
+        if (request()->ajax()) {
+            $data = DB::table('user_progres_materis')
+            ->select('user_progres_materis.*','t_sub_materi.nama')
+            ->leftJoin('t_sub_materi','user_progres_materis.sub_materi_id','=','t_sub_materi.id')
+            ->where('user_id',$id)
+            ->where('materi_id',$materiid)
+            ->get();
+            return DataTables::of($data)->make(true);
+
+        }
+        return view('detail-user-progres',compact('user','materi'));
     }
 }
