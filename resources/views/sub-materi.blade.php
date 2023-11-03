@@ -50,62 +50,65 @@
 <div class="main-content">
   <section class="section">
     <div class="section-header">
-      <h1 style="width:80%">List Materi </h1>
-      <div class="float-right; text-right" style="width: 20%;"><strong><i class="fa fa-bookmark"></i> Materi : </strong>
-        <span class="badge badge-sm badge-dark"> {{$name}} </span></div>
-    </div>
+      <h1 style="width:80%">List Sub Materi </h1>
+      {{-- <div class="float-right; text-right" style="width: 20%;"><strong><i class="fa fa-bookmark"></i> Materi : </strong>
+        <span class="badge badge-sm badge-dark"> {{$name}} </span>
+    </div> --}}
+</div>
 
-    <div class="section-body">
-      <h2 class="section-title">Daftar Materi </h2>
-      <p class="section-lead">Materi yang diperlukan untuk kategori materi yang sebelumnya.</p>
-      <div class="card">
-        <div class="card-body">
-          <strong class="text-dark">List Materi </strong>
-          <span class="float-right"><button type="button" class="btn btn-sm btn-primary" data-toggle="modal"
-              data-target="#tambahData"><i class="fa fa-plus"></i> Tambah Sub Materi</button> </span>
-          <hr />
-          <div class="row">
-            <div class="col-12">
-              <table class="table table-striped table-hovered">
-                <thead>
-                  <tr>
-                    <th>No</th>
-                    <th>Title</th>
-                    {{-- <th>Kategori</th> --}}
-                    <th>File / Video Materi</th>
-                    <th>Deskripsi</th>
-                    <th>Tgl</th>
-                    <th>Aksi</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @forelse ($sub_materi as $key => $item)
-                  <tr>
-                    <td class="text-center">{{$key + 1}}</td>
-                    <td class="text-center">{{$item->nama}}</td>
-                    {{-- <td class="text-center">{{'-'}}</td> --}}
-                    <td class="text-center"><button class="btn btn-dark btn-sm"><i class="fa fa-search"></i>
-                        Lihat</button></td>
-                    <td class="text-center">{{$item->deskripsi}}</td>
-                    <td class="text-center">{{\Carbon\Carbon::parse($item->created_at)->locale('id')->format('j F Y')}}
-                    </td>
-                    <td class="text-center"><a href="#" class="btn btn-sm btn-warning"><i class="fa fa-th-list"></i>
-                        Edit</a></td>
-                  </tr>
-                  @empty
-                  <tr>
-                    <td class="text-center" colspan="6">No Data</td>
-                  </tr>
-                  @endforelse
-                </tbody>
-              </table>
-            </div>
-          </div>
+<div class="section-body">
+  <h2 class="section-title">Daftar Sub Materi : '{{$name}}' </h2>
+  <p class="section-lead">Sub materi yang diperlukan untuk kategori materi yang sebelumnya.</p>
+  <div class="card">
+    <div class="card-body">
+      <strong class="text-dark">List Sub Materi </strong>
+      <span class="float-right"><button type="button" class="btn btn-sm btn-primary" data-toggle="modal"
+          data-target="#tambahData"><i class="fa fa-plus"></i> Tambah Sub Materi</button> </span>
+      <hr />
+      <div class="row">
+        <div class="col-12">
+          <table class="table table-striped table-hovered">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Title</th>
+                {{-- <th>Kategori</th> --}}
+                <th>File / Video Materi</th>
+                <th>Deskripsi</th>
+                <th>Tgl</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              @forelse ($sub_materi as $key => $item)
+              <tr>
+                <td class="text-center">{{$key + 1}}</td>
+                <td class="text-center">{{$item->nama}}</td>
+                {{-- <td class="text-center">{{'-'}}</td> --}}
+                <td class="text-center"><a class="btn btn-dark btn-sm" href="/sub-materi/{{$item->id}}"><i
+                      class="fa fa-search"></i>
+                    Lihat</a></td>
+                <td class="text-center">{{$item->deskripsi}}</td>
+                <td class="text-center">{{\Carbon\Carbon::parse($item->created_at)->locale('id')->format('j F Y')}}
+                </td>
+                <td class="text-center"><a href="/edit-sub-materi/{{$item->id}}" class="btn btn-sm btn-warning"><i
+                      class="fa fa-th-list"></i>
+                    Edit</a></td>
+              </tr>
+              @empty
+              <tr>
+                <td class="text-center" colspan="6">No Data</td>
+              </tr>
+              @endforelse
+            </tbody>
+          </table>
         </div>
       </div>
-
     </div>
-  </section>
+  </div>
+
+</div>
+</section>
 </div>
 
 <form action="{{url('add-sub-materi/'.$id.'/'.$name)}}" method="POST" enctype="multipart/form-data">
@@ -131,29 +134,22 @@
               style="height: 100px" required></textarea>
             <div id="deskripsiHelp" class="form-text"></div>
           </div>
-          <input type="hidden" class="hidden" name="versi" id="versi" value="PDF">
           <div class="mb-3">
-            <label for="file" class="form-label">Upload Materi <span class="text-danger text-bold">*</span></label>
-            <input type="file" class="form-control" id="file" name="file" accept=".pdf" aria-describedby="fileHelp"
-              required>
-            <div id="fileHelp" class="form-text"></div>
-          </div>
-          <div class="mb-3">
-            <label for="file" class="form-label">Upload Video<span class="text-danger text-bold">*</span></label>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="flexRadioDefault" id="file-video" checked>
-              <label class="form-check-label" for="file-video">
-                File
-              </label>
+            <label for="file" class="form-label">Upload File Materi <span class="text-danger text-bold">*</span></label>
+            <div class="form-group">
+              <div class="form-check mb-1">
+                <input class="form-check-input" type="checkbox" id="pdf" checked>
+                <label class="form-check-label" for="pdf">PDF</label>
+                <input type="file" class="form-control" id="input-pdf" name="file" accept=".pdf"
+                  aria-describedby="fileHelp" required>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="video">
+                <label class="form-check-label" for="video">Video</label>
+                <input type="file" style="display: none;" class="form-control" accept=".mp4, .webm, .mkv"
+                  id="input-video" name="video">
+              </div>
             </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="flexRadioDefault" id="url">
-              <label class="form-check-label" for="url">
-                Url Link
-              </label>
-            </div>
-            <input type="file" class="form-control" accept=".mp4, .webm, .mkv" id="input-video" name="video_url" required>
-            <input type="url" class="form-control" name="video_url" id="input-url" required>
           </div>
           <hr />
         </div>
@@ -165,32 +161,35 @@
   </div>
 </form>
 <script>
-  window.onload = function (){
-    let a = document.getElementById('file-video').checked = true; 
-      if (a == true) {
-        document.getElementById('input-video').style.display = 'block';
-        document.getElementById('input-url').style.display = 'none';
-        document.getElementById('input-url').removeAttribute("required");
-      } 
-  };
+  
+  // window.onload = function (){
+  // //   let a = document.getElementById('pdf').checked = true; 
+  // //     if (a == true) {
+  // //       document.getElementById('input-video').style.display = 'block';
+  // //     } 
+  // // };
 
-  document.getElementById('file-video').addEventListener('click', function() {
-        if (this.checked) {
-            document.getElementById('input-video').style.display = 'block';
-            document.getElementById('input-url').style.display = 'none';
-            document.getElementById('input-url').value = '';
-            document.getElementById('input-url').removeAttribute("required");
-          }
-        });
-        
-        document.getElementById('url').addEventListener('click', function() {
-          if (this.checked) {
-            document.getElementById('input-video').style.display = 'none';
-            document.getElementById('input-url').style.display = 'block';
-            document.getElementById('input-video').value = '';
-            document.getElementById('input-video').removeAttribute("required");
-        }
-    });
+  document.getElementById('video').addEventListener('click', function () {
+    if (this.checked) {
+      document.getElementById('input-video').style.display = 'block';
+    } else {
+      document.getElementById('input-video').style.display = 'none';
+      document.getElementById('input-video').value = '';
+      document.getElementById('input-video').removeAttribute("required");
+
+    }
+  });
+
+  document.getElementById('pdf').addEventListener('click', function () {
+    if (this.checked) {
+      document.getElementById('input-pdf').style.display = 'block';
+    } else {
+      document.getElementById('input-pdf').style.display = 'none';
+      document.getElementById('input-pdf').value = '';
+      document.getElementById('input-pdf').removeAttribute("required");
+    }
+  });
+
 </script>
 @endsection
 
@@ -213,6 +212,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
 </script>
 
 <script>
+  
   $(document).ready(function () {
     $('.select2').select2({
       width: 'resolve'

@@ -36,7 +36,7 @@ class LmsController extends Controller
 
     public function approve($id){
         DB::table('m_materi')->where('id', $id)->update(['aktif' => 1]);
-        return redirect('list-materi');
+        return redirect('/list-materi')->with(['success' => 'Materi Berhasil DiPublish']);
     }
     
     public function listPengumuman() {
@@ -79,7 +79,7 @@ class LmsController extends Controller
         return redirect('list-materi');
     }
 
-    public function subMateri($id, $name) {
+    public function subMateri($name, $id) {
         $d['name'] = $name;
         $d['id'] = $id;
         $d['sub_materi'] = DB::table('t_sub_materi')
@@ -102,10 +102,7 @@ class LmsController extends Controller
         }
         try {
             DB::beginTransaction();
-            $request->validate([
-                'file' => 'required|file|mimes:jpeg,png,pdf|max:2048',
-            ]);
-            // dd($publicUrl);    
+
             $lastId = DB::table('t_sub_materi')->insertGetId([
                 'nama' => $request->title,
                 'deskripsi' => $request->deskripsi,
@@ -113,69 +110,87 @@ class LmsController extends Controller
                 'created_by' => $request->session()->get('id_user'),
                 'created_at' => date("Y-m-d")
             ]);
+            if ($request->hasFile('file') && $request->hasFile('video') ) {
+                $file = Str::random(3).time().'.'.$request->file->getClientOriginalExtension();
+                $request->file('file')->move(public_path().'/storage/data_upload_lms/', $file);
 
-            $file = $request->file('file');
-    
-            // Generate a hashed filename using the original file name and a unique identifier
-            $hashedFileName = Str::random(40) . '.' . $file->getClientOriginalExtension();
-    
-            // Store the file in the storage/app/public directory
-            $filePath = $file->storeAs('data_upload_lms', $hashedFileName, 'public');
+                $video = Str::random(3).time().'.'.$request->video->getClientOriginalExtension();
+                $request->file('video')->move(public_path().'/storage/data_upload_lms/', $video);
 
-            // Create a public URL for the file using the storage link
-            $publicUrl = Storage::disk('public')->url($filePath);   
+                DB::table('t_sub_materi_file')->insert([
+                    'id_sub_materi' => $lastId,
+                    'video_url' => env('APP_URL').'/storage/data_upload_lms/'.$video,
+                    'file_location' => env('APP_URL').'/storage/data_upload_lms/'.$file,
+                    'file_name' => $file,
+                    'video_name' => $video,
+                    'created_by' => $request->session()->get('id_user'),
+                    'created_at' => date("Y-m-d")
+                ]);
 
-            DB::table('t_sub_materi_file')->insert([
-                'id_sub_materi' => $lastId,
-                'kategori_materi' => "PDF",
-                'video_url' => $request->video_url,
-                'file_location' => $publicUrl,
-                'created_by' => $request->session()->get('id_user'),
-                'created_at' => date("Y-m-d")
-            ]);
+            }elseif ($request->hasFile('file')) {
+                $file = Str::random(3).time().'.'.$request->file->getClientOriginalExtension();
+                $request->file('file')->move(public_path().'/storage/data_upload_lms/', $file);
+                DB::table('t_sub_materi_file')->insert([
+                    'id_sub_materi' => $lastId,
+                    'file_location' => env('APP_URL').'/storage/data_upload_lms/'.$file,
+                    'file_name' => $file,
+                    'created_by' => $request->session()->get('id_user'),
+                    'created_at' => date("Y-m-d")
+                ]);
+            }elseif ($request->hasFile('video')) {
+                $video = Str::random(3).time().'.'.$request->video->getClientOriginalExtension();
+                $request->file('video')->move(public_path().'/storage/data_upload_lms/', $video);
+                DB::table('t_sub_materi_file')->insert([
+                    'id_sub_materi' => $lastId,
+                    'video_url' => env('APP_URL').'/storage/data_upload_lms/'.$video,
+                    'video_name' => $video,
+                    'created_by' => $request->session()->get('id_user'),
+                    'created_at' => date("Y-m-d")
+                ]);
+            }
+
+
+          
             
             DB::commit();
         } catch (\Throwable $th) {
             DB::rollback();
-            dd($th);
-            //throw $th;
+            // dd($th);
+            throw $th;
         }
 
-        return redirect('sub-materi/'.$id.'/'.$name);
+        return redirect($name.'/sub-materi/'.$id)->with(['success' => 'Data Berhasil Ditambahkan!']);
     }
 
-    public function addPengumuman() {
-        return view('list-pengumuman-page', $d);
+    public function addPengumuman(Request $request) {
+        DB::table('notifikasis')->insert([
+            'judul_notifikasi' => $request->judul_notifikasi,
+            'keterangan' => $request->keterangan,
+            'created_by' => $request->session()->get('id_user'),
+            'tanggal' => date("Y-m-d")
+        ]);
+        return redirect('/list-pengumuman');
     }
 
     public function deletePengumuman($id) {
-        DB::table('notifikasis')->where('id', $id)->update(['final_level' => $level]);
-        return view('list-pengumuman-page', $d);
+        DB::table('notifikasis')->where('id', $id)->update(['status_aktif' => 0]);
+        return redirect('/list-pengumuman');
     }
 
     public function editPengumuman($id) {
         $d['pengumumanById'] = DB::table('notifikasis')->where('id', $id)->first();
-        return view('list-pengumuman-page', $d);
+        return view('edit-pengumuman', $d);
+    }
+
+    public function updatePengumuman(Request $request, $id) {
+        $d['pengumumanById'] = DB::table('notifikasis')->where('id', $id)->update([
+            'judul_notifikasi' =>$request->judul_notifikasi,
+            'keterangan' =>$request->keterangan,
+        ]);
+        return redirect('list-pengumuman');
     }
 
     public function user_progres(){
-        // $data = DB::table('user_progres_materis')
-        // ->select(
-        //     'user_progres_materis.materi_id', 
-        //     'm_materi.nama', 
-        //     'users.name', 
-        //     'users.id', 
-        //     DB::raw('COUNT(user_progres_materis.id) as jumlah_user'),
-        //     DB::raw('COUNT(user_progres_materis.sub_materi_id) as jumlah_sub_materi_user'))
-        // ->leftJoin('users','user_progres_materis.user_id','=','users.id')
-        // ->leftJoin('m_materi','user_progres_materis.materi_id','=','m_materi.id')
-        // ->groupBy('user_progres_materis.materi_id', 'm_materi.nama', 'users.name','users.id')
-        // ->get();
-        // $data->each(function($item){
-        //     $item->total_sub_bdsarkan_materi = DB::table('t_sub_materi')->selectRaw('COUNT(id_materi) as tot')->where('id_materi', $item->materi_id)->count();
-        //     $item->progres = ($item->jumlah_sub_materi_user * 100) / $item->total_sub_bdsarkan_materi;
-        // });
-        // dd($data);
         if (request()->ajax()) {
             $data = DB::table('user_progres_materis')
             ->select(
@@ -205,16 +220,81 @@ class LmsController extends Controller
         ->select('nama')
         ->find($materiid);
         // dd($materi);
-        if (request()->ajax()) {
-            $data = DB::table('user_progres_materis')
-            ->select('user_progres_materis.*','t_sub_materi.nama')
-            ->leftJoin('t_sub_materi','user_progres_materis.sub_materi_id','=','t_sub_materi.id')
-            ->where('user_id',$id)
-            ->where('materi_id',$materiid)
-            ->get();
-            return DataTables::of($data)->make(true);
-
+        $all_sub_materi = DB::table('t_sub_materi')->where('id_materi',$materiid)->get();
+        $materi_progres_user = DB::table('user_progres_materis')
+        ->select('user_progres_materis.*','t_sub_materi.nama')
+        ->leftJoin('t_sub_materi','user_progres_materis.sub_materi_id','=','t_sub_materi.id')
+        ->where('user_id',$id)
+        ->where('materi_id',$materiid)
+        ->get();
+        $sub_materi_yg_dikerjain = [];
+        foreach ($materi_progres_user as $item) {
+            $sub_materi_yg_dikerjain[$item->sub_materi_id] = $item->progres;
         }
-        return view('detail-user-progres',compact('user','materi'));
+
+        return view('detail-user-progres',compact('user','materi','all_sub_materi','sub_materi_yg_dikerjain'));
+    }
+    public function detail_sub_materi($id){
+        $a = DB::table('t_sub_materi')->find($id);
+        $data = DB::table('t_sub_materi_file')
+        ->where('id_sub_materi',$id)
+        ->first();
+        return view('detail-sub-materi',compact('data','a'));
+    }
+    public function edit_sub_materi($id){
+        $a = DB::table('t_sub_materi')->find($id);
+        $data = DB::table('t_sub_materi_file')
+        ->where('id_sub_materi',$id)
+        ->first();
+        // dd($a);
+        return view('edit-sub-materi',compact('data','a'));
+    }
+    public function update_sub_materi(Request $request, $id){
+        $sub_materi = DB::table('t_sub_materi')->find($id);
+        $sub_materi_file = DB::table('t_sub_materi_file')->where('id_sub_materi',$id)->first();
+        
+        if($request->hasFile('file') && $request->hasFile('video') ) {
+            $file = Str::random(3).time().'.'.$request->file->getClientOriginalExtension();
+            $request->file('file')->move(public_path().'/storage/data_upload_lms/', $file);
+
+            $video = Str::random(3).time().'.'.$request->video->getClientOriginalExtension();
+            $request->file('video')->move(public_path().'/storage/data_upload_lms/', $video);
+                
+            DB::table('t_sub_materi_file')->where('id_sub_materi',$id)->update([
+                    'video_url' => env('APP_URL').'/storage/data_upload_lms/'.$video,
+                    'file_location' => env('APP_URL').'/storage/data_upload_lms/'.$file,
+                    'file_name' => $file,
+                    'video_name' => $video,
+                    'created_by' => $request->session()->get('id_user'),
+                    'created_at' => date("Y-m-d")
+                ]);
+        }elseif ($request->hasFile('file')) {
+                $file = Str::random(3).time().'.'.$request->file->getClientOriginalExtension();
+                $request->file('file')->move(public_path().'/storage/data_upload_lms/', $file);
+                DB::table('t_sub_materi_file')->where('id_sub_materi',$id)->update([
+                    'file_location' => env('APP_URL').'/storage/data_upload_lms/'.$file,
+                    'file_name' => $file,
+                    'created_by' => $request->session()->get('id_user'),
+                    'created_at' => date("Y-m-d")
+                ]);
+        }elseif ($request->hasFile('video')) {
+                $video = Str::random(3).time().'.'.$request->video->getClientOriginalExtension();
+                $request->file('video')->move(public_path().'/storage/data_upload_lms/', $video);
+                DB::table('t_sub_materi_file')->where('id_sub_materi',$id)->update([
+                    'video_url' => env('APP_URL').'/storage/data_upload_lms/'.$video,
+                    'video_name' => $video,
+                    'created_by' => $request->session()->get('id_user'),
+                    'created_at' => date("Y-m-d")
+                ]);
+        }
+
+       
+            DB::table('t_sub_materi')->where('id',$id)->update([
+                'nama' => $request->title,
+                'deskripsi' => $request->deskripsi,
+            ]);
+            // dd($sub_materi);
+            return redirect('/list-materi')->with(['success'=>'Data Berhasil Diedit!']);
+
     }
 }

@@ -91,15 +91,18 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
                   data: 'name'
                 },
                 {
-                  data: 'nama'
+                  data: 'nama', 
+                  render: function(data) {
+                    return '<label class="badge badge-sm badge-dark"><i class="fa fa-tag"></i> '+ data + '</label>'
+                  }
                 },
                 {
                   data: 'progres',
                   render: function(data) {
-                    return data + '%'
+                    return '<label class="badge badge-sm badge-info">'+ Math.floor(data) + '%</label>'
                   }
                 },
-                {
+                { 
                   data: null,
                     render: function (data) {
                         var detail = '/user-progres/'+data.id+'/materi/' + data.materi_id;

@@ -57,18 +57,22 @@ Route::redirect('/', '/login');
     Route::get('/list-materi', [\App\Http\Controllers\LmsController::class, 'listMateri'])->name("list-materi");
     Route::post('/add-materi', [\App\Http\Controllers\LmsController::class, 'addMateri'])->name("add-materi");
     
-    Route::get('/sub-materi/{id}/{name}', [\App\Http\Controllers\LmsController::class, 'subMateri'])->name("sub-materi/{id}/{name}");
+    Route::get('/{name}/sub-materi/{id}/', [\App\Http\Controllers\LmsController::class, 'subMateri']);
     Route::post('/add-sub-materi/{id}/{name}', [\App\Http\Controllers\LmsController::class, 'addSubMateri'])->name("add-sub-materi/{id}/{name}");
     Route::get('/approve-materi/{id}/', [\App\Http\Controllers\LmsController::class, 'approve'])->name("approve-materi/{id}");
 
     Route::get('/list-pengumuman', [\App\Http\Controllers\LmsController::class, 'listPengumuman'])->name("list-pengumuman");
-    Route::post('/submit-pengumuman', [\App\Http\Controllers\LmsController::class, 'submitPengumuman'])->name("submit-pengumuman");
+    Route::post('/add-pengumuman', [\App\Http\Controllers\LmsController::class, 'addPengumuman'])->name("add-pengumuman");
     Route::get('/edit-pengumuman/{id}', [\App\Http\Controllers\LmsController::class, 'editPengumuman'])->name("edit-pengumuman/{id}");
-    Route::get('/hapus-pengumuman/{id}', [\App\Http\Controllers\LmsController::class, 'deletePengumuman'])->name("hapus-pengumuman/{id}");
+    Route::put('/update-pengumuman/{id}', [\App\Http\Controllers\LmsController::class, 'updatePengumuman'])->name("update-pengumuman/{id}");
+    Route::put('/hapus-pengumuman/{id}', [\App\Http\Controllers\LmsController::class, 'deletePengumuman'])->name("hapus-pengumuman/{id}");
 
     Route::get('/old-portal', [\App\Http\Controllers\OldPortalController::class, 'index'])->name("old-portal");
     Route::get('/user-progres', [\App\Http\Controllers\LmsController::class, 'user_progres'])->name("user-progres");
     Route::get('/user-progres/{id}/materi/{materiid}', [\App\Http\Controllers\LmsController::class, 'detail_user_progres']);
+    Route::get('/sub-materi/{id}', [\App\Http\Controllers\LmsController::class, 'detail_sub_materi']);
+    Route::get('/edit-sub-materi/{id}', [\App\Http\Controllers\LmsController::class, 'edit_sub_materi']);
+    Route::put('/update-sub-materi/{id}', [\App\Http\Controllers\LmsController::class, 'update_sub_materi']);
 
     // Route::get('/export-verif', [\App\Http\Controllers\KuesionerController::class, 'exportKuesionerVerif'])->name("export-verif");
 // });
