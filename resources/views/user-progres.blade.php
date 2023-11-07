@@ -39,7 +39,7 @@
                       <th>No</th>
                       <th>Nama</th>
                       <th>Materi</th>
-                      <th>Progres</th>
+                      <th>Status Progres Sub Materi</th>
                       <th>Aksi</th>
                     </tr>
                   </thead>
@@ -97,9 +97,9 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
                   }
                 },
                 {
-                  data: 'progres',
+                  data: 'jumlah_sub_materi_user',
                   render: function(data) {
-                    return '<label class="badge badge-sm badge-info">'+ Math.floor(data) + '%</label>'
+                    return '<label class="badge badge-sm badge-info">'+ data + ' Sedang Dikerjakan</label>'
                   }
                 },
                 { 

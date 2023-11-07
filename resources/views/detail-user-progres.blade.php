@@ -27,7 +27,13 @@
       <div class="section-body">
         <div class="card">
           <div class="card-body">
+            @if ($materi == null)
+                
+            <strong class="text-dark">Detail Progres '{{$user->name}}' | Sub Materi 'Tidak diketahui'</strong>
+            @else
             <strong class="text-dark">Detail Progres '{{$user->name}}' | Sub Materi '{{$materi->nama}}'</strong>
+                
+            @endif
             <hr />
             <div class="row">
               <div class="col-12">
