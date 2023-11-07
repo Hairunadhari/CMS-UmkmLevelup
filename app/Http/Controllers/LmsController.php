@@ -146,6 +146,12 @@ class LmsController extends Controller
                     'created_by' => $request->session()->get('id_user'),
                     'created_at' => date("Y-m-d")
                 ]);
+            } else{
+                DB::table('t_sub_materi_file')->insert([
+                    'id_sub_materi' => $lastId,
+                    'created_by' => $request->session()->get('id_user'),
+                    'created_at' => date("Y-m-d")
+                ]);
             }
 
 
@@ -302,6 +308,18 @@ class LmsController extends Controller
             ]);
             // dd($sub_materi);
             return redirect('/list-materi')->with(['success'=>'Data Berhasil Diedit!']);
+
+    }
+
+    public function deleteSubmateri($id){
+        DB::table('t_sub_materi')->where('id',$id)->update([
+            'aktif'=>0
+        ]);
+        DB::table('t_sub_materi_file')->where('id_sub_materi',$id)->update([
+            'aktif'=>0
+        ]);
+
+        return redirect('/list-materi')->with(['success'=>'Data Berhasil DiHapus!']);
 
     }
 }

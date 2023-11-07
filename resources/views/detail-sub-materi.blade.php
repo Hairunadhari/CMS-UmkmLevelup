@@ -16,6 +16,8 @@
         </div>
         <div class="card-body">
             <form>
+                @if ($data != null)
+                    
                 <div class="form-group">
                     <label>File PDF Location</label>
                     <br>
@@ -26,6 +28,19 @@
                     <br>
                     <a target="_blank" href="{{ $data->video_url }}">{{ $data->video_url }}</a>
                 </div>
+                @else
+                <div class="form-group">
+                    <label>File PDF Location</label>
+                    <br>
+                    <span>-</span>
+                </div>
+                <div class="form-group">
+                    <label>Video Location</label>
+                    <br>
+                    <span>-</span>
+                </div>
+                    
+                @endif
             </form>
         </div>
     </div>

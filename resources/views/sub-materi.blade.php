@@ -91,9 +91,16 @@
                 <td class="text-center">{{$item->deskripsi}}</td>
                 <td class="text-center">{{\Carbon\Carbon::parse($item->created_at)->locale('id')->format('j F Y')}}
                 </td>
-                <td class="text-center"><a href="/edit-sub-materi/{{$item->id}}" class="btn btn-sm btn-warning"><i
-                      class="fa fa-th-list"></i>
-                    Edit</a></td>
+                <td class="text-center">
+                  <form action="/hapus-submateri/{{$item->id}}" method="post" onsubmit="return confirm('Apakah anda yakin akan menghapus data ini ?');">
+                    <a href="/edit-sub-materi/{{$item->id}}" class="btn btn-sm btn-warning"><i
+                        class="fa fa-th-list"></i>
+                      Edit</a>
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <input type="hidden" name="_method" value="PUT">
+                    <button class="btn btn-sm btn-danger" type="submit"><i class="far fa-trash-alt"></i> Hapus</button>
+                      </form>
+                  </td>
               </tr>
               @empty
               <tr>

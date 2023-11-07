@@ -34,14 +34,25 @@
               <label for="file" class="form-label">Upload File Materi <span
                   class="text-danger text-bold">*</span></label>
               <div class="form-group">
-                  <label class="form-label" >PDF</label><br>
-                  {{-- <span for="">File saat ini</span><input type="tex" class="form-control mb-2" id="file" value="{{$data->file_name}}" name="file"
-                  accept=".pdf" aria-describedby="fileHelp"> --}}
-                  <input type="file" class="form-control" id="input-pdf" name="file" accept=".pdf"
-                    aria-describedby="fileHelp" value="{{$data->file_name}}">
-                  <label class="form-label">Video</label>
-                  <input type="file" class="form-control" accept=".mp4, .webm, .mkv" id="input-video"
-                    value="{{$data->video_name}}" name="video">
+                @if ($data != null)
+                <label class="form-label">PDF</label><br>
+                <input type="file" class="form-control" id="input-pdf" name="file" accept=".pdf"
+                aria-describedby="fileHelp" value="{{$data->file_name}}">
+                
+                <label class="form-label">Video</label>
+                <input type="file" class="form-control" accept=".mp4, .webm, .mkv" id="input-video"
+                value="{{$data->video_name}}" name="video">
+                @else
+                <label class="form-label">PDF</label><br>
+                <input type="file" class="form-control" id="input-pdf" name="file" accept=".pdf"
+                  aria-describedby="fileHelp" value="">
+
+                <label class="form-label">Video</label>
+                <input type="file" class="form-control" accept=".mp4, .webm, .mkv" id="input-video"
+                  value="" name="video">
+
+                @endif
+
               </div>
             </div>
             <div class="text-center">
