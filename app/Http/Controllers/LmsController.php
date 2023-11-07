@@ -83,12 +83,11 @@ class LmsController extends Controller
         $d['name'] = $name;
         $d['id'] = $id;
         $d['sub_materi'] = DB::table('t_sub_materi')
-        ->select('t_sub_materi.*', 't_sub_materi_file.file_location')
-        ->leftJoin('t_sub_materi_file', 't_sub_materi.id', '=', 't_sub_materi_file.id_sub_materi')
+        ->select('t_sub_materi.*')
         ->where('t_sub_materi.aktif', 1)
         ->where('t_sub_materi.id_materi', $id)
         ->get();
-
+// dd($d['sub_materi']);
         return view('sub-materi', $d);
     }
 
