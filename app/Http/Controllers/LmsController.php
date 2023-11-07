@@ -191,23 +191,24 @@ class LmsController extends Controller
     }
 
     public function user_progres(){
+        $data = DB::table('user_progres_materis')
+        ->select(
+            'user_progres_materis.materi_id', 
+            'm_materi.nama', 
+            'users.name', 
+            'users.id', 
+            DB::raw('COUNT(user_progres_materis.id) as jumlah_user'),
+            DB::raw('COUNT(user_progres_materis.sub_materi_id) as jumlah_sub_materi_user'))
+        ->leftJoin('users','user_progres_materis.user_id','=','users.id')
+        ->leftJoin('m_materi','user_progres_materis.materi_id','=','m_materi.id')
+        ->groupBy('user_progres_materis.materi_id', 'm_materi.nama', 'users.name','users.id')
+        ->get();
+        $data->each(function($item){
+            $item->total_sub_bdsarkan_materi = DB::table('t_sub_materi')->selectRaw('COUNT(id_materi) as tot')->where('id_materi', $item->materi_id)->count();
+            $item->progres = ($item->jumlah_sub_materi_user * 100) / $item->total_sub_bdsarkan_materi;
+        });
+        dd($data);
         if (request()->ajax()) {
-            $data = DB::table('user_progres_materis')
-            ->select(
-                'user_progres_materis.materi_id', 
-                'm_materi.nama', 
-                'users.name', 
-                'users.id', 
-                DB::raw('COUNT(user_progres_materis.id) as jumlah_user'),
-                DB::raw('COUNT(user_progres_materis.sub_materi_id) as jumlah_sub_materi_user'))
-            ->leftJoin('users','user_progres_materis.user_id','=','users.id')
-            ->leftJoin('m_materi','user_progres_materis.materi_id','=','m_materi.id')
-            ->groupBy('user_progres_materis.materi_id', 'm_materi.nama', 'users.name','users.id')
-            ->get();
-            $data->each(function($item){
-                $item->total_sub_bdsarkan_materi = DB::table('t_sub_materi')->selectRaw('COUNT(id_materi) as tot')->where('id_materi', $item->materi_id)->count();
-                $item->progres = ($item->jumlah_sub_materi_user * 100) / $item->total_sub_bdsarkan_materi;
-            });
             return DataTables::of($data)->make(true);
         }
         
