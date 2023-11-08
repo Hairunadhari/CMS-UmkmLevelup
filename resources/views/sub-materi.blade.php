@@ -59,6 +59,8 @@
 <div class="section-body">
   <h2 class="section-title">Daftar Sub Materi : '{{$name}}' </h2>
   <p class="section-lead">Sub materi yang diperlukan untuk kategori materi yang sebelumnya.</p>
+  {{-- <h1>tes{{ env("APP_CHILD") }}</h1> --}}
+
   <div class="card">
     <div class="card-body">
       <strong class="text-dark">List Sub Materi </strong>
@@ -118,7 +120,8 @@
 </section>
 </div>
 
-<form action="{{url('add-sub-materi/'.$id.'/'.$name)}}" method="POST" enctype="multipart/form-data">
+<form action="{{ env('APP_CHILD').'add-sub-materi/'.$id.'/'.$name }}" method="POST" enctype="multipart/form-data">
+  @csrf
   <div class="modal fade" id="tambahData" aria-labelledby="tambahData" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -129,7 +132,6 @@
           </button>
         </div>
         <div class="modal-body pb-0">
-          {{ csrf_field() }}
           <div class="mb-3">
             <label for="title" class="form-label">Title <span class="text-danger text-bold">*</span></label>
             <input type="text" class="form-control" id="title" name="title" aria-describedby="titleHelp" required>

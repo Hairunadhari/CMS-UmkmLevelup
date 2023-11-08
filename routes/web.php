@@ -88,3 +88,7 @@ Route::post(
     [\App\Http\Controllers\Content\SignedStorageUrlController::class, 'store']
 )->middleware([]);
 // Route::get('/sitemap.xml', [\App\Http\Controllers\SitemapController::class, 'getSitemap'])->name('sitemap');
+Route::group(['middleware' => ['cors']], function () {
+    Route::post('/get-file', [App\Http\Controllers\LmsController::class, 'get_file_by_name']);
+});
+// });

@@ -111,15 +111,14 @@ class LmsController extends Controller
             ]);
             if ($request->hasFile('file') && $request->hasFile('video') ) {
                 $file = Str::random(3).time().'.'.$request->file->getClientOriginalExtension();
-                $request->file('file')->move(public_path().'/storage/data_upload_lms/', $file);
-
+                $request->file('file')->move(env('APP_CHILD').'/storage/data_upload_lms/', $file);
                 $video = Str::random(3).time().'.'.$request->video->getClientOriginalExtension();
                 $request->file('video')->move(public_path().'/storage/data_upload_lms/', $video);
 
                 DB::table('t_sub_materi_file')->insert([
                     'id_sub_materi' => $lastId,
-                    'video_url' => env('APP_URL').'/storage/data_upload_lms/'.$video,
-                    'file_location' => env('APP_URL').'/storage/data_upload_lms/'.$file,
+                    'video_url' => env('APP_CHILD').'/storage/data_upload_lms/'.$video,
+                    'file_location' => env('APP_CHILD').'/storage/data_upload_lms/'.$file,
                     'file_name' => $file,
                     'video_name' => $video,
                     'created_by' => $request->session()->get('id_user'),
@@ -128,10 +127,10 @@ class LmsController extends Controller
 
             }elseif ($request->hasFile('file')) {
                 $file = Str::random(3).time().'.'.$request->file->getClientOriginalExtension();
-                $request->file('file')->move(public_path().'/storage/data_upload_lms/', $file);
+                $request->file('file')->move(env('APP_CHILD').'storage/data_upload_lms/', $file);
                 DB::table('t_sub_materi_file')->insert([
                     'id_sub_materi' => $lastId,
-                    'file_location' => env('APP_URL').'/storage/data_upload_lms/'.$file,
+                    'file_location' => env('APP_CHILD').'/storage/data_upload_lms/'.$file,
                     'file_name' => $file,
                     'created_by' => $request->session()->get('id_user'),
                     'created_at' => date("Y-m-d")
@@ -141,7 +140,7 @@ class LmsController extends Controller
                 $request->file('video')->move(public_path().'/storage/data_upload_lms/', $video);
                 DB::table('t_sub_materi_file')->insert([
                     'id_sub_materi' => $lastId,
-                    'video_url' => env('APP_URL').'/storage/data_upload_lms/'.$video,
+                    'video_url' => env('APP_CHILD').'/storage/data_upload_lms/'.$video,
                     'video_name' => $video,
                     'created_by' => $request->session()->get('id_user'),
                     'created_at' => date("Y-m-d")
@@ -321,5 +320,10 @@ class LmsController extends Controller
 
         return redirect('/list-materi')->with(['success'=>'Data Berhasil DiHapus!']);
 
+    }
+    public function get_file_by_name(Request $request){
+        dd($request->filename);
+        $file = 'http://127.0.0.1:8000/storage/data_upload_lms/'. $request->filename;
+        return response()->json(['file' => $file]);
     }
 }
