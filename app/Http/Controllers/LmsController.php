@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use DB;
 use App\Models\User;
+use App\Models\MateriChat;
 use Spatie\PdfToImage\Pdf;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -325,5 +326,56 @@ class LmsController extends Controller
         dd($request->filename);
         $file = 'http://127.0.0.1:8000/storage/data_upload_lms/'. $request->filename;
         return response()->json(['file' => $file]);
+    }
+
+    public function materi_chatting(){
+        if (request()->ajax()) {
+            if (session('id_role') == 2 or session('id_role') == 3) {
+                $data = DB::table('m_materi')->where('aktif', 1)->orWhere('aktif', 2)->get();
+            }else{
+                $data = DB::table('m_materi')->where('created_by', session('id_user'))->where('aktif', 1)->orWhere('aktif', 2)->get();
+            }
+           
+            return DataTables::of($data)->make(true);
+        }
+        return view('materi-chatting');
+    }
+
+    public function materi_chatting_by_id($id, $nama){
+        if (request()->ajax()) {
+            $data = DB::table('t_sub_materi')
+            ->select('t_sub_materi.*')
+            ->where('t_sub_materi.aktif', 1)
+            ->where('t_sub_materi.id_materi', $id)
+            ->get();
+           
+            return DataTables::of($data)->make(true);
+        }
+        return view('sub-materi-chatting',compact('nama'));
+    }
+
+    public function sub_materi_chatting_by_id($id){
+        $name = DB::table('t_sub_materi')
+        ->select('*')
+        ->where('id',$id)->first();
+        $chats = DB::table('materi_chats')
+        ->select('materi_chats.*','users.name','users.id')
+        ->leftJoin('users','materi_chats.user_id','=','users.id')
+        ->where('materi_chats.sub_materi_id',$id)
+        ->get();
+
+        return view('chatting',compact('id','chats','name'));
+    }
+
+    public function send_chatting(Request $request){
+        $now = now()->setTimezone('Asia/Jakarta');
+
+        MateriChat::create([
+            'user_id' => $request->id_user,
+            'sub_materi_id' => $request->sub_materi_id,
+            'chat' => $request->chat,
+            'tanggal' => $now,
+        ]);
+        return response()->json(['message'=>'success']);
     }
 }

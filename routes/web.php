@@ -75,6 +75,11 @@ Route::redirect('/', '/login');
     Route::put('/update-sub-materi/{id}', [\App\Http\Controllers\LmsController::class, 'update_sub_materi']);
     Route::put('/hapus-submateri/{id}', [\App\Http\Controllers\LmsController::class, 'deleteSubmateri']);
 
+    Route::get('/materi-chatting', [\App\Http\Controllers\LmsController::class, 'materi_chatting']);
+    Route::get('/materi-chatting/{id}/materi/{name}', [\App\Http\Controllers\LmsController::class, 'materi_chatting_by_id']);
+    Route::get('/sub-materi-chatting/{id}', [\App\Http\Controllers\LmsController::class, 'sub_materi_chatting_by_id']);
+    Route::post('/send-chatting', [\App\Http\Controllers\LmsController::class, 'send_chatting']);
+
     // Route::get('/export-verif', [\App\Http\Controllers\KuesionerController::class, 'exportKuesionerVerif'])->name("export-verif");
 // });
     

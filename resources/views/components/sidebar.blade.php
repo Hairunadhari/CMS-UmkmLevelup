@@ -60,6 +60,10 @@
                     <a class="nav-link"
                         href="{{url('list-pengumuman')}}"><i class="fas fa-bullhorn"></i> <span>Pengumuman</span></a>
                 </li>
+                <li class="{{ Request::is('materi-chatting') ? 'active' : '' }}">
+                    <a class="nav-link"
+                        href="{{url('materi-chatting')}}"><i class="fas fa-comments"></i> <span>Materi Chatting</span></a>
+                </li>
 
 
                 <li class="menu-header">Portal Lama</li>
