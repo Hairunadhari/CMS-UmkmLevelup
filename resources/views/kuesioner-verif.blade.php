@@ -58,8 +58,10 @@ href="https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css">
                             <td class="text-center">{{$value->level}}</td>
                             <td class="text-center">
                               <a type="button" target="_blank" href="detail-data/{{$value->id.'/'.urlencode(base64_encode($value->level))}}" class="btn btn-sm btn-dark"><i class="fa fa-search"></i></a>&nbsp; 
+                              <a class="btn btn-primary" target="_blank" href="/preview-pdf/{{$value->id}}"><i class="fas fa-file-pdf"></i></a>
                               <button type="button" data-href="{{url('/')}}/rollback-data/{{$value->id_user}}" class="btn btn-sm btn-danger rollback"><i class="fa fa-reply"></i> Rollback</a>
-                            </td>
+                                
+                              </td>
                           </tr>
                         @empty
                           <tr>

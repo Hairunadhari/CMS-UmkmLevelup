@@ -21,6 +21,7 @@
     "php": "^8.0",
     "ext-json": "*",
     "aws/aws-sdk-php": "^3.183",
+    "barryvdh/laravel-dompdf": "^2.0",
     "doctrine/dbal": "^3.4",
     "fruitcake/laravel-cors": "^2.0",
     "guzzlehttp/guzzle": "^7.0.1",

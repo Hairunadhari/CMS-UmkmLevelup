@@ -124,6 +124,7 @@ class KuesionerController extends Controller
         ->where('users.final_level', '!=', 0)
         ->whereNull('forms.deleted_at')
         ->get();
+        // dd($d['data']);
         return view('kuesioner-verif', $d);
     }
 
