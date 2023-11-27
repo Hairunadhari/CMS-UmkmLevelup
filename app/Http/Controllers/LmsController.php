@@ -429,8 +429,13 @@ class LmsController extends Controller
         // dd($d);
         $pdf = PDF::loadView('generate.pdf',compact('d'));
         $pdf->setPaper('a4', 'landscape');
-        return $pdf->stream('disney.pdf', [
-            'Attachment' => false,
-        ]);
+
+        // tanpa keunduh
+        // return $pdf->stream('disney.pdf', [
+        //     'Attachment' => false,
+        // ]);
+
+        // diunduh
+        return $pdf->download('Sertifikat-UMKM-Level-UP.pdf');
     }
 }

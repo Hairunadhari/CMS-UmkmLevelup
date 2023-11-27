@@ -22,8 +22,21 @@ href="https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css">
     <section class="section">
       <div class="section-header">
         <h1 style="width:87%">Kuesioner - Verified</h1>
+        @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
         <div class="float-right">
           <a target="_blank" class="btn btn-sm btn-success" href="export-verif"><i class="fa fa-download"></i> Export Excel</a>
+          {{-- <form action="{{ route('import-penerima-sertifikat') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="form-group">
+                <label for="file">Choose Excel File</label>
+                <input type="file" accept=".xls, .xlsx" name="file" id="file" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-primary">Import</button>
+        </form> --}}
         </div>
       </div>
 
@@ -58,7 +71,8 @@ href="https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css">
                             <td class="text-center">{{$value->level}}</td>
                             <td class="text-center">
                               <a type="button" target="_blank" href="detail-data/{{$value->id.'/'.urlencode(base64_encode($value->level))}}" class="btn btn-sm btn-dark"><i class="fa fa-search"></i></a>&nbsp; 
-                              <a class="btn btn-primary" target="_blank" href="/preview-pdf/{{$value->id}}"><i class="fas fa-file-pdf"></i></a>
+                              <a class="btn btn-primary"  href="/preview-pdf/{{$value->id}}"><i class="fas fa-file-pdf"></i></a>
+                              <a class="btn btn-success" href="/send-pdf/{{$value->id}}"><i class="fas fa-paper-plane"></i></a>
                               <button type="button" data-href="{{url('/')}}/rollback-data/{{$value->id_user}}" class="btn btn-sm btn-danger rollback"><i class="fa fa-reply"></i> Rollback</a>
                                 
                               </td>
