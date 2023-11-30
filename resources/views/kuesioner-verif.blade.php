@@ -4,7 +4,7 @@
 
 @push('style')
 <style>
-  #data-table tbody tr td {
+  /* #data-table tbody tr td {
     vertical-align: middle;
   }
 
@@ -12,7 +12,7 @@
   .table th {
     vertical-align: middle !important;
     text-align: center;
-  }
+  } */
 
 </style>
 <link rel="stylesheet" href="{{ asset('library/datatables/media/css/jquery.dataTables.min.css') }}">
@@ -29,9 +29,9 @@
           Excel</a> --}}
           <form action="/export-verif" method="post" enctype="multipart/form-data">
           @csrf
-          <input type="text" id="id_kabupaten" name="id_kab">
-          <input type="text" id="id_kecamatan" name="id_kec">
-          <input type="text" id="id_kelurahan" name="id_kel">
+          <input type="hidden" id="id_kabupaten" name="id_kab">
+          <input type="hidden" id="id_kecamatan" name="id_kec">
+          <input type="hidden" id="id_kelurahan" name="id_kel">
             <button type="submit" class="btn btn-sm btn-success" ><i class="fa fa-download"></i> Export
               Excel</button>
           </form>
@@ -66,7 +66,7 @@
         </div>
         <div class="card-body">
           <div class="table-responsive">
-            <table class="table table-striped table-sm" id="table-1">
+            <table class="table table-striped" id="table-x">
               <thead>
                 <tr>
                   <th class="text-center" scope="col">#</th>
@@ -78,34 +78,6 @@
                 </tr>
               </thead>
               <tbody id="table-verif">
-                @forelse ($data as $key => $value)
-                <tr>
-                  <td class="text-center">{{$key + 1}}</td>
-                  <td>{{$value->name}}</td>
-                  <td>{{$value->nama_usaha}}</td>
-                  {{-- <td>{{$value->title}}</td> --}}
-                  <td>{!! $value->import == 0 ? '<span class="badge badge-dark"><i class="fa fa-desktop"></i>
-                      App</span>' : '<span class="badge badge-danger badge-sm"><i
-                        class="fa-brands fa-google-plus-g"></i> form</span>' !!}</td>
-                  <td class="text-center">{{$value->level}}</td>
-                  <td class="text-center">
-                    <a type="button" target="_blank"
-                      href="detail-data/{{$value->id.'/'.urlencode(base64_encode($value->level))}}"
-                      class="btn btn-sm btn-dark"><i class="fa fa-search"></i></a>&nbsp;
-                    <a class="btn btn-sm btn-primary" href="/preview-pdf/{{$value->id}}"><i
-                        class="fas fa-file-pdf"></i></a>
-                    <a class="btn btn-sm btn-success" href="/send-pdf/{{$value->id}}"><i
-                        class="fas fa-paper-plane"></i></a>
-                    <button type="button" data-href="{{url('/')}}/rollback-data/{{$value->id_user}}"
-                      class="btn btn-sm btn-danger rollback"><i class="fa fa-reply"></i> Rollback</a>
-
-                  </td>
-                </tr>
-                @empty
-                <tr>
-                  <td colspan="6">Tidak Ada Data</td>
-                </tr>
-                @endforelse
               </tbody>
             </table>
           </div>
@@ -167,7 +139,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
 <!-- Page Specific JS File -->
 <script src="{{ asset('js/page/modules-datatables.js') }}"></script>
 <script>
-  $("#table").dataTable({});
+  // $("#table").dataTable({});
 
   $(document).on("click", ".doVerif", function () {
     // alert('test');
@@ -195,6 +167,63 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
   $(document).ready(function () {
     $('.select2').select2();
 
+    var table = $('#table-x').DataTable({
+        processing: true,
+        ordering: false,
+        searching: true,
+        serverSide: true,
+        ajax: {
+                url: '{{ url()->current() }}',
+                data: function (data) {
+                    data.id_kab = $('#id_kabupaten').val(),
+                    data.id_kec = $('#id_kecamatan').val(),
+                    data.id_kel = $('#id_kelurahan').val()
+                }
+            },
+        columns: [{
+                render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                },
+            },
+            {
+              data: 'name'
+            },
+            {
+              data: 'nama_usaha', 
+              render: function(data) {
+                return '<label class="badge badge-sm badge-dark"><i class="fa fa-tag"></i> '+ data + '</label>'
+              }
+            },
+            {
+              data: 'import', 
+              render: function(data) {
+                if (data == 0) {
+                  var use = '<span class="badge badge-dark"><i class="fa fa-desktop"></i>App</span>'
+                } else {
+                  var use = '<span class="badge badge-danger badge-sm"><iclass="fa-brands fa-google-plus-g"></i> form</span>'
+                }
+                return use;
+              }
+            },
+            {
+              data: 'level'
+            },
+            { 
+              data: null,
+                render: function (data,row) {
+                    return `
+                    <a type="button" target="_blank" href="detail-data/${data.id}/${encodeURIComponent(btoa(data.level))}" class="btn btn-sm btn-dark"><i class="fa fa-search"></i></a>&nbsp;
+                    <a class="btn btn-sm btn-primary" href="/preview-pdf/${data.id}"><i class="fas fa-file-pdf"></i></a>
+                    <a class="btn btn-sm btn-success" href="/send-pdf/${data.id}"><i class="fas fa-paper-plane"></i></a>
+                    <button type="button" data-href="{{url('/')}}/rollback-data/${data.id_user}" class="btn btn-sm btn-danger rollback"><i class="fa fa-reply"></i> Rollback</button>
+                    `;
+                },
+            },
+            
+        ],
+    });
+
+    // filter kabupaten
     $('#kabupatens').on('change', function () {
       var kabupatens_id = this.value;
       $('#kecamatans').html('<option value="" selected disabled>-- Pilih Kecamatan --</option>');
@@ -216,48 +245,8 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
               .nama_kecamatan + '</option>');
 
           });
-          if (res.data.length > 0) {
-            // console.log(res.data);
-            $.each(res.data, function (key, value) {
-              if (value.import == 0) {
-
-                var use = '<span class="badge badge-dark"><i class="fa fa-desktop"></i>App</span>'
-              } else {
-                var use =
-                  '<span class="badge badge-danger badge-sm"><iclass="fa-brands fa-google-plus-g"></i> form</span>'
-
-              }
-              $('#table-verif').append(
-                '<tr>' +
-                '<td class="text-center">' + (key + 1) + '</td>' +
-                '<td class="text-center">' + value.name + '</td>' +
-                '<td>' + value.nama_usaha + '</td>' +
-                '<td>' + use + '</td>' +
-                '<td class="text-center">' + value.level + '</td>' +
-                '<td class="text-center">' +
-                '<a type="button" target="_blank" ' +
-                'href="detail-data/' + value.id + '/' + encodeURIComponent(btoa(value.level)) +
-                '" ' +
-                'class="btn btn-sm btn-dark"><i class="fa fa-search"></i></a>&nbsp;' +
-                '<a class="btn btn-sm btn-primary" href="/preview-pdf/' + value.id +
-                '"><i class="fas fa-file-pdf"></i></a>' +
-                '<a class="btn btn-sm btn-success" href="/send-pdf/' + value.id +
-                '"><i class="fas fa-paper-plane"></i></a>' +
-                '<button type="button" data-href="' + "{{url('/')}}/rollback-data/" + value
-                .id_user + '" ' +
-                'class="btn btn-sm btn-danger rollback"><i class="fa fa-reply"></i> Rollback</button>' +
-                '</td>' +
-                '</tr>'
-              );
-            });
-
-          } else {
-            $('#table-verif').append(
-              '<tr>' +
-              '<td colspan="6" class="text-center">Tidak Ada Data</td>' +
-              '</tr>'
-            );
-          }
+          table.draw();           
+           
         }
       });
     });
@@ -265,9 +254,9 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
     // filter kecamatan
     $('#kecamatans').on('change', function () {
       var kecamatans_id = this.value;
+
       // ambil value dropdown kabupaten
       id_kab = $('#kabupatens').val();
-      $('#table-verif').html('');
       $('#id_kecamatan').val(kecamatans_id);
       $('#id_kelurahan').val('');
       $('#kelurahans').html('<option value="" selected disabled>-- Pilih Kelurahan --</option>');
@@ -282,113 +271,16 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
             $('#kelurahans').append('<option value="' + value.id_kelurahan + '">' + value
               .nama_kelurahan + '</option>');
           });
-          if (res.data.length > 0) {
-            // console.log(res.data);
-            $.each(res.data, function (key, value) {
-              if (value.import == 0) {
-
-                var use = '<span class="badge badge-dark"><i class="fa fa-desktop"></i>App</span>'
-              } else {
-                var use =
-                  '<span class="badge badge-danger badge-sm"><iclass="fa-brands fa-google-plus-g"></i> form</span>'
-
-              }
-              $('#table-verif').append(
-                '<tr>' +
-                '<td class="text-center">' + (key + 1) + '</td>' +
-                '<td class="text-center">' + value.name + '</td>' +
-                '<td>' + value.nama_usaha + '</td>' +
-                '<td>' + use + '</td>' +
-                '<td class="text-center">' + value.level + '</td>' +
-                '<td class="text-center">' +
-                '<a type="button" target="_blank" ' +
-                'href="detail-data/' + value.id + '/' + encodeURIComponent(btoa(value.level)) +
-                '" ' +
-                'class="btn btn-sm btn-dark"><i class="fa fa-search"></i></a>&nbsp;' +
-                '<a class="btn btn-sm btn-primary" href="/preview-pdf/' + value.id +
-                '"><i class="fas fa-file-pdf"></i></a>' +
-                '<a class="btn btn-sm btn-success" href="/send-pdf/' + value.id +
-                '"><i class="fas fa-paper-plane"></i></a>' +
-                '<button type="button" data-href="' + "{{url('/')}}/rollback-data/" + value
-                .id_user + '" ' +
-                'class="btn btn-sm btn-danger rollback"><i class="fa fa-reply"></i> Rollback</button>' +
-                '</td>' +
-                '</tr>'
-              );
-            });
-
-          } else {
-            $('#table-verif').append(
-              '<tr>' +
-              '<td colspan="6" class="text-center">Tidak Ada Data</td>' +
-              '</tr>'
-            );
-          }
+         table.draw();
         }
       });
     });
     
+    // filter kelurahan
     $('#kelurahans').on('change', function () {
       var kelurahans_id = this.value;
-      
-      // ambil value dropdown kabupaten
-      id_kab = $('#kabupatens').val();
-      id_kec = $('#kecamatans').val();
-      console.log(id_kec);
-      $('#table-verif').html('');
-      console.log(id_kab);
       $('#id_kelurahan').val(kelurahans_id);
-
-      $.ajax({
-        url: "/get-kelurahan/" + kelurahans_id+'/'+id_kab+'/'+id_kec,
-        method: 'get',
-
-        success: function (res) {
-          console.log(res);
-          if (res.length > 0) {
-            // console.log(res.data);
-            $.each(res, function (key, value) {
-              if (value.import == 0) {
-
-                var use = '<span class="badge badge-dark"><i class="fa fa-desktop"></i>App</span>'
-              } else {
-                var use =
-                  '<span class="badge badge-danger badge-sm"><iclass="fa-brands fa-google-plus-g"></i> form</span>'
-
-              }
-              $('#table-verif').append(
-                '<tr>' +
-                '<td class="text-center">' + (key + 1) + '</td>' +
-                '<td class="text-center">' + value.name + '</td>' +
-                '<td>' + value.nama_usaha + '</td>' +
-                '<td>' + use + '</td>' +
-                '<td class="text-center">' + value.level + '</td>' +
-                '<td class="text-center">' +
-                '<a type="button" target="_blank" ' +
-                'href="detail-data/' + value.id + '/' + encodeURIComponent(btoa(value.level)) +
-                '" ' +
-                'class="btn btn-sm btn-dark"><i class="fa fa-search"></i></a>&nbsp;' +
-                '<a class="btn btn-sm btn-primary" href="/preview-pdf/' + value.id +
-                '"><i class="fas fa-file-pdf"></i></a>' +
-                '<a class="btn btn-sm btn-success" href="/send-pdf/' + value.id +
-                '"><i class="fas fa-paper-plane"></i></a>' +
-                '<button type="button" data-href="' + "{{url('/')}}/rollback-data/" + value
-                .id_user + '" ' +
-                'class="btn btn-sm btn-danger rollback"><i class="fa fa-reply"></i> Rollback</button>' +
-                '</td>' +
-                '</tr>'
-              );
-            });
-
-          } else {
-            $('#table-verif').append(
-              '<tr>' +
-              '<td colspan="6" class="text-center">Tidak Ada Data</td>' +
-              '</tr>'
-            );
-          }
-        }
-      });
+      table.draw();
     });
 
   });
