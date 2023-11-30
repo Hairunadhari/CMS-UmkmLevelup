@@ -78,14 +78,17 @@ Route::redirect('/', '/login');
     Route::get('/materi-chatting', [\App\Http\Controllers\LmsController::class, 'materi_chatting']);
     Route::get('/materi-chatting/{id}/materi/{name}', [\App\Http\Controllers\LmsController::class, 'materi_chatting_by_id']);
     Route::get('/sub-materi-chatting/{id}', [\App\Http\Controllers\LmsController::class, 'sub_materi_chatting_by_id']);
-    Route::post('/send-chatting', [\App\Http\Controllers\LmsController::class, 'send_chatting']);
     Route::get('/send-pdf/{id}', [\App\Http\Controllers\MailController::class, 'send'])->name("send-pdf");
+    Route::post('/send-chatting', [\App\Http\Controllers\LmsController::class, 'send_chatting']);
+    Route::get('/get-kabupaten/{id}', [\App\Http\Controllers\KuesionerController::class, 'getKabupaten']);
+    Route::get('/get-kecamatan/{id_kecamatan}/{id_kab}', [\App\Http\Controllers\KuesionerController::class, 'getKecamatan']);
+    Route::get('/get-kelurahan/{id_kelurahan}/{id_kab}/{id_kec}', [\App\Http\Controllers\KuesionerController::class, 'getKelurahan']);
 
     // Route::get('/export-verif', [\App\Http\Controllers\KuesionerController::class, 'exportKuesionerVerif'])->name("export-verif");
 // });
     
 Route::get('/export-data-unverif', [\App\Http\Controllers\KuesionerController::class, 'exportKuesionerUnverif'])->name("/export-data-unverif");
-Route::get('/export-verif', [\App\Http\Controllers\KuesionerController::class, 'exportKuesionerVerif'])->name("/export-verif");
+Route::post('/export-verif', [\App\Http\Controllers\KuesionerController::class, 'exportKuesionerVerif'])->name("/export-verif");
 Route::get('/export-kuesioner/{id}', [\App\Http\Controllers\KuesionerController::class, 'exportKuesioner'])->name("/export-kuesioner/{id}");
 Route::get('/preview-pdf/{id}', [\App\Http\Controllers\LmsController::class, 'downloadPdf']);
 

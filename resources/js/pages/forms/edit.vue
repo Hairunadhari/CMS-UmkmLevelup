@@ -3,7 +3,7 @@
     <form-editor v-if="pageLoaded" ref="editor"
                  :style="{
                    'max-height': editorMaxHeight + 'px'
-                 }"
+                }"
                  :isEdit="true"
                  @mounted="onResize"
     />
