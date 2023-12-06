@@ -63,22 +63,22 @@
 </head>
 <body style="background-image: url('{{public_path("img/bg-pdf.png")}}'); height:100vh; background-size:cover;">
   <div class="row">
-    <img class="logo" src="{{public_path('img/logo2.png')}}" alt="">
-    <img class="logokeranjang" src="{{public_path('img/logokeranjang.png')}}" alt="">
+    <img class="logo" src="{{public_path("img/logo2.png")}}" alt="">
+    <img class="logokeranjang" src="{{public_path("img/logokeranjang.png")}}" alt="">
   </div>
   <div class="row">
     <h1 class="tebal">SERTIFIKAT</h1>
     <hr class="garis">
-    <p>{{$d->id}}/DJAI.4-UMKM/DL.01.{{\Carbon\Carbon::parse($d->created_at)->format('d/m/Y')}}</p>
+    <p>{{$key->id}}/DJAI.4-UMKM/DL.01.{{\Carbon\Carbon::parse($key->created_at)->format('d/m/Y')}}</p>
     <p>diberikan kepada:</p>
-    <h1 class="tebal">{{strtoupper($d->name)}}</h1>
+    <h1 class="tebal">{{strtoupper($key->nama_pemilik)}}</h1>
     <p>sebagai</p>
     <h1 class="tebal">PESERTA</h1>
     <p>Dalam Program</p>
     <h3>Pendampingan dan Fasilitasi Adopsi Teknologi Digital 4.0 Bagi UMKM <br>
         UMKM LEVEL UP <br>
         TAHUN {{now()->format('Y')}} <br>
-        Jakarta, {{\Carbon\Carbon::parse($d->created_at)->format('d F Y')}}
+        Jakarta, {{\Carbon\Carbon::parse($key->created_at)->format('d F Y')}}
       </h3>
         <p class="a">Direktur Ekonomi Digital</p>
         <hr class="garis2">

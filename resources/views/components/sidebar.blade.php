@@ -30,6 +30,10 @@
                 <a class="nav-link"
                     href="{{ url('kuesioner-verif') }}"><i class="fas fa-user-check"></i> <span>List - Verified</span></a>
             </li>
+            <li class="{{ Request::is('management-sertifikat') ? 'active' : '' }}">
+                <a class="nav-link"
+                    href="{{ url('management-sertifikat') }}"><i class="fas fa-file"></i> <span>Management Sertifikat</span></a>
+            </li>
             @endif
 
             @if (Session::get('id_role') == 5)

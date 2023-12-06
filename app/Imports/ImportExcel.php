@@ -4,6 +4,7 @@ namespace App\Imports;
 
 use App\Models\PenerimaSertifikat;
 use Illuminate\Support\Collection;
+use App\Models\ManagementSertifikat;
 use Maatwebsite\Excel\Concerns\ToCollection;
 
 class ImportExcel implements ToCollection
@@ -13,15 +14,15 @@ class ImportExcel implements ToCollection
     */
     public function collection(Collection $rows)
     {
-        $isFirstRow = true; // Menandakan apakah ini adalah baris pertama (header)
-
+        $skippedRows = 0; // Menandakan jumlah baris yang sudah dilewati
+    
         foreach ($rows as $row) {
-            if ($isFirstRow) {
-                $isFirstRow = false;
-                continue; // Lewati baris header
+            if ($skippedRows < 4) {
+                $skippedRows++;
+                continue; // Lewati baris-baris pertama
             }
-
-            PenerimaSertifikat::create([
+    
+            ManagementSertifikat::create([
                 'nama_fasilitator' => $row[0],
                 'nama_usaha' => $row[1],
                 'nama_pemilik' => $row[2],
@@ -29,4 +30,5 @@ class ImportExcel implements ToCollection
             ]);
         }
     }
+    
 }

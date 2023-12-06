@@ -71,7 +71,7 @@
     <hr class="garis">
     <p>{{$d->id}}/DJAI.4-UMKM/DL.01.{{\Carbon\Carbon::parse($d->created_at)->format('d/m/Y')}}</p>
     <p>diberikan kepada:</p>
-    <h1 class="tebal">{{strtoupper($d->name)}}</h1>
+    <h1 class="tebal">{{strtoupper($d->nama_pemilik)}}</h1>
     <p>sebagai</p>
     <h1 class="tebal">PESERTA</h1>
     <p>Dalam Program</p>

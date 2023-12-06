@@ -367,6 +367,6 @@ class ImportController extends Controller
         // Process the Excel file
         Excel::import(new ImportExcel, $file);
  
-        return redirect()->back()->with('success', 'Excel file imported successfully!');
+        return redirect('management-sertifikat');
     }
 }

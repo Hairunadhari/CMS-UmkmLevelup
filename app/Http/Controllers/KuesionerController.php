@@ -3,10 +3,15 @@
 namespace App\Http\Controllers;
 
 use DB;
+use PDF;
+use File;
 use Session;
+use Throwable;
+use ZipArchive;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
+use App\Models\ManagementSertifikat;
 use Illuminate\Database\Query\Builder;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -842,5 +847,95 @@ class KuesionerController extends Controller
         'kelurahan'=>$kelurahan,
       ]);
     }
-   
+
+    public function management_sertifikat(){
+      if (request()->ajax()) {
+        $data = DB::table('management_sertifikats')
+        ->select('*')
+        ->get();
+
+
+        return DataTables::of($data)->make(true);
+      }
+        return view('management-sertifikat');
+    }
+
+    public function all_generate_pdf(Request $request){
+      try {
+        DB::beginTransaction();
+
+        $data = DB::table('management_sertifikats')
+        ->select('id','nama_pemilik','created_at')
+        ->whereIn('id',$request->id)
+        ->get();
+            foreach ($data as $key) {
+                $html = '';
+                $view = view('generate.sertifikat', compact('key'));
+                $html .= $view->render();
+
+                $pdf = PDF::loadHTML($html);
+                $pdf->setPaper('a4', 'landscape');
+                $filename = $key->nama_pemilik . '-' . $key->id . '.pdf';
+
+                // Simpan file PDF terpisah
+                $pdf->save(public_path('pdf/' . $filename));
+            }
+
+        
+      ManagementSertifikat::where('status_pdf',1)->whereIn('id',$request->id)->update(['status_pdf' => 0]);
+
+        $zip = new ZipArchive;
+        $FileName = 'Management-Sertifikat-'.date('His').'.zip';
+
+          if ($zip->open(public_path($FileName), ZipArchive::CREATE) === TRUE) {
+
+              $files = File::files(public_path('pdf'));
+            
+              foreach ($files as $key => $value) {
+                $relativeNameInZipFile = basename($value);
+                  $zip->addFile($value, $relativeNameInZipFile);
+              }
+              $zip->close();
+
+            $response = asset($FileName);
+            // $response = response()->download(public_path($FileName));
+            // $response->deleteFileAfterSend(true);
+
+          } 
+          DB::commit();
+        } catch (Throwable $th) {
+          DB::rollback();
+          dd($th);
+          echo 'gagal mendwonload sertifikat';
+        }
+
+      return $response;
+
+      
+    }
+
+    public function generate_ulang_pdf($id){
+      try {
+        DB::beginTransaction();
+        $d = DB::table('management_sertifikats')
+        ->select('*')
+        ->where('id',$id)
+        ->first();
+        DB::table('management_sertifikats')->where('id',$id)->update(['status_pdf'=>0]);
+        $pdf = PDF::loadView('generate.generate_ulang',compact('d'));
+        $pdf->setPaper('a4', 'landscape');
+        
+        // diunduh
+        DB::commit();
+      } catch (Throwable $th) {
+        //throw $th;
+        DB::rollback();
+        dd($th);
+      }
+      return $pdf->download('Sertifikat-UMKM-Level-UP.pdf');
+  
+      }
+
+    
+    
 }

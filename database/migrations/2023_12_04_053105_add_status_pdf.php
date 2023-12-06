@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('user_progres_materis', function (Blueprint $table) {
-            $table->bigInteger('materi_id')->nullable();
+        Schema::table('management_sertifikats', function (Blueprint $table) {
+            $table->bigInteger('status_pdf')->default(1);
         });
     }
 
@@ -25,7 +25,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('user_progres_materis', function (Blueprint $table) {
+        Schema::table('management_sertifikats', function (Blueprint $table) {
             //
         });
     }

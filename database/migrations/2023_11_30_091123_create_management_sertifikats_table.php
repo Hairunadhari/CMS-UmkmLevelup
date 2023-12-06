@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('penerima_sertifikats', function (Blueprint $table) {
+        Schema::create('management_sertifikats', function (Blueprint $table) {
             $table->id();
             $table->string('nama_fasilitator')->nullable();
             $table->string('nama_usaha')->nullable();
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('penerima_sertifikats');
+        Schema::dropIfExists('management_sertifikats');
     }
 };
