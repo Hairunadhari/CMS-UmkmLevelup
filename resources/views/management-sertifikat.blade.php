@@ -36,6 +36,8 @@
       <div class="card">
         <div class="card-body">
           <strong class="text-dark">List Management Sertifikat </strong>
+      <p>'Maksimal Download 20 data'</p>
+
           <hr />
           <div class="row">
             <div class="col-12">
@@ -130,7 +132,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
         $('.user_checkbox:checked').each(function(){
           id.push($(this).val());
         });
-        if (id.length > 0 && id.length < 11 ) {
+        if (id.length > 0 && id.length < 21 ) {
           $.ajax({
             url:"/all-generate-pdf",
             method:"post",

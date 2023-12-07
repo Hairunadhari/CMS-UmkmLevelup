@@ -23,6 +23,7 @@ class ImportExcel implements ToCollection
             }
     
             ManagementSertifikat::create([
+                'id' => $row[0],
                 'nama_fasilitator' => $row[0],
                 'nama_usaha' => $row[1],
                 'nama_pemilik' => $row[2],
