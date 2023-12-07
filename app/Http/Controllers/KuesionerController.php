@@ -2,13 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use DB;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Routing\Redirector;
+use PDF;
+use File;
 use Session;
-use Illuminate\Database\Query\Builder;
+use Throwable;
+use ZipArchive;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
+use App\Models\ManagementSertifikat;
+use Illuminate\Database\Query\Builder;
+use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class KuesionerController extends Controller
 {
@@ -106,26 +112,45 @@ class KuesionerController extends Controller
 
     public function verif()
     {
-        $d['data'] = DB::table('form_submissions')
-          ->leftJoin('users', function($join) {
-            $join->on('form_submissions.id_user', '=', 'users.id');
-          })
-          ->leftJoin('profil_user', function($join) {
-            $join->on('form_submissions.id_user', '=', 'profil_user.id_user');
-          })
-          ->leftJoin('forms', function($join) {
-            $join->on('form_submissions.form_id', '=', 'forms.id');
-          })
-          ->leftJoin('m_level', function($join) {
-            $join->on('m_level.id', '=', 'users.final_level');
-          })
-        ->select('form_submissions.*', 'users.name', 'users.id as id_user', 'users.final_level', 'profil_user.nama_usaha', 'profil_user.nama_usaha', 'forms.title', 'm_level.level')
-        ->where('users.aktif', 1)
-        ->where('users.final_level', '!=', 0)
-        ->whereNull('forms.deleted_at')
-        ->get();
-        return view('kuesioner-verif', $d);
+      
+        if (request()->ajax()) {
+            $id_kab = request('id_kab');
+            $id_kec = request('id_kec');
+            $id_kel = request('id_kel');
+            
+            $query = DB::table('form_submissions')
+                ->leftJoin('users','form_submissions.id_user', '=', 'users.id')
+                ->leftJoin('profil_user','form_submissions.id_user', '=', 'profil_user.id_user')
+                ->leftJoin('forms','form_submissions.form_id', '=', 'forms.id')
+                ->leftJoin('m_level','m_level.id', '=', 'users.final_level')
+                ->select('form_submissions.*', 'users.name', 'users.id as id_user', 'users.final_level', 'profil_user.nama_usaha', 'profil_user.nama_usaha', 'forms.title', 'm_level.level','profil_user.id_kabupaten','profil_user.id_kecamatan','profil_user.id_keluarahan')
+                ->where('users.aktif', 1)
+                ->where('users.final_level', '!=', 0)
+                ->whereNull('forms.deleted_at');
+
+            if ($id_kab) {
+                $query->where('profil_user.id_kabupaten', $id_kab);
+            }
+            
+            if ($id_kec) {
+                $query->where('profil_user.id_kecamatan', $id_kec);
+            }
+            
+            if ($id_kel) {
+                $query->where('profil_user.id_keluarahan', $id_kel);
+            }
+
+            $data = $query->get();
+            return DataTables::of($data)->make(true);
+        }
+
+        $d['kabupaten'] = DB::table('m_kabupaten')
+            ->select('id_kabupaten','nama_kabupaten')
+            ->where('aktif',1)
+            ->get();
+        return view('kuesioner-verif',$d);
     }
+
 
     public function verification($id = null, $name = null)
     {
@@ -621,31 +646,35 @@ class KuesionerController extends Controller
           echo $dataHtml;
     }
 
-    public function exportKuesionerVerif() {
+    public function exportKuesionerVerif(Request $request) {
+      
       $filename = "export_kuesioner_verified_".date('Y-m-d').".xls";		 
       header("Content-Type: application/vnd.ms-excel");
       header("Content-Disposition: attachment; filename=\"$filename\"");
       header('Cache-Control: max-age=0');
-      // dd($filename);
 
-      $data = DB::table('form_submissions')
-          ->leftJoin('users', function($join) {
-            $join->on('form_submissions.id_user', '=', 'users.id');
-          })
-          ->leftJoin('profil_user', function($join) {
-            $join->on('form_submissions.id_user', '=', 'profil_user.id_user');
-          })
-          ->leftJoin('forms', function($join) {
-            $join->on('form_submissions.form_id', '=', 'forms.id');
-          })
-          ->leftJoin('m_level', function($join) {
-            $join->on('m_level.id', '=', 'users.final_level');
-          })
-        ->select('form_submissions.*', 'users.name', 'users.id as id_user', 'users.final_level', 'profil_user.nama_usaha', 'forms.title', 'm_level.level')
-        ->where('users.aktif', 1)
-        ->where('users.final_level', '!=', 0)
-        ->whereNull('forms.deleted_at')
-        ->get();
+      // jika 1 filter
+      $query = DB::table('form_submissions')
+      ->leftJoin('users','form_submissions.id_user', '=', 'users.id')
+      ->leftJoin('profil_user','form_submissions.id_user', '=', 'profil_user.id_user')
+      ->leftJoin('forms','form_submissions.form_id', '=', 'forms.id')
+      ->leftJoin('m_level','m_level.id', '=', 'users.final_level')
+      ->select('form_submissions.*', 'users.name', 'users.id as id_user', 'users.final_level', 'profil_user.nama_usaha', 'profil_user.nama_usaha', 'forms.title', 'm_level.level','profil_user.id_kabupaten')
+      ->where('users.aktif', 1)
+      ->where('users.final_level', '!=', 0)
+      ->whereNull('forms.deleted_at');
+      if ($request->id_kab != null) {
+        $query->where('profil_user.id_kabupaten',$request->id_kab);
+      }
+      if($request->id_kec != null){
+        $query->where('profil_user.id_kecamatan',$request->id_kec);
+      }
+      if($request->id_kel != null){
+        $query->where('profil_user.id_keluarahan',$request->id_kel);
+      } 
+
+      $data = $query->get();
+    
 
       // $heading = false;
       $dataHtml = '<table border="1">
@@ -670,6 +699,7 @@ class KuesionerController extends Controller
               </tr>";
             }
           $dataHtml .= '</table>';
+          // return $dataHtml->download($filename);
           echo $dataHtml;
     }
 
@@ -794,4 +824,118 @@ class KuesionerController extends Controller
         }
         echo '</tbody></table>';
     }
+
+    public function getKabupaten($id){
+    
+      $kecamatan = DB::table('m_kecamatan')
+      ->select('*')
+      ->where('id_kabupaten',$id)
+      ->where('aktif',1)
+      ->get();
+        return response()->json([
+          'kecamatan'=>$kecamatan,
+        ]);
+    }
+    public function getKecamatan($id_kecamatan,$id_kab){
+      
+      $kelurahan = DB::table('m_kelurahan')
+      ->select('*')
+      ->where('id_kecamatan',$id_kecamatan)
+      ->where('aktif',1)
+      ->get();
+      return response()->json([
+        'kelurahan'=>$kelurahan,
+      ]);
+    }
+
+    public function management_sertifikat(){
+      if (request()->ajax()) {
+        $data = DB::table('management_sertifikats')
+        ->select('*')
+        ->get();
+
+
+        return DataTables::of($data)->make(true);
+      }
+        return view('management-sertifikat');
+    }
+
+    public function all_generate_pdf(Request $request){
+      try {
+        DB::beginTransaction();
+
+        $data = DB::table('management_sertifikats')
+        ->select('id','nama_pemilik','created_at')
+        ->whereIn('id',$request->id)
+        ->get();
+            foreach ($data as $key) {
+                $html = '';
+                $view = view('generate.sertifikat', compact('key'));
+                $html .= $view->render();
+
+                $pdf = PDF::loadHTML($html);
+                $pdf->setPaper('a4', 'landscape');
+                $filename = $key->nama_pemilik . '-' . $key->id . '.pdf';
+
+                // Simpan file PDF terpisah
+                $pdf->save(public_path('pdf/' . $filename));
+            }
+
+        
+      ManagementSertifikat::where('status_pdf',1)->whereIn('id',$request->id)->update(['status_pdf' => 0]);
+
+        $zip = new ZipArchive;
+        $FileName = 'Management-Sertifikat-'.date('His').'.zip';
+
+          if ($zip->open(public_path($FileName), ZipArchive::CREATE) === TRUE) {
+
+              $files = File::files(public_path('pdf'));
+            
+              foreach ($files as $key => $value) {
+                $relativeNameInZipFile = basename($value);
+                  $zip->addFile($value, $relativeNameInZipFile);
+              }
+              $zip->close();
+
+            $response = asset($FileName);
+            // $response = response()->download(public_path($FileName));
+            // $response->deleteFileAfterSend(true);
+
+          } 
+          DB::commit();
+        } catch (Throwable $th) {
+          DB::rollback();
+          dd($th);
+          echo 'gagal mendwonload sertifikat';
+        }
+
+      return $response;
+
+      
+    }
+
+    public function generate_ulang_pdf($id){
+      try {
+        DB::beginTransaction();
+        $d = DB::table('management_sertifikats')
+        ->select('*')
+        ->where('id',$id)
+        ->first();
+        DB::table('management_sertifikats')->where('id',$id)->update(['status_pdf'=>0]);
+        $pdf = PDF::loadView('generate.generate_ulang',compact('d'));
+        $pdf->setPaper('a4', 'landscape');
+        
+        // diunduh
+        DB::commit();
+      } catch (Throwable $th) {
+        //throw $th;
+        DB::rollback();
+        dd($th);
+      }
+      return $pdf->download('Sertifikat-UMKM-Level-UP.pdf');
+  
+      }
+
+    
+    
 }

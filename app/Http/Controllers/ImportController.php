@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use DB;
+use Excel;
+use App\Models\User;
+use App\Imports\ImportExcel;
 use Illuminate\Http\Request;
 use PhpOffice\PhpSpreadsheet\IOFactory;
-use App\Models\User;
-use DB;
 
 class ImportController extends Controller
 {
@@ -354,5 +356,17 @@ class ImportController extends Controller
             "fd3948c7-0659-43d8-9254-9f349e0afdd6" => ($row[52] == '(✓)' ? true : false)
         );
         return $data;
+    }
+
+    public function import_penerima_sertifikat(Request $request){
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls',
+        ]);
+        $file = $request->file('file');
+ 
+        // Process the Excel file
+        Excel::import(new ImportExcel, $file);
+ 
+        return redirect('management-sertifikat');
     }
 }

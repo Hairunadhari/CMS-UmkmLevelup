@@ -60,7 +60,7 @@
                         @endif
                         <td class="text-center">{{\Carbon\Carbon::parse($item->created_at)->locale('id')->format('j F Y')}}</td>
                         <td class="text-center">
-                          <a href="{{url('sub-materi/'.$item->id.'/'.$item->nama)}}" class="btn btn-sm btn-danger"><i class="fa fa-th-list"></i> Sub Materi</a>
+                          <a href="{{url($item->nama.'/sub-materi/'.$item->id)}}" class="btn btn-sm btn-danger"><i class="fa fa-th-list"></i> Sub Materi</a>
                           {!! ($item->aktif == 2) ? '<a href="'.url("approve-materi").'/'.$item->id.'" class="btn btn-sm btn-primary"><i class="fa fa-arrow-right"></i> Publish</a>' : ''!!}
                         </td>
                       </tr>

@@ -201,5 +201,10 @@ class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
                 });
         });
     }
+    
+    public function progres()
+    {
+        return $this->hasMany(UserProgresMateri::class);
+    }
 
 }

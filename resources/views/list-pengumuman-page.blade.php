@@ -24,7 +24,7 @@ href="https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css">
       <div class="section-header">
         <h1 style="width:87%">List Pengumuman</h1>
         <div class="float-right">
-          {{-- <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#tambahData"><i class="fa fa-plus"></i> Tambah Data</button> --}}
+          <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#tambahData"><i class="fa fa-plus"></i> Tambah Data</button>
         </div>
       </div>
       <div class="section-body">
@@ -44,6 +44,7 @@ href="https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css">
                       <th>Keterangan</th>
                       <th>Tanggal</th>
                       <th>Status?</th>
+                      <th>Aksi</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -54,7 +55,20 @@ href="https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css">
                             <td style="width: 40%">{{$item->keterangan}}</td>
                             <td class="text-center">{{ \Carbon\Carbon::parse($item->tanggal)->locale('id')->format('j F Y')}}</td>
                             <td class="text-center">{!! $item->status_aktif == 1 ? "<span class='badge badge-success'><i class='fa fa-check'></i></span>" : "<span class='badge badge-dark'><i class='fa fa-times'></i></span>" !!}</td>
-                        </tr>
+                            <td class="text-center">
+                              @if ($item->status_aktif == 1)
+                                  
+                              <form action="/hapus-pengumuman/{{$item->id}}" method="post">
+                              <a href="/edit-pengumuman/{{$item->id}}" class="btn btn-sm btn-warning"><i
+                              class="fa fa-th-list"></i>
+                            Edit</a>
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                            <input type="hidden" name="_method" value="PUT">
+                            <button class="btn btn-sm btn-danger" type="submit"><i class="far fa-trash-alt"></i> Hapus</button>
+                              </form>
+                              @endif
+                          </td>
+                          </tr>
                     @empty
                         <tr>
                         <td class="text-center" colspan="4">No Data</td>
@@ -66,10 +80,39 @@ href="https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css">
             </div>
           </div>
         </div>
-
     </section>
     
   </div>
+  <form action="{{url('add-pengumuman')}}" method="POST">
+    <div class="modal fade" id="tambahData"  aria-labelledby="tambahData" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="tambahDataLabel">Tambah Pengumuman</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body pb-0">
+                    {{ csrf_field() }}
+                    <div class="mb-3">
+                        <label for="nama" class="form-label">Judul Pengumuman <span class="text-danger text-bold">*</span></label>
+                        <input type="nama" class="form-control" id="nama" name="judul_notifikasi" aria-describedby="namaHelp" required>
+                        <div id="namaHelp" class="form-text"></div>
+                    </div>
+                    <div class="mb-3">
+                      <label for="deskripsi" class="form-label">Keterangan <span class="text-danger text-bold">*</span></label>
+                      <textarea class="form-control" rows="5" id="deskripsi" name="keterangan" aria-describedby="deskripsiHelp" style="height: 100px" required></textarea>
+                    </div>
+                    <hr />
+                </div>
+                <div class="modal-footer pt-1 justify-content-center">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+  </form>
 @endsection
    
 @push('scripts')

@@ -30,6 +30,10 @@
                 <a class="nav-link"
                     href="{{ url('kuesioner-verif') }}"><i class="fas fa-user-check"></i> <span>List - Verified</span></a>
             </li>
+            <li class="{{ Request::is('management-sertifikat') ? 'active' : '' }}">
+                <a class="nav-link"
+                    href="{{ url('management-sertifikat') }}"><i class="fas fa-file"></i> <span>Management Sertifikat</span></a>
+            </li>
             @endif
 
             @if (Session::get('id_role') == 5)
@@ -50,16 +54,28 @@
                     <a class="nav-link"
                         href="{{url('list-materi')}}"><i class="fas fa-graduation-cap"></i> <span>List Kategori Materi</span></a>
                 </li>
+
+                <li class="{{ Request::is('user-progres') ? 'active' : '' }}">
+                    <a class="nav-link"
+                        href="{{url('user-progres')}}"><i class="fas fa-users"></i> <span>List Progress Learning</span></a>
+                </li>
+
                 <li class="{{ Request::is('list-pengumuman') ? 'active' : '' }}">
                     <a class="nav-link"
                         href="{{url('list-pengumuman')}}"><i class="fas fa-bullhorn"></i> <span>Pengumuman</span></a>
                 </li>
+                <li class="{{ Request::is('materi-chatting') ? 'active' : '' }}">
+                    <a class="nav-link"
+                        href="{{url('materi-chatting')}}"><i class="fas fa-comments"></i> <span>Materi Chatting</span></a>
+                </li>
+
 
                 <li class="menu-header">Portal Lama</li>
                 <li class="{{ Request::is('old-portal') ? 'active' : '' }}">
                     <a class="nav-link"
                         href="{{url('old-portal')}}"><i class="fas fa-database"></i> <span>List User</span></a>
                 </li>
+                
 
                 <li class="menu-header">Konfig & Lain</li>
                 <li class="{{ Request::is('set-level') ? 'active' : '' }}">
