@@ -166,3 +166,4 @@ Route::post('templates', [TemplateController::class, 'create'])->name('templates
 
 Route::get('/countumkm', [MainController::class, 'countuser']);
 Route::get('/skalausaha', [MainController::class, 'skalausaha']);
+Route::get('/levelumkm', [MainController::class, 'levelumkm']);
