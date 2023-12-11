@@ -99,7 +99,7 @@ class LmsController extends Controller
         if ($request->session()->get('id_user') == null) {
             $request->session()->flash('alert', [
                 'type' => 'error',
-                'message' => 'Silahkan periksa kembali email password anda.',
+                'message' => 'Silahkan periksa kembali email password anda!',
             ]);
             return redirect('login');
         }
