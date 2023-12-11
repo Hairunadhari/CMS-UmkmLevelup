@@ -17,7 +17,7 @@ class ImportExcel implements ToCollection
         $skippedRows = 0; // Menandakan jumlah baris yang sudah dilewati
     
         foreach ($rows as $row) {
-            if ($skippedRows < 4) {
+            if ($skippedRows < 1) {
                 $skippedRows++;
                 continue; // Lewati baris-baris pertama
             }
