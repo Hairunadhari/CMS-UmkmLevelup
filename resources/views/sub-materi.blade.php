@@ -120,7 +120,7 @@
 </section>
 </div>
 
-<form action="{{ env('APP_CHILD').'add-sub-materi/'.$id.'/'.$name }}" method="POST" enctype="multipart/form-data">
+<form action="{{ '/add-sub-materi/'.$id.'/'.$name }}" method="POST" enctype="multipart/form-data">
   @csrf
   <div class="modal fade" id="tambahData" aria-labelledby="tambahData" aria-hidden="true">
     <div class="modal-dialog">
