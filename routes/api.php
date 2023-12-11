@@ -1,23 +1,24 @@
 <?php
 
-use App\Http\Controllers\Auth\ForgotPasswordController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\api\MainController;
+use App\Http\Controllers\TemplateController;
+use App\Http\Controllers\Auth\UserController;
+use App\Http\Controllers\WorkspaceController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\OAuthController;
-use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Http\Controllers\Auth\UserController;
-use App\Http\Controllers\Auth\VerificationController;
-use App\Http\Controllers\Settings\PasswordController;
-use App\Http\Controllers\Settings\ProfileController;
+use App\Http\Controllers\Forms\FormController;
 use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Forms\FormStatsController;
 use App\Http\Controllers\Forms\PublicFormController;
+use App\Http\Controllers\Settings\ProfileController;
+use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\Settings\PasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Forms\FormSubmissionController;
-use App\Http\Controllers\Forms\FormController;
-use App\Http\Controllers\WorkspaceController;
-use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\Forms\Integration\FormZapierWebhookController;
-use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -162,3 +163,6 @@ Route::prefix('content')->name('content.')->group(function () {
 // Templates
 Route::get('templates', [TemplateController::class, 'index'])->name('templates.show');
 Route::post('templates', [TemplateController::class, 'create'])->name('templates.create');
+
+Route::get('/countumkm', [MainController::class, 'countuser']);
+Route::get('/skalausaha', [MainController::class, 'skalausaha']);
