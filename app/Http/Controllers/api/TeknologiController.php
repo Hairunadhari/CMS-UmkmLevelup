@@ -13,7 +13,7 @@ class TeknologiController extends Controller
             ->join('profil_user', 'users.id', '=', 'profil_user.id_user')
             ->join('form_submissions', 'users.id', '=', 'form_submissions.id_user')
             ->join('m_provinsi', 'profil_user.id_provinsi', '=', 'm_provinsi.id_provinsi')
-            ->whereRaw("LOWER(form_submissions.data) LIKE ?", ['%instagram.com%'])
+            ->whereRaw("LOWER(form_submissions.data) LIKE ?", ['%"21f77341-fa46-45d9-bac6-1a04d3cf3764":true%'])
             ->select(DB::raw('COUNT(DISTINCT profil_user.id_user) AS total_user'))
             ->first();
 
@@ -21,7 +21,7 @@ class TeknologiController extends Controller
             ->join('profil_user', 'users.id', '=', 'profil_user.id_user')
             ->join('form_submissions', 'users.id', '=', 'form_submissions.id_user')
             ->join('m_provinsi', 'profil_user.id_provinsi', '=', 'm_provinsi.id_provinsi')
-            ->whereRaw("LOWER(form_submissions.data) LIKE ?", ['%instagram.com%'])
+            ->whereRaw("LOWER(form_submissions.data) LIKE ?", ['%"21f77341-fa46-45d9-bac6-1a04d3cf3764":true%'])
             ->groupBy('m_provinsi.nama_provinsi')
             ->select('m_provinsi.nama_provinsi', DB::raw('COUNT(DISTINCT users.id) AS total_user'))
             ->get();
@@ -31,7 +31,7 @@ class TeknologiController extends Controller
             ->join('profil_user', 'users.id', '=', 'profil_user.id_user')
             ->join('form_submissions', 'users.id', '=', 'form_submissions.id_user')
             ->join('m_provinsi', 'profil_user.id_provinsi', '=', 'm_provinsi.id_provinsi')
-            ->whereRaw("LOWER(form_submissions.data) LIKE ?", ['%tiktok.com%'])
+            ->whereRaw("LOWER(form_submissions.data) LIKE ?", ['%"f02eebeb-d578-4c39-a383-984e33dceea7":true%'])
             ->select(DB::raw('COUNT(DISTINCT profil_user.id_user) AS total_user'))
             ->first();
 
@@ -39,7 +39,7 @@ class TeknologiController extends Controller
             ->join('profil_user', 'users.id', '=', 'profil_user.id_user')
             ->join('form_submissions', 'users.id', '=', 'form_submissions.id_user')
             ->join('m_provinsi', 'profil_user.id_provinsi', '=', 'm_provinsi.id_provinsi')
-            ->whereRaw("LOWER(form_submissions.data) LIKE ?", ['%tiktok.com%'])
+            ->whereRaw("LOWER(form_submissions.data) LIKE ?", ['%"f02eebeb-d578-4c39-a383-984e33dceea7":true%'])
             ->groupBy('m_provinsi.nama_provinsi')
             ->select('m_provinsi.nama_provinsi', DB::raw('COUNT(DISTINCT users.id) AS total_user'))
             ->get();
@@ -49,7 +49,7 @@ class TeknologiController extends Controller
             ->join('profil_user', 'users.id', '=', 'profil_user.id_user')
             ->join('form_submissions', 'users.id', '=', 'form_submissions.id_user')
             ->join('m_provinsi', 'profil_user.id_provinsi', '=', 'm_provinsi.id_provinsi')
-            ->whereRaw("LOWER(form_submissions.data) LIKE ?", ['%facebook.com%'])
+            ->whereRaw("LOWER(form_submissions.data) LIKE ?", ['%"8285d9a0-e209-4bf4-a858-21c942efc67d":true%'])
             ->select(DB::raw('COUNT(DISTINCT profil_user.id_user) AS total_user'))
             ->first();
 
@@ -57,7 +57,7 @@ class TeknologiController extends Controller
             ->join('profil_user', 'users.id', '=', 'profil_user.id_user')
             ->join('form_submissions', 'users.id', '=', 'form_submissions.id_user')
             ->join('m_provinsi', 'profil_user.id_provinsi', '=', 'm_provinsi.id_provinsi')
-            ->whereRaw("LOWER(form_submissions.data) LIKE ?", ['%facebook.com%'])
+            ->whereRaw("LOWER(form_submissions.data) LIKE ?", ['%"8285d9a0-e209-4bf4-a858-21c942efc67d":true%'])
             ->groupBy('m_provinsi.nama_provinsi')
             ->select('m_provinsi.nama_provinsi', DB::raw('COUNT(DISTINCT users.id) AS total_user'))
             ->get();
@@ -88,7 +88,7 @@ class TeknologiController extends Controller
             ->join('profil_user', 'users.id', '=', 'profil_user.id_user')
             ->join('form_submissions', 'users.id', '=', 'form_submissions.id_user')
             ->join('m_provinsi', 'profil_user.id_provinsi', '=', 'm_provinsi.id_provinsi')
-            ->whereRaw("LOWER(form_submissions.data) LIKE ?", ['%shopee.com%'])
+            ->whereRaw("LOWER(form_submissions.data) LIKE ?", ['%"7e7d93fe-f890-4912-b5f7-8cec9aeb07f9":true%'])
             ->select(DB::raw('COUNT(DISTINCT profil_user.id_user) AS total_user'))
             ->first();
 
@@ -96,7 +96,7 @@ class TeknologiController extends Controller
             ->join('profil_user', 'users.id', '=', 'profil_user.id_user')
             ->join('form_submissions', 'users.id', '=', 'form_submissions.id_user')
             ->join('m_provinsi', 'profil_user.id_provinsi', '=', 'm_provinsi.id_provinsi')
-            ->whereRaw("LOWER(form_submissions.data) LIKE ?", ['%shopee.com%'])
+            ->whereRaw("LOWER(form_submissions.data) LIKE ?", ['%"7e7d93fe-f890-4912-b5f7-8cec9aeb07f9":true%'])
             ->groupBy('m_provinsi.nama_provinsi')
             ->select('m_provinsi.nama_provinsi', DB::raw('COUNT(DISTINCT users.id) AS total_user'))
             ->get();
@@ -106,7 +106,7 @@ class TeknologiController extends Controller
             ->join('profil_user', 'users.id', '=', 'profil_user.id_user')
             ->join('form_submissions', 'users.id', '=', 'form_submissions.id_user')
             ->join('m_provinsi', 'profil_user.id_provinsi', '=', 'm_provinsi.id_provinsi')
-            ->whereRaw("LOWER(form_submissions.data) LIKE ?", ['%tokopedia.com%'])
+            ->whereRaw("LOWER(form_submissions.data) LIKE ?", ['%"52747ee5-a58c-4eef-ba80-747b19fd454f":true%'])
             ->select(DB::raw('COUNT(DISTINCT profil_user.id_user) AS total_user'))
             ->first();
 
@@ -114,7 +114,7 @@ class TeknologiController extends Controller
             ->join('profil_user', 'users.id', '=', 'profil_user.id_user')
             ->join('form_submissions', 'users.id', '=', 'form_submissions.id_user')
             ->join('m_provinsi', 'profil_user.id_provinsi', '=', 'm_provinsi.id_provinsi')
-            ->whereRaw("LOWER(form_submissions.data) LIKE ?", ['%tokopedia.com%'])
+            ->whereRaw("LOWER(form_submissions.data) LIKE ?", ['%"52747ee5-a58c-4eef-ba80-747b19fd454f":true%'])
             ->groupBy('m_provinsi.nama_provinsi')
             ->select('m_provinsi.nama_provinsi', DB::raw('COUNT(DISTINCT users.id) AS total_user'))
             ->get();
@@ -124,7 +124,7 @@ class TeknologiController extends Controller
             ->join('profil_user', 'users.id', '=', 'profil_user.id_user')
             ->join('form_submissions', 'users.id', '=', 'form_submissions.id_user')
             ->join('m_provinsi', 'profil_user.id_provinsi', '=', 'm_provinsi.id_provinsi')
-            ->whereRaw("LOWER(form_submissions.data) LIKE ?", ['%lazada.com%'])
+            ->whereRaw("LOWER(form_submissions.data) LIKE ?", ['%"4899bd76-84fe-4d3b-b026-98369b812b16":true%'])
             ->select(DB::raw('COUNT(DISTINCT profil_user.id_user) AS total_user'))
             ->first();
 
@@ -132,7 +132,7 @@ class TeknologiController extends Controller
             ->join('profil_user', 'users.id', '=', 'profil_user.id_user')
             ->join('form_submissions', 'users.id', '=', 'form_submissions.id_user')
             ->join('m_provinsi', 'profil_user.id_provinsi', '=', 'm_provinsi.id_provinsi')
-            ->whereRaw("LOWER(form_submissions.data) LIKE ?", ['%lazada.com%'])
+            ->whereRaw("LOWER(form_submissions.data) LIKE ?", ['%"4899bd76-84fe-4d3b-b026-98369b812b16":true%'])
             ->groupBy('m_provinsi.nama_provinsi')
             ->select('m_provinsi.nama_provinsi', DB::raw('COUNT(DISTINCT users.id) AS total_user'))
             ->get();
@@ -142,7 +142,7 @@ class TeknologiController extends Controller
             ->join('profil_user', 'users.id', '=', 'profil_user.id_user')
             ->join('form_submissions', 'users.id', '=', 'form_submissions.id_user')
             ->join('m_provinsi', 'profil_user.id_provinsi', '=', 'm_provinsi.id_provinsi')
-            ->whereRaw("LOWER(form_submissions.data) LIKE ?", ['%blibli.com%'])
+            ->whereRaw("LOWER(form_submissions.data) LIKE ?", ['%"933d946d-6b6d-401f-93ce-796b7d53eefe":true%'])
             ->select(DB::raw('COUNT(DISTINCT profil_user.id_user) AS total_user'))
             ->first();
 
@@ -150,7 +150,7 @@ class TeknologiController extends Controller
             ->join('profil_user', 'users.id', '=', 'profil_user.id_user')
             ->join('form_submissions', 'users.id', '=', 'form_submissions.id_user')
             ->join('m_provinsi', 'profil_user.id_provinsi', '=', 'm_provinsi.id_provinsi')
-            ->whereRaw("LOWER(form_submissions.data) LIKE ?", ['%blibli.com%'])
+            ->whereRaw("LOWER(form_submissions.data) LIKE ?", ['%"933d946d-6b6d-401f-93ce-796b7d53eefe":true%'])
             ->groupBy('m_provinsi.nama_provinsi')
             ->select('m_provinsi.nama_provinsi', DB::raw('COUNT(DISTINCT users.id) AS total_user'))
             ->get();
@@ -160,7 +160,7 @@ class TeknologiController extends Controller
             ->join('profil_user', 'users.id', '=', 'profil_user.id_user')
             ->join('form_submissions', 'users.id', '=', 'form_submissions.id_user')
             ->join('m_provinsi', 'profil_user.id_provinsi', '=', 'm_provinsi.id_provinsi')
-            ->whereRaw("LOWER(form_submissions.data) LIKE ?", ['%bukalapak.com%'])
+            ->whereRaw("LOWER(form_submissions.data) LIKE ?", ['%"43a9fd21-c843-46ab-873b-32c9e2cf07e9":true%'])
             ->select(DB::raw('COUNT(DISTINCT profil_user.id_user) AS total_user'))
             ->first();
 
@@ -168,7 +168,7 @@ class TeknologiController extends Controller
             ->join('profil_user', 'users.id', '=', 'profil_user.id_user')
             ->join('form_submissions', 'users.id', '=', 'form_submissions.id_user')
             ->join('m_provinsi', 'profil_user.id_provinsi', '=', 'm_provinsi.id_provinsi')
-            ->whereRaw("LOWER(form_submissions.data) LIKE ?", ['%bukalapak.com%'])
+            ->whereRaw("LOWER(form_submissions.data) LIKE ?", ['%"43a9fd21-c843-46ab-873b-32c9e2cf07e9":true%'])
             ->groupBy('m_provinsi.nama_provinsi')
             ->select('m_provinsi.nama_provinsi', DB::raw('COUNT(DISTINCT users.id) AS total_user'))
             ->get();

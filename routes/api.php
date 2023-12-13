@@ -171,5 +171,5 @@ Route::get('/levelumkm', [MainController::class, 'levelumkm']);
 Route::get('/adopsiteknologi', [MainController::class, 'adopsiteknologi']);
 
 
-// Route::get('/sosialmedia', [TeknologiController::class, 'sosialmedia']);
-// Route::get('/marketplace', [TeknologiController::class, 'marketplace']);
+Route::get('/sosialmedia', [TeknologiController::class, 'sosialmedia']);
+Route::get('/marketplace', [TeknologiController::class, 'marketplace']);
