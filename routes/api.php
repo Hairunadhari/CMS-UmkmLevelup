@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\MainController;
+use App\Http\Controllers\api\UmkmController;
 use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\WorkspaceController;
@@ -173,3 +174,6 @@ Route::get('/adopsiteknologi', [MainController::class, 'adopsiteknologi']);
 
 Route::get('/sosialmedia', [TeknologiController::class, 'sosialmedia']);
 Route::get('/marketplace', [TeknologiController::class, 'marketplace']);
+
+Route::get('/countdaerah', [UmkmController::class, 'countdaerah']);
+Route::get('/countperdaerah', [UmkmController::class, 'countperdaerah']);

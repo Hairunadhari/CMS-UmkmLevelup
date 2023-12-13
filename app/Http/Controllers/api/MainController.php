@@ -51,9 +51,6 @@ class MainController extends Controller
             $query->where('level', 'LIKE', '%Adopter%');
         })->count();
 
-        // 192.168.100.133
-        // php artisan serve --host=192.168.100.133 --port=8000
-
         $leader = User::with('level')->wherehas('level', function($query){
             $query->where('level', 'LIKE', '%Leader%');
         })->count();
