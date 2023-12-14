@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\MainController;
+use App\Http\Controllers\api\UmkmController;
 use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\WorkspaceController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\OAuthController;
 use App\Http\Controllers\Forms\FormController;
 use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\api\TeknologiController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Forms\FormStatsController;
 use App\Http\Controllers\Forms\PublicFormController;
@@ -166,3 +168,12 @@ Route::post('templates', [TemplateController::class, 'create'])->name('templates
 
 Route::get('/countumkm', [MainController::class, 'countuser']);
 Route::get('/skalausaha', [MainController::class, 'skalausaha']);
+Route::get('/levelumkm', [MainController::class, 'levelumkm']);
+Route::get('/adopsiteknologi', [MainController::class, 'adopsiteknologi']);
+
+
+Route::get('/sosialmedia', [TeknologiController::class, 'sosialmedia']);
+Route::get('/marketplace', [TeknologiController::class, 'marketplace']);
+
+Route::get('/countdaerah', [UmkmController::class, 'countdaerah']);
+Route::get('/countperdaerah', [UmkmController::class, 'countperdaerah']);

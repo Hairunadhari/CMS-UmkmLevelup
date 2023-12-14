@@ -207,4 +207,10 @@ class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
         return $this->hasMany(UserProgresMateri::class);
     }
 
+    
+
+    public function level(){
+        return $this->belongsTo(M_Level::class, 'final_level');
+    }
+
 }
