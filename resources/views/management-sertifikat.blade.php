@@ -28,9 +28,13 @@
           Import
           Excel</button>
       </form>
-      <button id="generatezip" class="btn btn-sm btn-danger d-flex align-items-center justify-content-center"
-        style="width: 150px; margin-left: 10px; height: 42px;" class="mb-0"><i class="fas fa-file-archive"></i> Download
-        ZIP</button>
+      <div class="bungkusgeneratezip">
+        <button id="generatezip" class="btn btn-sm btn-danger d-flex align-items-center justify-content-center"
+        style="width: 150px; margin-left: 10px; height: 42px;" class="mb-0"><i class="fas fa-file-archive"></i> DownloadZIP</button>
+      </div>
+      <div class="buttons" id="loading" style="display: none">
+          <a href="#" class="btn btn-sm btn-danger disabled btn-progress mb-0" style="width: 140px; margin-left: 10px; height: 42px;">Progress</a>
+      </div>
     </div>
     <div class="section-body">
       <div class="card">
@@ -90,10 +94,17 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
       searching: true,
       serverSide: true,
       ajax: '{{ url()->current() }}',
-      columns: [{
-          data: 'id',
-          render: function (data) {
-            return `<input type="checkbox" class="user_checkbox" value="${data}">`
+      columns: [
+        {
+          data: null,
+          render: function (data, row) {
+            if (data.status_pdf == 1) {
+              
+              var a = `<input type="checkbox" class="user_checkbox" value="${data.id}">`
+            }else{
+              var a = '-'
+            }
+            return a;
           }
         },
         {
@@ -126,35 +137,40 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
       ],
     });
     $(document).on('click','#generatezip',function(){
-      var id = [];
-      if(confirm("apakah anda ingin mendownload zip?"))
-      {
-        $('.user_checkbox:checked').each(function(){
-          id.push($(this).val());
-        });
-        if (id.length > 0 && id.length < 21 ) {
-          $.ajax({
-            url:"/all-generate-pdf",
-            method:"post",
-            data:{id:id},
-            success:function (data) {
-              // console.log(data);
-              window.location.href = data;
-  table.draw(); 
-              // $('.user_checkbox:checked').prop('checked', false);
-            },
-            error:function (data) {
-              console.log(data);
-            }
-          });
-        }else{
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Maksimal data yang dipilih 20 data",
-          });
-        }
-      }
+     var id = [];
+     if(confirm("apakah anda ingin mendownload zip?"))
+     {
+        $('#loading').show();
+        $('.bungkusgeneratezip').hide();
+
+       $('.user_checkbox:checked').each(function(){
+         id.push($(this).val());
+       });
+       if (id.length > 0 && id.length < 21 ) {
+         $.ajax({
+           url:"/all-generate-pdf",
+           method:"post",
+           data:{id:id},
+           success:function (data) {
+            console.log(data);
+             window.location.href = data;
+             table.draw(); 
+            $('.user_checkbox:checked').prop('checked', false);
+            $('#loading').hide();
+            $('.bungkusgeneratezip').show();
+           },
+           error:function (data) {
+             console.log(data);
+           }
+         });
+       }else{
+         Swal.fire({
+           icon: "error",
+           title: "Oops...",
+           text: "Maksimal data yang dipilih 20 data",
+         });
+       }
+     }
     });
   });
 

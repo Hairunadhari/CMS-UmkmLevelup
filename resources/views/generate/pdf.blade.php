@@ -48,7 +48,7 @@
       font-weight: 800;
     }
     .a{
-      margin-bottom: 80px;
+      margin-bottom: 0px;
     }
     .b{
       font-weight: 900;
@@ -57,6 +57,9 @@
     .garis2{
         width: 200px;
         color: #0c438d;
+        margin-left: 460px;
+    }
+    .ttd{
         margin-left: 460px;
     }
   </style>
@@ -81,6 +84,7 @@
         Jakarta, {{\Carbon\Carbon::parse($d->created_at)->format('d F Y')}}
       </h3>
         <p class="a">Direktur Ekonomi Digital</p>
+        <img class="ttd" src="{{public_path('img/ttd.jpg')}}" alt="">
         <hr class="garis2">
         <p class="b">Bonifasiaus Wahyu Pudjianto</p>
   </div>

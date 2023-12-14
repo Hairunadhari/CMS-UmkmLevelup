@@ -924,6 +924,9 @@ class KuesionerController extends Controller
         DB::table('management_sertifikats')->where('id',$id)->update(['status_pdf'=>0]);
         $pdf = PDF::loadView('generate.generate_ulang',compact('d'));
         $pdf->setPaper('a4', 'landscape');
+        $filename = $d->nama_pemilik . '-' . $d->id . '.pdf';
+        // Simpan file PDF terpisah
+        $pdf->save(public_path('pdf/' . $filename));
         
         // diunduh
         DB::commit();
