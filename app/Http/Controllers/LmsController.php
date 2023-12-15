@@ -236,7 +236,7 @@ class LmsController extends Controller
         ->select('nama')
         ->find($materiid);
         // dd($materi);
-        $all_sub_materi = DB::table('t_sub_materi')->where('id_materi',$materiid)->get();
+        $all_sub_materi = DB::table('t_sub_materi')->where('id_materi',$materiid)->where('aktif',1)->get();
         $materi_progres_user = DB::table('user_progres_materis')
         ->select('user_progres_materis.*','t_sub_materi.nama')
         ->leftJoin('t_sub_materi','user_progres_materis.sub_materi_id','=','t_sub_materi.id')
