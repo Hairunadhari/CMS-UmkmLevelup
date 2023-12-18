@@ -95,6 +95,8 @@ Route::get('/preview-pdf/{id}', [\App\Http\Controllers\LmsController::class, 'do
 Route::get('/regenerate-pdf/{id}', [\App\Http\Controllers\KuesionerController::class, 'generate_ulang_pdf']);
 Route::get('/management-sertifikat', [\App\Http\Controllers\KuesionerController::class, 'management_sertifikat']);
 Route::post('/all-generate-pdf', [\App\Http\Controllers\KuesionerController::class, 'all_generate_pdf']);
+Route::get('/zipdownload', [\App\Http\Controllers\KuesionerController::class, 'zipdownload']);
+// Route::get('/zipfolder', [\App\Http\Controllers\KuesionerController::class, 'zipfolder']);
 
 
 Route::post(

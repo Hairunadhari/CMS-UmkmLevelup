@@ -162,9 +162,9 @@ class LmsController extends Controller
           
             
             DB::commit();
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             DB::rollback();
-            // dd($th);
+            dd($th);
             throw $th;
         }
 
