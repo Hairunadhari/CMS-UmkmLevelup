@@ -148,7 +148,7 @@
             <div class="form-group">
               <div class="form-check mb-1">
                 <input class="form-check-input" type="checkbox" id="pdf" checked>
-                <label class="form-check-label" for="pdf">PDF</label>
+                <label class="form-check-label" for="pdf">PDF (max: 2048 kb)</label>
                 <input type="file" class="form-control" id="input-pdf" name="file" accept=".pdf"
                   aria-describedby="fileHelp" required>
               </div>

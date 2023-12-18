@@ -107,6 +107,7 @@ class LmsController extends Controller
         }
         $validator = Validator::make($request->all(), [
             'video' => 'max:2048', // Tambahkan validasi untuk logo
+            'file' => 'max:2048', // Tambahkan validasi untuk logo
         ]);
         if($validator->fails()){
             return redirect()->back()->with(['error' => "Maksimal ukuran video 2048 kb !"]);
