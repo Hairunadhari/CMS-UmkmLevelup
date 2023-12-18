@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use DB;
 use PDF;
 use Throwable;
+use Validator;
 // use Barryvdh\DomPDF\PDF;
 use App\Models\User;
 // use Spatie\PdfToImage\Pdf;
@@ -103,6 +104,12 @@ class LmsController extends Controller
                 'message' => 'Silahkan periksa kembali email password anda!',
             ]);
             return redirect('login');
+        }
+        $validator = Validator::make($request->all(), [
+            'video' => 'max:2048', // Tambahkan validasi untuk logo
+        ]);
+        if($validator->fails()){
+            return redirect()->back()->with(['error' => "Maksimal ukuran video 2048 kb !"]);
         }
         try {
             DB::beginTransaction();
