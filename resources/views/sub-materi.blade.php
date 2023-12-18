@@ -154,7 +154,7 @@
               </div>
               <div class="form-check">
                 <input class="form-check-input" type="checkbox" id="video">
-                <label class="form-check-label" for="video">Video (max: 2048 kb)</label>
+                <label class="form-check-label" for="video">Video (max: 1048 kb)</label>
                 <input type="file" style="display: none;" class="form-control" accept=".mp4, .webm, .mkv"
                   id="input-video" name="video">
               </div>
