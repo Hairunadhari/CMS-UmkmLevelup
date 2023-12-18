@@ -109,7 +109,7 @@ class LmsController extends Controller
             'video' => 'max:1048', // Tambahkan validasi untuk logo
         ]);
         if($validator->fails()){
-            return redirect()->back()->with(['error' => "Maksimal ukuran video 2048 kb !"]);
+            return redirect()->back()->with(['error' => "Maksimal ukuran video 1048 kb !"]);
         }
         try {
             DB::beginTransaction();
@@ -171,8 +171,9 @@ class LmsController extends Controller
             DB::commit();
         } catch (Throwable $th) {
             DB::rollback();
-            dd($th);
-            throw $th;
+            // dd($th);
+            return redirect()->back()->with(['error' => 'Data Gagal Ditambahkan!']);
+            // throw $th;
         }
 
         return redirect($name.'/sub-materi/'.$id)->with(['success' => 'Data Berhasil Ditambahkan!']);
