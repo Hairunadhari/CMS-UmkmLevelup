@@ -30,7 +30,7 @@
       </form>
       <div class="bungkusgeneratezip">
         <a  id="generatezip" class="btn btn-sm btn-danger d-flex align-items-center justify-content-center"
-        style="width: 150px; margin-left: 10px; height: 42px;" class="mb-0"><i class="fas fa-file-archive"></i> Generate All PDF</a>
+        style="width: 150px; margin-left: 10px; height: 42px;" class="mb-0"><i class="fas fa-file-archive"></i> Generate PDF</a>
       </div>
       <div class="buttons" id="loading" style="display: none">
           <a href="#" class="btn btn-sm btn-danger disabled btn-progress mb-0" style="width: 140px; margin-left: 10px; height: 42px;">Progress</a>
@@ -40,7 +40,7 @@
       <div class="card">
         <div class="card-body">
           <strong class="text-dark">List Management Sertifikat </strong>
-      <p>'Maksimal Download 200 data'</p>
+      <p>'Maksimal Download 500 data'</p>
 
           <hr />
           <div class="row">
@@ -124,7 +124,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
       ],
     });
     $(document).on('click','#generatezip',function(){
-     if(confirm("Apakah anda ingin menggenerate data ke pdf? jika ya maka 200 data akan di generate pdf dan akan memakan waktu yg lama"))
+     if(confirm("Apakah anda ingin menggenerate data ke pdf? jika ya maka 500 data akan di generate pdf dan akan memakan waktu yg lama"))
      {
         $('#loading').show();
         $('.bungkusgeneratezip').hide();

@@ -946,7 +946,7 @@ class KuesionerController extends Controller
         $data = DB::table('management_sertifikats')
         ->select('id','nama_pemilik','created_at')
         ->where('status_pdf',1)
-        ->take(200)
+        ->take(500)
         ->get();
         foreach ($data as $key) {
           // mengganti karakter-karakter yang bukan huruf, angka, atau spasi dengan karakter '-' pada nama pemilik.
@@ -971,7 +971,7 @@ class KuesionerController extends Controller
         
 
         $zip = new ZipArchive;
-        $FileName = 'Management-Sertifikat-'.date('His').'.zip';
+        $FileName = 'Management-Sertifikat-'.date('H-i-s').'.zip';
 
           if ($zip->open(public_path($FileName), ZipArchive::CREATE) === TRUE) {
 
