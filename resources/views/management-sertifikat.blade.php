@@ -124,7 +124,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
       ],
     });
     $(document).on('click','#generatezip',function(){
-     if(confirm("Apakah anda ingin menggenerate data ke pdf? jika ya maka 500 data akan di generate pdf dan akan memakan waktu yg lama"))
+     if(confirm("Apakah anda ingin menggenerate data ke pdf? jika ya maka 50 data akan di generate pdf dan akan memakan waktu yg lama"))
      {
         $('#loading').show();
         $('.bungkusgeneratezip').hide();
