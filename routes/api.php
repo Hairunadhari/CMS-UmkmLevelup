@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\api\AuthController;
 use App\Http\Controllers\api\MainController;
 use App\Http\Controllers\api\UmkmController;
 use App\Http\Controllers\TemplateController;
@@ -166,14 +167,21 @@ Route::prefix('content')->name('content.')->group(function () {
 Route::get('templates', [TemplateController::class, 'index'])->name('templates.show');
 Route::post('templates', [TemplateController::class, 'create'])->name('templates.create');
 
-Route::get('/countumkm', [MainController::class, 'countuser']);
-Route::get('/skalausaha', [MainController::class, 'skalausaha']);
-Route::get('/levelumkm', [MainController::class, 'levelumkm']);
-Route::get('/adopsiteknologi', [MainController::class, 'adopsiteknologi']);
 
+Route::post('/dashboard/login', [AuthController::class, 'login']);
 
-Route::get('/sosialmedia', [TeknologiController::class, 'sosialmedia']);
-Route::get('/marketplace', [TeknologiController::class, 'marketplace']);
-
-Route::get('/countdaerah', [UmkmController::class, 'countdaerah']);
-Route::get('/countperdaerah', [UmkmController::class, 'countperdaerah']);
+Route::group(['middleware' => 'auth:api'], function () {
+    Route::get('/countumkm', [MainController::class, 'countuser']);
+    Route::get('/skalausaha', [MainController::class, 'skalausaha']);
+    Route::get('/levelumkm', [MainController::class, 'levelumkm']);
+    Route::get('/adopsiteknologi', [MainController::class, 'adopsiteknologi']);
+    
+    
+    Route::get('/sosialmedia', [TeknologiController::class, 'sosialmedia']);
+    Route::get('/marketplace', [TeknologiController::class, 'marketplace']);
+    
+    Route::get('/countdaerah', [UmkmController::class, 'countdaerah']);
+    Route::get('/countperdaerah', [UmkmController::class, 'countperdaerah']);
+    
+    Route::post('/dashboard/logout', [AuthController::class, 'logout']);
+});
