@@ -32,7 +32,7 @@
     <meta name='og:title' content='{{$meta['title']}}'>
     <meta name='og:description' content='{{$meta['description']}}'>
     <meta name='og:image' content='{{$meta['image']}}'>
-    <meta name='og:site_name' content='UMKM Go Online'>
+    <meta name='og:site_name' content='UMKMLEVELUP'>
 
     <meta name="twitter:title" content="{{$meta['title']}}">
     <meta name="twitter:description" content="{{$meta['description']}}">
