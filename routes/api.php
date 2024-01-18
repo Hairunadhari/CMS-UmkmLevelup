@@ -170,18 +170,18 @@ Route::post('templates', [TemplateController::class, 'create'])->name('templates
 
 Route::post('/dashboard/login', [AuthController::class, 'login']);
 
-Route::group(['middleware' => 'auth:api'], function () {
-    Route::get('/countumkm', [MainController::class, 'countuser']);
-    Route::get('/skalausaha', [MainController::class, 'skalausaha']);
-    Route::get('/levelumkm', [MainController::class, 'levelumkm']);
-    Route::get('/adopsiteknologi', [MainController::class, 'adopsiteknologi']);
-    
-    
-    Route::get('/sosialmedia', [TeknologiController::class, 'sosialmedia']);
-    Route::get('/marketplace', [TeknologiController::class, 'marketplace']);
-    
-    Route::get('/countdaerah', [UmkmController::class, 'countdaerah']);
-    Route::get('/countperdaerah', [UmkmController::class, 'countperdaerah']);
-    
-    Route::post('/dashboard/logout', [AuthController::class, 'logout']);
-});
+Route::get('/countumkm', [MainController::class, 'countuser']);
+Route::get('/skalausaha', [MainController::class, 'skalausaha']);
+Route::get('/levelumkm', [MainController::class, 'levelumkm']);
+Route::get('/adopsiteknologi', [MainController::class, 'adopsiteknologi']);
+
+
+Route::get('/sosialmedia', [TeknologiController::class, 'sosialmedia']);
+Route::get('/marketplace', [TeknologiController::class, 'marketplace']);
+Route::get('/sosialmediaperdaerah', [TeknologiController::class, 'sosialmediaperdaerah']);
+Route::get('/marketplaceperdaerah', [TeknologiController::class, 'marketplaceperdaerah']);
+
+Route::get('/countdaerah', [UmkmController::class, 'countdaerah']);
+Route::get('/countperdaerah', [UmkmController::class, 'countperdaerah']);
+
+Route::post('/dashboard/logout', [AuthController::class, 'logout']);
