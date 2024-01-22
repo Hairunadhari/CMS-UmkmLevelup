@@ -184,7 +184,9 @@ Route::group(['middleware'=>'auth:api'], function(){
     Route::get('/marketplace3', [TeknologiController::class, 'marketplace3']);
     Route::get('/marketplace4', [TeknologiController::class, 'marketplace4']);
     Route::get('/sosialmediaperdaerah', [TeknologiController::class, 'sosialmediaperdaerah']);
+    Route::get('/daerah', [TeknologiController::class, 'daerah']);
     Route::get('/marketplaceperdaerah', [TeknologiController::class, 'marketplaceperdaerah']);
+    Route::get('/foodperdaerah', [TeknologiController::class, 'foodperdaerah']);
     
     Route::get('/countdaerah', [UmkmController::class, 'countdaerah']);
     Route::get('/countperdaerah', [UmkmController::class, 'countperdaerah']);
