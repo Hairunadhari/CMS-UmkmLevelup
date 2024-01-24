@@ -70,6 +70,24 @@
                 </li>
 
 
+                <li class="menu-header">Management Wilayah</li>
+                <li class="{{ Request::is('provinsi') ? 'active' : '' }}">
+                    <a class="nav-link"
+                        href="{{url('provinsi')}}"><i class="fas fa-database"></i> <span>List Provinsi</span></a>
+                </li>
+                <li class="{{ Request::is('kabupaten') ? 'active' : '' }}">
+                    <a class="nav-link"
+                        href="{{url('kabupaten')}}"><i class="fas fa-database"></i> <span>List Kabupaten & Kota</span></a>
+                </li>
+                <li class="{{ Request::is('kecamatan') ? 'active' : '' }}">
+                    <a class="nav-link"
+                        href="{{url('kecamatan')}}"><i class="fas fa-database"></i> <span>List Kecamatan</span></a>
+                </li>
+                <li class="{{ Request::is('kelurahan') ? 'active' : '' }}">
+                    <a class="nav-link"
+                        href="{{url('kelurahan')}}"><i class="fas fa-database"></i> <span>List Kelurahan</span></a>
+                </li>
+
                 <li class="menu-header">Portal Lama</li>
                 <li class="{{ Request::is('old-portal') ? 'active' : '' }}">
                     <a class="nav-link"
