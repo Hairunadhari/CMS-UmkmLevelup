@@ -286,7 +286,7 @@ class WilayahController extends Controller
             //throw $th;
         }
 
-          return redirect('/kelurahan')->with('success', [
+          return redirect('/kecamatan')->with('success', [
             'type' => 'success',
             'message' => 'Data berhasil diTambahkan',
           ]);
@@ -419,7 +419,7 @@ class WilayahController extends Controller
             //throw $th;
         }
 
-          return redirect('/kecamatan')->with('success', [
+          return redirect('/kelurahan')->with('success', [
             'type' => 'success',
             'message' => 'Data berhasil diTambahkan',
           ]);

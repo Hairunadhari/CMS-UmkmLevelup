@@ -14,7 +14,7 @@
                     @csrf
                     @method('put')
                     <div class="form-group">
-                        <label>Nama Kabupaten <span style="color: red">*</span></label>
+                        <label>Nama Provinsi <span style="color: red">*</span></label>
                         <select class="form-control select2" name="id_provinsi"  required>
                             @foreach ($provinsi as $item)
                            <option value="{{ $item->id_provinsi }}"

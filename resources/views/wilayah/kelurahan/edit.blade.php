@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Form Input Kelurahan')
+@section('title', 'Form Edit Kelurahan')
 @section('main')
 <div class="main-content">
   <section class="section">
@@ -7,7 +7,7 @@
     <div class="section-body">
         <div class="card">
             <div class="card-header">
-                <h5>Form Input Kelurahan</h5>
+                <h5>Form Edit Kelurahan</h5>
             </div>
             <div class="card-body">
                 <form action="{{url('/update-kelurahan',$data->id_kelurahan)}}" method="post" enctype="multipart/form-data">

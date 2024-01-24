@@ -1,4 +1,4 @@
-@extends('layouts.app') @section('title', 'List Provinsi')
+@extends('layouts.app') @section('title', 'List Kabupaten')
     <link rel="stylesheet" href="{{ asset('library/datatables/media/css/jquery.dataTables.min.css') }}">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css">
     @section('main') 
