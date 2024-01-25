@@ -38,7 +38,7 @@ class SetLevelController extends Controller
         DB::table('m_logic_level')->insert([
             'name' => $request->nama,
             'id_level' => $request->level,
-            'id_form' => 6,
+            'id_form' => 7,
             'logic' => '[]',
             'created_at' => date("Y-m-d")
         ]);

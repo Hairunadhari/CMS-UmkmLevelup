@@ -92,7 +92,6 @@ class LmsController extends Controller
         ->where('t_sub_materi.aktif', 1)
         ->where('t_sub_materi.id_materi', $id)
         ->get();
-        // dd($d['sub_materi']);
         return view('sub-materi', $d);
     }
     
@@ -106,11 +105,11 @@ class LmsController extends Controller
             return redirect('login');
         }
         $validator = Validator::make($request->all(), [
-            'video' => 'max:2048', // Tambahkan validasi untuk logo
-            'file' => 'max:2048', // Tambahkan validasi untuk logo
+            'video' => 'max:102400', // Tambahkan validasi untuk video
+            'file' => 'max:51200', // Tambahkan validasi untuk file
         ]);
         if($validator->fails()){
-            return redirect()->back()->with(['error' => "Maksimal ukuran video 2048 kb !"]);
+            return redirect()->back()->with(['error' => "Maksimal ukuran video 100 mb & pdf sebesar 50 mb !"]);
         }
         try {
             DB::beginTransaction();

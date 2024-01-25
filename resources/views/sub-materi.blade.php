@@ -148,13 +148,13 @@
             <div class="form-group">
               <div class="form-check mb-1">
                 <input class="form-check-input" type="checkbox" id="pdf" checked>
-                <label class="form-check-label" for="pdf">PDF (max: 2048 kb)</label>
+                <label class="form-check-label" for="pdf">PDF (max: 50Mb )</label>
                 <input type="file" class="form-control" id="input-pdf" name="file" accept=".pdf"
                   aria-describedby="fileHelp" required>
               </div>
               <div class="form-check">
                 <input class="form-check-input" type="checkbox" id="video">
-                <label class="form-check-label" for="video">Video (max: 2048 kb)</label>
+                <label class="form-check-label" for="video">Video (max: 100Mb )</label>
                 <input type="file" style="display: none;" class="form-control" accept=".mp4, .webm, .mkv"
                   id="input-video" name="video">
               </div>
