@@ -13,6 +13,10 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
     integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.css"
+    integrity="sha512-wJgJNTBBkLit7ymC6vvzM1EcSWeM9mmOu+1USHaRBbHkm6W9EgM0HY27+UtUaprntaYQJF75rc8gjxllKs5OIQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
   @stack('style')
 
@@ -129,16 +133,24 @@
   <script src="{{ asset('js/scripts.js') }}"></script>
   <script src="{{ asset('js/custom.js') }}"></script>
   <script src="{{ asset('library/select2/dist/js/select2.full.min.js') }}"></script>
-  
-  {{-- @if (Session::has('success'))
-  <script>
-    Swal.fire({
-      title: "Success!",
-      text: "{{Session::get('success')}}",
-      icon: "success",
-    });
-  </script>
-  @endif --}}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"
+  integrity="sha512-zlWWyZq71UMApAjih4WkaRpikgY9Bz1oXIW5G0fED4vk14JjGlQ1UmkGM392jEULP8jbNMiwLWdM8Z87Hu88Fw=="
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  @if(session('success'))
+    <script>
+
+        $.toast({
+            heading: 'Notifikasi :',
+            text: "{{ session('success')['message'] }}",
+            icon: "{{ session('success')['type'] }}",
+            hideAfter: false,
+            // loader: true,        // Change it to false to disable loader
+            position: 'top-right',
+            loaderBg: '#9EC600' // To change the background
+        })
+
+    </script>
+    @endif
 
   <script>
     $(document).ready(function () {

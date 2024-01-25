@@ -29,8 +29,8 @@
           Excel</button>
       </form>
       <div class="bungkusgeneratezip">
-        <button id="generatezip" class="btn btn-sm btn-danger d-flex align-items-center justify-content-center"
-        style="width: 150px; margin-left: 10px; height: 42px;" class="mb-0"><i class="fas fa-file-archive"></i> DownloadZIP</button>
+        <a  id="generatezip" class="btn btn-sm btn-danger d-flex align-items-center justify-content-center"
+        style="width: 150px; margin-left: 10px; height: 42px;" class="mb-0"><i class="fas fa-file-archive"></i> Generate PDF</a>
       </div>
       <div class="buttons" id="loading" style="display: none">
           <a href="#" class="btn btn-sm btn-danger disabled btn-progress mb-0" style="width: 140px; margin-left: 10px; height: 42px;">Progress</a>
@@ -40,7 +40,7 @@
       <div class="card">
         <div class="card-body">
           <strong class="text-dark">List Management Sertifikat </strong>
-      <p>'Maksimal Download 20 data'</p>
+      <p>'Maksimal Download 500 data'</p>
 
           <hr />
           <div class="row">
@@ -48,7 +48,6 @@
                 <table class="table table-striped table-hovered" id="m">
                   <thead>
                     <tr>
-                      <th>#</th>
                       <th>No</th>
                       <th>Nama Fasilitator</th>
                       <th>Nama Usaha</th>
@@ -96,18 +95,6 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
       ajax: '{{ url()->current() }}',
       columns: [
         {
-          data: null,
-          render: function (data, row) {
-            if (data.status_pdf == 1) {
-              
-              var a = `<input type="checkbox" class="user_checkbox" value="${data.id}">`
-            }else{
-              var a = '-'
-            }
-            return a;
-          }
-        },
-        {
           render: function (data, type, row, meta) {
             return meta.row + meta.settings._iDisplayStart + 1;
           },
@@ -137,25 +124,18 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
       ],
     });
     $(document).on('click','#generatezip',function(){
-     var id = [];
-     if(confirm("apakah anda ingin mendownload zip?"))
+     if(confirm("Apakah anda ingin menggenerate data ke pdf? jika ya maka 50 data akan di generate pdf dan akan memakan waktu yg lama"))
      {
         $('#loading').show();
         $('.bungkusgeneratezip').hide();
 
-       $('.user_checkbox:checked').each(function(){
-         id.push($(this).val());
-       });
-       if (id.length > 0 && id.length < 21 ) {
          $.ajax({
-           url:"/all-generate-pdf",
-           method:"post",
-           data:{id:id},
+           url:"/zipdownload",
+           method:"get",
            success:function (data) {
             console.log(data);
              window.location.href = data;
              table.draw(); 
-            $('.user_checkbox:checked').prop('checked', false);
             $('#loading').hide();
             $('.bungkusgeneratezip').show();
            },
@@ -163,15 +143,78 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
              console.log(data);
            }
          });
-       }else{
-         Swal.fire({
-           icon: "error",
-           title: "Oops...",
-           text: "Maksimal data yang dipilih 20 data",
-         });
-       }
      }
     });
+    // $(document).on('click','#generatezip',function(){
+    //  var id = [];
+    //  if(confirm("apakah anda ingin mendownload zip?"))
+    //  {
+    //     $('#loading').show();
+    //     $('.bungkusgeneratezip').hide();
+
+    //    $('.user_checkbox:checked').each(function(){
+    //      id.push($(this).val());
+    //    });
+    //    if (id.length > 0 && id.length < 21 ) {
+    //      $.ajax({
+    //        url:"/all-generate-pdf",
+    //        method:"post",
+    //        data:{id:id},
+    //        success:function (data) {
+    //         console.log(data);
+    //          window.location.href = data;
+    //          table.draw(); 
+    //         $('.user_checkbox:checked').prop('checked', false);
+    //         $('#loading').hide();
+    //         $('.bungkusgeneratezip').show();
+    //        },
+    //        error:function (data) {
+    //          console.log(data);
+    //        }
+    //      });
+    //    }else{
+    //      Swal.fire({
+    //        icon: "error",
+    //        title: "Oops...",
+    //        text: "Maksimal data yang dipilih 20 data",
+    //      });
+    //    }
+    //  }
+    // });
+
+    // $(document).on('click','#generatezip', function() {
+    //   let timerInterval;
+    //   Swal.fire({
+    //     title: 'Proses Pembuatan ZIP',
+    //     html: 'Sedang memproses... <b></b>',
+    //     timerProgressBar: true,
+    //     allowOutsideClick: false, 
+    //     didOpen: () => {
+    //       Swal.showLoading();
+    //       const timer = Swal.getHtmlContainer().querySelector('b');
+    //       timerInterval = setInterval(() => {
+    //         $.ajax({
+    //           url: '/zipdownload',
+    //           method: 'get',
+    //           success: function(data) {
+    //             if (data.zipFileName) {
+    //                         clearInterval(timerInterval);
+    //                         Swal.close();
+    //                         window.location.href = data.zipFileName;
+    //                     }
+    //           },
+    //           error: function(data) {
+    //             console.log(data);
+    //           }
+    //         });
+    //       }, 1000);
+    //     },
+    //     willClose: () => {
+    //       clearInterval(timerInterval);
+    //     }
+    //   });
+    // });
+
   });
 
 

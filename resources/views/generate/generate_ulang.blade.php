@@ -47,7 +47,7 @@
       color: #0c438d;
       font-weight: 800;
     }
-    .b{
+php    .b{
       font-weight: 900;
       color: #0c438d;
     }

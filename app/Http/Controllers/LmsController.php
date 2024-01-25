@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use DB;
 use PDF;
-use App\Models\User;
+use Throwable;
+use Validator;
 // use Barryvdh\DomPDF\PDF;
-use App\Models\MateriChat;
+use App\Models\User;
 // use Spatie\PdfToImage\Pdf;
+use App\Models\MateriChat;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\UserProgresMateri;
@@ -103,6 +105,13 @@ class LmsController extends Controller
             ]);
             return redirect('login');
         }
+        $validator = Validator::make($request->all(), [
+            'video' => 'max:2048', // Tambahkan validasi untuk logo
+            'file' => 'max:2048', // Tambahkan validasi untuk logo
+        ]);
+        if($validator->fails()){
+            return redirect()->back()->with(['error' => "Maksimal ukuran video 2048 kb !"]);
+        }
         try {
             DB::beginTransaction();
 
@@ -161,10 +170,11 @@ class LmsController extends Controller
           
             
             DB::commit();
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             DB::rollback();
             // dd($th);
-            throw $th;
+            return redirect()->back()->with(['error' => 'Data Gagal Ditambahkan!']);
+            // throw $th;
         }
 
         return redirect($name.'/sub-materi/'.$id)->with(['success' => 'Data Berhasil Ditambahkan!']);
@@ -201,6 +211,19 @@ class LmsController extends Controller
     public function user_progres(){
         
         // dd($data);
+    //     $data = DB::table('user_progres_materis')
+    //     ->select(
+    //         'user_progres_materis.materi_id', 
+    //         'm_materi.nama', 
+    //         'users.name', 
+    //         'users.id', 
+    //         DB::raw('COUNT(user_progres_materis.id) as jumlah_user'),
+    //         DB::raw('COUNT(user_progres_materis.sub_materi_id) as jumlah_sub_materi_user'))
+    //         ->leftJoin('users','user_progres_materis.user_id','=','users.id')
+    //         ->leftJoin('m_materi','user_progres_materis.materi_id','=','m_materi.id')
+    //         ->groupBy('user_progres_materis.materi_id', 'm_materi.nama', 'users.name','users.id')
+    //         ->get();
+    //    dd($data);
         if (request()->ajax()) {
             $data = DB::table('user_progres_materis')
             ->select(
@@ -213,17 +236,8 @@ class LmsController extends Controller
                 ->leftJoin('users','user_progres_materis.user_id','=','users.id')
                 ->leftJoin('m_materi','user_progres_materis.materi_id','=','m_materi.id')
                 ->groupBy('user_progres_materis.materi_id', 'm_materi.nama', 'users.name','users.id')
+                ->where('status',1)
                 ->get();
-            // $data->each(function($item){
-                //     $item->total_sub_bdsarkan_materi = DB::table('t_sub_materi')->selectRaw('COUNT(id_materi) as tot')->where('id_materi', $item->materi_id)->count();
-                
-            //     // Memeriksa apakah total_sub_bdsarkan_materi adalah nol
-            //     $item->progres = ($item->jumlah_sub_materi_user * 100) / $item->total_sub_bdsarkan_materi;
-            //     // if ($item->total_sub_bdsarkan_materi != 0) {
-            //     // } else {
-            //     //     $item->progres = 0; // Jika total_sub_bdsarkan_materi adalah nol, atur progres menjadi 0
-            //     // }
-            // });
             return DataTables::of($data)->make(true);
         }
         
@@ -236,7 +250,7 @@ class LmsController extends Controller
         ->select('nama')
         ->find($materiid);
         // dd($materi);
-        $all_sub_materi = DB::table('t_sub_materi')->where('id_materi',$materiid)->get();
+        $all_sub_materi = DB::table('t_sub_materi')->where('id_materi',$materiid)->where('aktif',1)->get();
         $materi_progres_user = DB::table('user_progres_materis')
         ->select('user_progres_materis.*','t_sub_materi.nama')
         ->leftJoin('t_sub_materi','user_progres_materis.sub_materi_id','=','t_sub_materi.id')
@@ -315,12 +329,23 @@ class LmsController extends Controller
     }
 
     public function deleteSubmateri($id){
-        DB::table('t_sub_materi')->where('id',$id)->update([
-            'aktif'=>0
-        ]);
-        DB::table('t_sub_materi_file')->where('id_sub_materi',$id)->update([
-            'aktif'=>0
-        ]);
+        try {
+            DB::beginTransaction();
+            DB::table('t_sub_materi')->where('id',$id)->update([
+                'aktif'=>0
+            ]);
+            DB::table('t_sub_materi_file')->where('id_sub_materi',$id)->update([
+                'aktif'=>0
+            ]);
+            DB::table('user_progres_materis')->where('sub_materi_id',$id)->update([
+                'status'=>0
+            ]);
+            DB::commit();
+        } catch (Throwable $th) {
+            DB::rollback();
+            //throw $th;
+            return redirect()->back()->with(['error'=>'Data Gagal DiHapus!']);
+        }
 
         return redirect('/list-materi')->with(['success'=>'Data Berhasil DiHapus!']);
 
