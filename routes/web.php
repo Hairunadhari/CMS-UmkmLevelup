@@ -84,17 +84,51 @@ Route::redirect('/', '/login');
     Route::get('/get-kecamatan/{id_kecamatan}/{id_kab}', [\App\Http\Controllers\KuesionerController::class, 'getKecamatan']);
     Route::get('/get-kelurahan/{id_kelurahan}/{id_kab}/{id_kec}', [\App\Http\Controllers\KuesionerController::class, 'getKelurahan']);
     Route::post('/import-excel', [\App\Http\Controllers\ImportController::class, 'import_penerima_sertifikat']);
-
-    // Route::get('/export-verif', [\App\Http\Controllers\KuesionerController::class, 'exportKuesionerVerif'])->name("export-verif");
-// });
     
-Route::get('/export-data-unverif', [\App\Http\Controllers\KuesionerController::class, 'exportKuesionerUnverif'])->name("/export-data-unverif");
-Route::post('/export-verif', [\App\Http\Controllers\KuesionerController::class, 'exportKuesionerVerif'])->name("/export-verif");
-Route::get('/export-kuesioner/{id}', [\App\Http\Controllers\KuesionerController::class, 'exportKuesioner'])->name("/export-kuesioner/{id}");
-Route::get('/preview-pdf/{id}', [\App\Http\Controllers\LmsController::class, 'downloadPdf']);
-Route::get('/regenerate-pdf/{id}', [\App\Http\Controllers\KuesionerController::class, 'generate_ulang_pdf']);
-Route::get('/management-sertifikat', [\App\Http\Controllers\KuesionerController::class, 'management_sertifikat']);
-Route::post('/all-generate-pdf', [\App\Http\Controllers\KuesionerController::class, 'all_generate_pdf']);
+    // Route::get('/export-verif', [\App\Http\Controllers\KuesionerController::class, 'exportKuesionerVerif'])->name("export-verif");
+    // });
+    
+    Route::get('/export-data-unverif', [\App\Http\Controllers\KuesionerController::class, 'exportKuesionerUnverif'])->name("/export-data-unverif");
+    Route::post('/export-verif', [\App\Http\Controllers\KuesionerController::class, 'exportKuesionerVerif'])->name("/export-verif");
+    Route::get('/export-kuesioner/{id}', [\App\Http\Controllers\KuesionerController::class, 'exportKuesioner'])->name("/export-kuesioner/{id}");
+    Route::get('/preview-pdf/{id}', [\App\Http\Controllers\LmsController::class, 'downloadPdf']);
+    Route::get('/regenerate-pdf/{id}', [\App\Http\Controllers\KuesionerController::class, 'generate_ulang_pdf']);
+    Route::get('/management-sertifikat', [\App\Http\Controllers\KuesionerController::class, 'management_sertifikat']);
+    Route::post('/all-generate-pdf', [\App\Http\Controllers\KuesionerController::class, 'all_generate_pdf']);
+    Route::get('/zipdownload', [\App\Http\Controllers\KuesionerController::class, 'zipdownload']);
+
+    // route wilayah
+    Route::get('/provinsi', [\App\Http\Controllers\WilayahController::class, 'list_provinsi']);
+    Route::get('/form-input-provinsi', [\App\Http\Controllers\WilayahController::class, 'form_input_provinsi']);
+    Route::post('/add-provinsi', [\App\Http\Controllers\WilayahController::class, 'add_provinsi']);
+    Route::get('/form-edit-provinsi/{id}', [\App\Http\Controllers\WilayahController::class, 'form_edit_provinsi']);
+    Route::put('/update-provinsi/{id}', [\App\Http\Controllers\WilayahController::class, 'update_provinsi']);
+    Route::put('/delete-provinsi/{id}', [\App\Http\Controllers\WilayahController::class, 'delete_provinsi']);
+
+    Route::get('/kabupaten', [\App\Http\Controllers\WilayahController::class, 'list_kabupaten']);
+    Route::get('/form-input-kabupaten', [\App\Http\Controllers\WilayahController::class, 'form_input_kabupaten']);
+    Route::post('/add-kabupaten', [\App\Http\Controllers\WilayahController::class, 'add_kabupaten']);
+    Route::get('/form-edit-kabupaten/{id}', [\App\Http\Controllers\WilayahController::class, 'form_edit_kabupaten']);
+    Route::put('/update-kabupaten/{id}', [\App\Http\Controllers\WilayahController::class, 'update_kabupaten']);
+    Route::put('/delete-kabupaten/{id}', [\App\Http\Controllers\WilayahController::class, 'delete_kabupaten']);
+
+    Route::get('/kecamatan', [\App\Http\Controllers\WilayahController::class, 'list_kecamatan']);
+    Route::get('/form-input-kecamatan', [\App\Http\Controllers\WilayahController::class, 'form_input_kecamatan']);
+    Route::post('/add-kecamatan', [\App\Http\Controllers\WilayahController::class, 'add_kecamatan']);
+    Route::get('/form-edit-kecamatan/{id}', [\App\Http\Controllers\WilayahController::class, 'form_edit_kecamatan']);
+    Route::put('/update-kecamatan/{id}', [\App\Http\Controllers\WilayahController::class, 'update_kecamatan']);
+    Route::put('/delete-kecamatan/{id}', [\App\Http\Controllers\WilayahController::class, 'delete_kecamatan']);
+    Route::get('/get-kabupaten-by-provinsi/{id}', [\App\Http\Controllers\WilayahController::class, 'get_kabupaten_by_provinsi']);
+    Route::get('/get-kecamatan-by-kabupaten/{id}', [\App\Http\Controllers\WilayahController::class, 'get_kecamatan_by_kabupaten']);
+
+    Route::get('/kelurahan', [\App\Http\Controllers\WilayahController::class, 'list_kelurahan']);
+    Route::get('/form-input-kelurahan', [\App\Http\Controllers\WilayahController::class, 'form_input_kelurahan']);
+    Route::post('/add-kelurahan', [\App\Http\Controllers\WilayahController::class, 'add_kelurahan']);
+    Route::get('/form-edit-kelurahan/{id}', [\App\Http\Controllers\WilayahController::class, 'form_edit_kelurahan']);
+    Route::put('/update-kelurahan/{id}', [\App\Http\Controllers\WilayahController::class, 'update_kelurahan']);
+    Route::put('/delete-kelurahan/{id}', [\App\Http\Controllers\WilayahController::class, 'delete_kelurahan']);
+
+
 
 
 Route::post(

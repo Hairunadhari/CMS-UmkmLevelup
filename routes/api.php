@@ -1,23 +1,27 @@
 <?php
 
-use App\Http\Controllers\Auth\ForgotPasswordController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\api\AuthController;
+use App\Http\Controllers\api\MainController;
+use App\Http\Controllers\api\UmkmController;
+use App\Http\Controllers\TemplateController;
+use App\Http\Controllers\Auth\UserController;
+use App\Http\Controllers\WorkspaceController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\OAuthController;
-use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Http\Controllers\Auth\UserController;
-use App\Http\Controllers\Auth\VerificationController;
-use App\Http\Controllers\Settings\PasswordController;
-use App\Http\Controllers\Settings\ProfileController;
+use App\Http\Controllers\Forms\FormController;
 use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\api\TeknologiController;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Forms\FormStatsController;
 use App\Http\Controllers\Forms\PublicFormController;
+use App\Http\Controllers\Settings\ProfileController;
+use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\Settings\PasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Forms\FormSubmissionController;
-use App\Http\Controllers\Forms\FormController;
-use App\Http\Controllers\WorkspaceController;
-use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\Forms\Integration\FormZapierWebhookController;
-use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -162,3 +166,30 @@ Route::prefix('content')->name('content.')->group(function () {
 // Templates
 Route::get('templates', [TemplateController::class, 'index'])->name('templates.show');
 Route::post('templates', [TemplateController::class, 'create'])->name('templates.create');
+
+
+Route::post('/dashboard/login', [AuthController::class, 'login']);
+
+Route::group(['middleware'=>'auth:api'], function(){
+    Route::get('/countumkm', [MainController::class, 'countuser']);
+    Route::get('/skalausaha', [MainController::class, 'skalausaha']);
+    Route::get('/levelumkm', [MainController::class, 'levelumkm']);
+    Route::get('/adopsiteknologi', [MainController::class, 'adopsiteknologi']);
+    
+    
+    Route::get('/sosialmedia1', [TeknologiController::class, 'sosialmedia']);
+    Route::get('/sosialmedia2', [TeknologiController::class, 'sosialmedia2']);
+    Route::get('/marketplace1', [TeknologiController::class, 'marketplace']);
+    Route::get('/marketplace2', [TeknologiController::class, 'marketplace2']);
+    Route::get('/marketplace3', [TeknologiController::class, 'marketplace3']);
+    Route::get('/marketplace4', [TeknologiController::class, 'marketplace4']);
+    Route::get('/sosialmediaperdaerah', [TeknologiController::class, 'sosialmediaperdaerah']);
+    Route::get('/daerah', [TeknologiController::class, 'daerah']);
+    Route::get('/marketplaceperdaerah', [TeknologiController::class, 'marketplaceperdaerah']);
+    Route::get('/foodperdaerah', [TeknologiController::class, 'foodperdaerah']);
+    
+    Route::get('/countdaerah', [UmkmController::class, 'countdaerah']);
+    Route::get('/countperdaerah', [UmkmController::class, 'countperdaerah']);
+    
+    Route::post('/dashboard/logout', [AuthController::class, 'logout']);
+});

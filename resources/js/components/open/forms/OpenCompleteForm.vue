@@ -126,7 +126,7 @@
         </open-form-button>
         <p v-if="form.editable_submissions && submissionId" class="mt-5">
           <!-- <a target="_parent" :href="childUrl+'?href='+form.share_url+'?submission_id='+submissionId" class="text-nt-blue hover:underline">Ubah Kembali</a> -->
-          <a target="_parent" :href="'https://demo.umkmlevelup.id/kuesioner?href='+form.share_url+'?submission_id='+submissionId" class="text-nt-blue hover:underline">Ubah Kembali</a>
+          <a target="_parent" :href="'https://umkmlevelup.id/kuesioner?href='+form.share_url+'?submission_id='+submissionId" class="text-nt-blue hover:underline">Ubah Kembali</a>
         </p>
         <p v-if="!form.no_branding" class="mt-5">
           <!-- <a target="_parent" href="#" class="text-nt-blue hover:underline">Create your form for free with Form Builder</a> -->
@@ -258,7 +258,7 @@ export default {
 
           // if (response.data.redirect && response.data.redirect_url) {
             // window.location.href = response.data.redirect_url
-            // window.top.location.href = "https://demo.umkmlevelup.id/home";
+            // window.top.location.href = "https://umkmlevelup.id/home";
           // }
 
           if (response.data.submission_id) {
@@ -306,7 +306,7 @@ export default {
 
               // if (response.data.redirect && response.data.redirect_url) {
                 // window.location.href = response.data.redirect_url
-                // window.top.location.href = "https://demo.umkmlevelup.id/home";
+                // window.top.location.href = "https://umkmlevelup.id/home";
               // }
 
               if (response.data.submission_id) {

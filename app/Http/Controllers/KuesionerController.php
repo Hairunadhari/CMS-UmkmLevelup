@@ -916,26 +916,85 @@ class KuesionerController extends Controller
 
     public function generate_ulang_pdf($id){
       try {
-        DB::beginTransaction();
-        $d = DB::table('management_sertifikats')
-        ->select('*')
-        ->where('id',$id)
-        ->first();
-        DB::table('management_sertifikats')->where('id',$id)->update(['status_pdf'=>0]);
-        $pdf = PDF::loadView('generate.generate_ulang',compact('d'));
-        $pdf->setPaper('a4', 'landscape');
-        
-        // diunduh
-        DB::commit();
+          DB::beginTransaction();
+          $d = DB::table('management_sertifikats')
+          ->select('*')
+          ->where('id',$id)
+          ->first();
+          DB::table('management_sertifikats')->where('id',$id)->update(['status_pdf'=>0]);
+          $pdf = PDF::loadView('generate.generate_ulang',compact('d'));
+          $pdf->setPaper('a4', 'landscape');
+          $filename = $d->nama_pemilik . '-' . $d->id . '.pdf';
+          // Simpan file PDF terpisah
+          $pdf->save(public_path('pdf/' . $filename));
+          
+          // diunduh
+          DB::commit();
       } catch (Throwable $th) {
-        //throw $th;
-        DB::rollback();
-        dd($th);
+          //throw $th;
+          DB::rollback();
+          dd($th);
       }
       return $pdf->download('Sertifikat-UMKM-Level-UP.pdf');
-  
-      }
+    }
 
-    
-    
+    public function zipdownload(Request $request){
+     
+      try {
+        DB::beginTransaction();
+
+        $data = DB::table('management_sertifikats')
+        ->select('id','nama_pemilik','created_at')
+        ->where('status_pdf',1)
+        ->take(50)
+        ->get();
+        foreach ($data as $key) {
+          // mengganti karakter-karakter yang bukan huruf, angka, atau spasi dengan karakter '-' pada nama pemilik.
+            $nama_pemilik = preg_replace('/[^\p{L}\p{N}\s]+/u', '-', $key->nama_pemilik);
+            $nama_pemilik = preg_replace('/\s+/', '-', $nama_pemilik);
+        
+            $html = '';
+            $view = view('generate.sertifikat', compact('key'));
+            $html .= $view->render();
+        
+            $pdf = PDF::loadHTML($html);
+            $pdf->setPaper('a4', 'landscape');
+            $filename = $nama_pemilik . '-' . $key->id . '.pdf';
+            DB::table('management_sertifikats')->where('id',$key->id)->update(['status_pdf' => 0]);
+
+        
+            // Simpan file PDF terpisah
+            $pdf->save(public_path('pdf/' . $filename));
+        }
+      
+
+        
+
+        $zip = new ZipArchive;
+        $FileName = 'Management-Sertifikat-'.date('H-i-s').'.zip';
+
+          if ($zip->open(public_path($FileName), ZipArchive::CREATE) === TRUE) {
+
+              $files = File::files(public_path('pdf'));
+            
+              foreach ($files as $key => $value) {
+                $relativeNameInZipFile = basename($value);
+                  $zip->addFile($value, $relativeNameInZipFile);
+              }
+              $zip->close();
+
+              
+            } 
+          DB::commit();
+          
+        } catch (Throwable $th) {
+          DB::rollback();
+          dd($th);
+          echo 'gagal mendwonload sertifikat';
+        }
+        return asset($FileName); // Kembalikan nama file ZIP
+     
+  }
+  
+
 }
