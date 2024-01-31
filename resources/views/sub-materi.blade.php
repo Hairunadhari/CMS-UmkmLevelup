@@ -192,11 +192,10 @@
                 </div>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" >
-                <label class="form-check-label" for="flexRadioDefault2">Link Embedded Video</label>
-                <div id="input-link" style="display: none">
-                  <input type="text" class="form-control mb-2"  name="link_video" id="link-video">
-                </div>
+                <input class="form-check-input" type="checkbox" id="video">
+                <label class="form-check-label" for="video">Video (max: 2048 kb)</label>
+                <input type="file" style="display: none;" class="form-control" accept=".mp4, .webm, .mkv"
+                  id="input-video" name="video">
               </div>
             </div>
           </div>

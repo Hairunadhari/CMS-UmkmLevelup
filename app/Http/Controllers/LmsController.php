@@ -92,7 +92,6 @@ class LmsController extends Controller
         ->where('t_sub_materi.aktif', 1)
         ->where('t_sub_materi.id_materi', $id)
         ->get();
-        // dd($d['sub_materi']);
         return view('sub-materi', $d);
     }
     
@@ -115,10 +114,7 @@ class LmsController extends Controller
         ]
         );
         if($validator->fails()){
-            $messages = $validator->messages();
-            $alertMessage = $messages->first();
-          
-            return redirect()->back()->with(['error' => $alertMessage]);
+            return redirect()->back()->with(['error' => "Maksimal ukuran video 2048 kb !"]);
         }
         try {
             DB::beginTransaction();

@@ -258,7 +258,7 @@ export default {
 
           // if (response.data.redirect && response.data.redirect_url) {
             // window.location.href = response.data.redirect_url
-            // window.top.location.href = "https://demo.umkmlevelup.id/home";
+            // window.top.location.href = "https://umkmlevelup.id/home";
           // }
 
           if (response.data.submission_id) {
