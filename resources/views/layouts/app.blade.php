@@ -18,6 +18,9 @@
     crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
+    {{-- progres uploading cdn --}}
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js" integrity="sha384-qlmct0AOBiA2VPZkMY3+2WqkHtIQ9lSdAsAn5RUJD/3vA5MKDgSGcdmIv4ycVxyn" crossorigin="anonymous"></script> --}}
+    
   @stack('style')
 
   <!-- Template CSS -->
@@ -128,6 +131,7 @@
   <script src="{{ asset('js/stisla.js') }}"></script>
 
   @stack('scripts')
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js" integrity="sha384-qlmct0AOBiA2VPZkMY3+2WqkHtIQ9lSdAsAn5RUJD/3vA5MKDgSGcdmIv4ycVxyn" crossorigin="anonymous"></script>
 
   <!-- Template JS File -->
   <script src="{{ asset('js/scripts.js') }}"></script>
@@ -136,7 +140,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"
   integrity="sha512-zlWWyZq71UMApAjih4WkaRpikgY9Bz1oXIW5G0fED4vk14JjGlQ1UmkGM392jEULP8jbNMiwLWdM8Z87Hu88Fw=="
   crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  @if(session('success'))
+  {{-- @if(session('success'))
     <script>
 
         $.toast({
@@ -150,7 +154,7 @@
         })
 
     </script>
-    @endif
+    @endif --}}
 
   <script>
     $(document).ready(function () {

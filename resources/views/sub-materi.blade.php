@@ -43,6 +43,28 @@
     outline: none;
   }
 
+  .bar {
+    background-color: #00ff00;
+  }
+
+  .percent {
+    position: absolute;
+    left: 50%;
+    top: 90%;
+    color: black
+  }
+
+  .bar-pdf {
+    background-color: #00ff00;
+  }
+
+  .percent-pdf {
+    position: absolute;
+    left: 50%;
+    top: 90%;
+    color: black
+  }
+
 </style>
 @endpush
 
@@ -94,15 +116,16 @@
                 <td class="text-center">{{\Carbon\Carbon::parse($item->created_at)->locale('id')->format('j F Y')}}
                 </td>
                 <td class="text-center">
-                  <form action="/hapus-submateri/{{$item->id}}" method="post" onsubmit="return confirm('Apakah anda yakin akan menghapus data ini ?');">
+                  <form action="/hapus-submateri/{{$item->id}}" method="post"
+                    onsubmit="return confirm('Apakah anda yakin akan menghapus data ini ?');">
                     <a href="/edit-sub-materi/{{$item->id}}" class="btn btn-sm btn-warning"><i
                         class="fa fa-th-list"></i>
                       Edit</a>
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <input type="hidden" name="_method" value="PUT">
                     <button class="btn btn-sm btn-danger" type="submit"><i class="far fa-trash-alt"></i> Hapus</button>
-                      </form>
-                  </td>
+                  </form>
+                </td>
               </tr>
               @empty
               <tr>
@@ -120,7 +143,7 @@
 </section>
 </div>
 
-<form action="{{ '/add-sub-materi/'.$id.'/'.$name }}" method="POST" enctype="multipart/form-data">
+<form action="{{ '/add-sub-materi/'.$id.'/'.$name }}" id="tambahsubmateri" method="POST" enctype="multipart/form-data">
   @csrf
   <div class="modal fade" id="tambahData" aria-labelledby="tambahData" aria-hidden="true">
     <div class="modal-dialog">
@@ -144,26 +167,43 @@
             <div id="deskripsiHelp" class="form-text"></div>
           </div>
           <div class="mb-3">
-            <label for="file" class="form-label">Upload File Materi <span class="text-danger text-bold">*</span></label>
+            <label for="file" class="form-label">Upload File Materi</label>
             <div class="form-group">
               <div class="form-check mb-1">
-                <input class="form-check-input" type="checkbox" id="pdf" checked>
-                <label class="form-check-label" for="pdf">PDF (max: 2048 kb)</label>
-                <input type="file" class="form-control" id="input-pdf" name="file" accept=".pdf"
-                  aria-describedby="fileHelp" required>
+                <label class="form-check-label" for="pdf">PDF (max: 50 mb)</label>
+                <div id="input-pdf">
+                  <input type="file" class="form-control mb-2" name="file" accept=".pdf" aria-describedby="fileHelp"
+                    id="value-pdf">
+                  <div class="progress progrespdf mb-3" style="display: none">
+                    <div class="bar-pdf"></div>
+                    <div class=" percent-pdf">0%</div>
+                  </div>
+                </div>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="video">
-                <label class="form-check-label" for="video">Video (max: 2048 kb)</label>
-                <input type="file" style="display: none;" class="form-control" accept=".mp4, .webm, .mkv"
-                  id="input-video" name="video">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
+                <label class="form-check-label" for="flexRadioDefault1">Video (max: 100 mb)</label>
+                <div id="input-video" >
+                  <input type="file" class="form-control mb-2" accept=".mp4, .webm, .mkv" name="video" id="value-video">
+                  <div class="progress progresvideo mb-3" style="display: none">
+                    <div class="bar"></div>
+                    <div class="percent">0%</div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" >
+                <label class="form-check-label" for="flexRadioDefault2">Link Embedded Video</label>
+                <div id="input-link" style="display: none">
+                  <input type="text" class="form-control mb-2"  name="link_video" id="link-video">
+                </div>
               </div>
             </div>
           </div>
           <hr />
         </div>
         <div class="modal-footer pt-1 justify-content-center">
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="submit" id="submit-button" class="btn btn-primary">Submit</button>
         </div>
       </div>
     </div>
@@ -171,32 +211,80 @@
 </form>
 
 <script>
-  
-  // window.onload = function (){
-  // //   let a = document.getElementById('pdf').checked = true; 
-  // //     if (a == true) {
-  // //       document.getElementById('input-video').style.display = 'block';
-  // //     } 
-  // // };
+ $(document).ready(function () {
+    var barPdf = $('.bar-pdf');
+    var percentPdf = $('.percent-pdf');
+    var barVideo = $('.bar');
+    var percentVideo = $('.percent');
+    var submitButton = $('#submit-button');
 
-  document.getElementById('video').addEventListener('click', function () {
+    $('#tambahsubmateri').ajaxForm({
+        beforeSend: function () {
+            submitButton.prop('disabled', true);
+            var percentVal = '0%';
+            barPdf.width(percentVal);
+            percentPdf.html(percentVal);
+            barVideo.width(percentVal);
+            percentVideo.html(percentVal);
+        },
+        uploadProgress: function (event, position, total, percentComplete) {
+            var percentVal = percentComplete + '%';
+            var pdfFile = $('#value-pdf')[0].files[0];
+            var videoFile = $('#value-video')[0].files[0];
+
+            if (pdfFile && !videoFile) {
+                // Jika hanya input PDF
+                $('.progrespdf').show();
+                barPdf.width(percentVal);
+                percentPdf.html(percentVal);
+            } else if (!pdfFile && videoFile) {
+                // Jika hanya input video
+                $('.progresvideo').show();
+
+                barVideo.width(percentVal);
+                percentVideo.html(percentVal);
+            } else if (pdfFile && videoFile) {
+                // Jika keduanya diisi
+                $('.progrespdf').show();
+                $('.progresvideo').show();
+
+                barPdf.width(percentVal);
+                percentPdf.html(percentVal);
+                barVideo.width(percentVal);
+                percentVideo.html(percentVal);
+            }
+        },
+        complete: function (xhr) {
+            submitButton.prop('disabled', false);
+            // Alert atau tindakan lainnya setelah pengunggahan berhasil
+            // var responseData = xhr.responseJSON;
+            // if (responseData.success) {
+            //     var name = responseData.name;
+            //     var id = responseData.id;
+            //     window.location.href = "";
+            // }
+            // Gantilah window.location.href dengan URL yang sesuai
+            window.location.href = "";
+            // console.log('te');
+            
+        }
+    });
+});
+
+
+
+
+document.getElementById('flexRadioDefault1').addEventListener('click', function () {
     if (this.checked) {
       document.getElementById('input-video').style.display = 'block';
-    } else {
-      document.getElementById('input-video').style.display = 'none';
-      document.getElementById('input-video').value = '';
-      document.getElementById('input-video').removeAttribute("required");
-
+      document.getElementById('input-link').style.display = 'none';
     }
   });
 
-  document.getElementById('pdf').addEventListener('click', function () {
+  document.getElementById('flexRadioDefault2').addEventListener('click', function () {
     if (this.checked) {
-      document.getElementById('input-pdf').style.display = 'block';
-    } else {
-      document.getElementById('input-pdf').style.display = 'none';
-      document.getElementById('input-pdf').value = '';
-      document.getElementById('input-pdf').removeAttribute("required");
+      document.getElementById('input-link').style.display = 'block';
+      document.getElementById('input-video').style.display = 'none';
     }
   });
 
@@ -221,20 +309,21 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
 
 </script>
 @if (Session::has('error'))
-  <script>
-    Swal.fire({
-      title: "Ada Kesalahan!",
-      text: "{{Session::get('error')}}",
-      icon: "error",
-    });
-  </script>
-  @endif
 <script>
-  
+  Swal.fire({
+    title: "Ada Kesalahan!",
+    text: "{{Session::get('error')}}",
+    icon: "error",
+  });
+
+</script>
+@endif
+<script>
   $(document).ready(function () {
     $('.select2').select2({
       width: 'resolve'
     });
+
   });
 
   $("#simpanLevel").on("click", function () {
@@ -255,7 +344,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
       }
     })
 
-    
+
   });
 
 </script>
