@@ -114,8 +114,12 @@ class LmsController extends Controller
         ]
         );
         if($validator->fails()){
-            return redirect()->back()->with(['error' => "Maksimal ukuran video 2048 kb !"]);
+            $messages = $validator->messages();
+            $alertMessage = $messages->first();
+          
+            return redirect()->back()->with(['error' => $alertMessage]);
         }
+
         try {
             DB::beginTransaction();
 
