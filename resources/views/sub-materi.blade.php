@@ -265,8 +265,8 @@
             //     window.location.href = "";
             // }
             // Gantilah window.location.href dengan URL yang sesuai
-            // window.location.href = "";
-            console.log('tes');
+            window.location.href = "";
+            // console.log('tes');
             
         }
     });
@@ -309,16 +309,26 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
   $("#table").dataTable({});
 
 </script>
-@if (Session::has('error'))
-<script>
-  Swal.fire({
-    title: "Ada Kesalahan!",
-    text: "{{Session::get('error')}}",
-    icon: "error",
-  });
+    @if (Session::has('error'))
+    <script>
+      Swal.fire({
+        title: "Ada Kesalahan!",
+        text: "{{Session::get('error')}}",
+        icon: "error",
+      });
 
-</script>
-@endif
+    </script>
+    @endif
+    @if (Session::has('success'))
+    <script>
+      Swal.fire({
+        title: "Notifikasi!",
+        text: "{{Session::get('success')}}",
+        icon: "success",
+      });
+
+    </script>
+    @endif
 <script>
   $(document).ready(function () {
     $('.select2').select2({
