@@ -265,8 +265,8 @@
             //     window.location.href = "";
             // }
             // Gantilah window.location.href dengan URL yang sesuai
-            window.location.href = "";
-            // console.log('te');
+            // window.location.href = "";
+            console.log('tes');
             
         }
     });
