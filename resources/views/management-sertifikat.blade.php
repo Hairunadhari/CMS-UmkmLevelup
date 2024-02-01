@@ -29,35 +29,37 @@
           Excel</button>
       </form>
       <div class="bungkusgeneratezip">
-        <a  id="generatezip" class="btn btn-sm btn-danger d-flex align-items-center justify-content-center"
-        style="width: 150px; margin-left: 10px; height: 42px;" class="mb-0"><i class="fas fa-file-archive"></i> Generate PDF</a>
+        <a id="generatezip" class="btn btn-sm btn-danger d-flex align-items-center justify-content-center"
+          style="width: 150px; margin-left: 10px; height: 42px;" class="mb-0"><i class="fas fa-file-archive"></i>
+          Generate PDF</a>
       </div>
       <div class="buttons" id="loading" style="display: none">
-          <a href="#" class="btn btn-sm btn-danger disabled btn-progress mb-0" style="width: 140px; margin-left: 10px; height: 42px;">Progress</a>
+        <a href="#" class="btn btn-sm btn-danger disabled btn-progress mb-0"
+          style="width: 140px; margin-left: 10px; height: 42px;">Progress</a>
       </div>
     </div>
     <div class="section-body">
       <div class="card">
         <div class="card-body">
           <strong class="text-dark">List Management Sertifikat </strong>
-      <p>'Maksimal Download 500 data'</p>
+          <p>'Maksimal Download 50 data'</p>
 
           <hr />
           <div class="row">
             <div class="col-12">
-                <table class="table table-striped table-hovered" id="m">
-                  <thead>
-                    <tr>
-                      <th>No</th>
-                      <th>Nama Fasilitator</th>
-                      <th>Nama Usaha</th>
-                      <th>Nama Pemilik</th>
-                      <th>Aksi</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                  </tbody>
-                </table>
+              <table class="table table-striped table-hovered" id="m">
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>Nama Fasilitator</th>
+                    <th>Nama Usaha</th>
+                    <th>Nama Pemilik</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -93,8 +95,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
       searching: true,
       serverSide: true,
       ajax: '{{ url()->current() }}',
-      columns: [
-        {
+      columns: [{
           render: function (data, type, row, meta) {
             return meta.row + meta.settings._iDisplayStart + 1;
           },
@@ -110,12 +111,13 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
         },
         {
           data: null,
-          render: function (data,row) {
+          render: function (data, row) {
             if (data.status_pdf == 1) {
               var a =
                 `<span><a class="btn btn-danger" href="/regenerate-pdf/${data.id}"><i class="fas fa-file-pdf"></i></a></span>`
             } else {
-              var a = `<span><a class="btn btn-primary" target="_blank" href="/pdf/${data.nama_pemilik}-${data.id}.pdf"><i class="far fa-eye"></i></a></span>`
+              var a =
+                `<span><a class="btn btn-primary" target="_blank" href="/pdf/${data.nama_pemilik}-${data.id}.pdf"><i class="far fa-eye"></i></a></span>`
             }
             return a;
           },
@@ -123,27 +125,28 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
 
       ],
     });
-    $(document).on('click','#generatezip',function(){
-     if(confirm("Apakah anda ingin menggenerate data ke pdf? jika ya maka 50 data akan di generate pdf dan akan memakan waktu yg lama"))
-     {
+    $(document).on('click', '#generatezip', function () {
+      if (confirm(
+          "Apakah anda ingin menggenerate data ke pdf? jika ya maka 50 data akan di generate pdf dan akan memakan waktu yg lama"
+          )) {
         $('#loading').show();
         $('.bungkusgeneratezip').hide();
 
-         $.ajax({
-           url:"/zipdownload",
-           method:"get",
-           success:function (data) {
+        $.ajax({
+          url: "/zipdownload",
+          method: "get",
+          success: function (data) {
             console.log(data);
-             window.location.href = data;
-             table.draw(); 
+            window.location.href = data;
+            table.draw();
             $('#loading').hide();
             $('.bungkusgeneratezip').show();
-           },
-           error:function (data) {
-             console.log(data);
-           }
-         });
-     }
+          },
+          error: function (data) {
+            console.log(data);
+          }
+        });
+      }
     });
     // $(document).on('click','#generatezip',function(){
     //  var id = [];
@@ -216,7 +219,6 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
     // });
 
   });
-
 
 </script>
 <!-- Page Specific JS File -->

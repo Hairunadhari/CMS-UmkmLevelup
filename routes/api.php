@@ -170,7 +170,7 @@ Route::post('templates', [TemplateController::class, 'create'])->name('templates
 
 Route::post('/dashboard/login', [AuthController::class, 'login']);
 
-Route::group(['middleware'=>'auth:api'], function(){
+// Route::group(['middleware'=>'auth:api'], function(){
     Route::get('/countumkm', [MainController::class, 'countuser']);
     Route::get('/skalausaha', [MainController::class, 'skalausaha']);
     Route::get('/levelumkm', [MainController::class, 'levelumkm']);
@@ -192,4 +192,4 @@ Route::group(['middleware'=>'auth:api'], function(){
     Route::get('/countperdaerah', [UmkmController::class, 'countperdaerah']);
     
     Route::post('/dashboard/logout', [AuthController::class, 'logout']);
-});
+// });

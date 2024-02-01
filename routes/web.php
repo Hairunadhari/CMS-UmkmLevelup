@@ -119,7 +119,7 @@ Route::redirect('/', '/login');
     Route::put('/update-kecamatan/{id}', [\App\Http\Controllers\WilayahController::class, 'update_kecamatan']);
     Route::put('/delete-kecamatan/{id}', [\App\Http\Controllers\WilayahController::class, 'delete_kecamatan']);
     Route::get('/get-kabupaten-by-provinsi/{id}', [\App\Http\Controllers\WilayahController::class, 'get_kabupaten_by_provinsi']);
-    Route::get('/get-kecamatan-by-kabupaten/{id}', [\App\Http\Controllers\WilayahController::class, 'get_kecamatan_by_kabupaten']);
+    Route::get('/get-kecamatan-by-kabupaten-/{id}', [\App\Http\Controllers\WilayahController::class, 'get_kecamatan_by_kabupaten-']);
 
     Route::get('/kelurahan', [\App\Http\Controllers\WilayahController::class, 'list_kelurahan']);
     Route::get('/form-input-kelurahan', [\App\Http\Controllers\WilayahController::class, 'form_input_kelurahan']);
