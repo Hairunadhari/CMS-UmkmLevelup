@@ -402,14 +402,17 @@ class LmsController extends Controller
             DB::table('user_progres_materis')->where('sub_materi_id',$id)->update([
                 'status'=>0
             ]);
+            $sub = DB::table('t_sub_materi')->find($id);
+            $data = DB::table('m_materi')->find($sub->id_materi);
             DB::commit();
         } catch (Throwable $th) {
             DB::rollback();
             //throw $th;
+            dd($th);
             return redirect()->back()->with(['error'=>'Data Gagal DiHapus!']);
         }
 
-        return redirect('/list-materi')->with(['success'=>'Data Berhasil DiHapus!']);
+        return redirect('/'.$data->nama.'/sub-materi/'.$data->id)->with(['success'=>'Data Berhasil DiHapus!']);
 
     }
     public function get_file_by_name(Request $request){
