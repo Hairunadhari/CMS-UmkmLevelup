@@ -30,7 +30,7 @@
               <a :href="'/api/forms/public/'+idForm+'/submissions/file/' + currentUrl[0]" target="_blank" rel="noreferrer">{{ currentUrl[0] }}</a>
             </div>
           </div>
-          <div :class="{ invisible: !hasDataFile }">
+          <div v-if="!trigRead" :class="{ invisible: !hasDataFile }">
             <a href="#" class="hover:text-nt-blue" role="button" @click.prevent="changeType">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -47,7 +47,7 @@
               <p v-if="files.length==1"><svg xmlns="http://www.w3.org/2000/svg"
                                             class="h-6 w-6 inline mr-2 -mt-1" fill="none"
                                             viewBox="0 0 24 24"
-                                            stroke="currentColor"
+                                             stroke="currentColor"
               >
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                       d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
@@ -95,7 +95,7 @@
               </svg>{{ files.length }} file(s)</p>
             </div>
           </div>
-          <div v-if="files.length>0">
+          <div v-if="files.length>0 && !trigRead">
             <a href="#" class="hover:text-nt-blue" role="button" @click.prevent="clearAll">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                    stroke="currentColor"
@@ -178,7 +178,7 @@
                     {{ file.file.name }}
                   </p>
                   <div>
-                    <a href="#" class="text-gray-400 dark:text-gray-600 hover:text-nt-blue flex" role="button"
+                    <a v-if="!trigRead" href="#" class="text-gray-400 dark:text-gray-600 hover:text-nt-blue flex" role="button"
                        @click.prevent="clearFile(index)"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
@@ -226,7 +226,8 @@ export default {
     // formId : '',
     uploadDragoverTracking: false,
     uploadDragoverEvent: false,
-    loading: false
+    loading: false,
+    trigRead: false
   }),
 
   computed: {
@@ -259,18 +260,11 @@ export default {
   },
 
   created () {
-    // const checkSub = this.$route.query.submission_id
-    console.log(this.form)
-    console.log(this.name)
-    // const forms = { ...this.form };
-    // delete forms[this.name];
-    // this.form = forms
     this.idForm = document.querySelector('#form_id').getAttribute('data-id')
-    // if (checkSub) {
-    //   this.idUser = hashids.decode(checkSub)
-    // } else {
-    //   this.idUser = ''
-    // }
+    const checkread = this.$route.query.read
+    if (checkread) {
+      this.trigRead = true
+    }
   },
 
   methods: {

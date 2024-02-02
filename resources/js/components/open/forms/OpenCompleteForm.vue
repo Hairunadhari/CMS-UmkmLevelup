@@ -1,7 +1,7 @@
 <template>
   <div v-if="form" class="open-complete-form">
     <!-- <button v-if="!submitted && form.editable_submissions" type="button" @click="submitTemporary(form)" class="rounded float-right mt-2 px-4 pt-2 pb-2 mx-1 ">Simpan Sementara</button> -->
-    <open-form-button v-if="!submitted && form.editable_submissions" :loading="loading" :theme="theme" :color="form.color" class="px-4 mt-4 mr-4 pt-2 pb-2 mx-1 bg-emerald-400 text-white float-right"
+    <open-form-button v-if="!submitted && form.editable_submissions && !trigRead" :loading="loading" :theme="theme" :color="form.color" class="px-4 mt-4 mr-4 pt-2 pb-2 mx-1 bg-emerald-400 text-white float-right"
                       @click="submitTemporary(form)"
     >
       Simpan Sementara
@@ -102,7 +102,7 @@
             </open-form-button>
           </template>
           <template #submit-btn="{submitForm}">
-            <open-form-button :loading="loading" refs="submitButtonSecond" :theme="theme" :color="form.color" class="mt-2 px-8 mx-1"
+            <open-form-button v-if="!trigRead" :loading="loading" refs="submitButtonSecond" :theme="theme" :color="form.color" class="mt-2 px-8 mx-1"
                               @click.prevent="submitForm"
             >
               {{ form.submit_button_text }}
@@ -126,7 +126,15 @@
         </open-form-button>
         <p v-if="form.editable_submissions && submissionId" class="mt-5">
           <!-- <a target="_parent" :href="childUrl+'?href='+form.share_url+'?submission_id='+submissionId" class="text-nt-blue hover:underline">Ubah Kembali</a> -->
-          <a target="_parent" :href="'https://umkmlevelup.id/kuesioner?href='+form.share_url+'?submission_id='+submissionId" class="text-nt-blue hover:underline">Ubah Kembali</a>
+          <p v-if="!submitSession">
+            <a target="_parent" :href="'https://umkmlevelup.id/home'" class="text-nt-blue hover:underline float-left">Kembali</a>
+
+            <a target="_parent" :href="'https://umkmlevelup.id/kuesioner?href='+form.share_url+'?submission_id='+submissionId" class="text-nt-blue hover:underline float-right">Ubah Kembali</a>
+          </p>
+          <p v-else key="submitSession">
+            <a target="_parent" :href="'https://umkmlevelup.id/home'" class="text-nt-blue hover:underline">Kembali</a>
+
+          </p>
         </p>
         <p v-if="!form.no_branding" class="mt-5">
           <!-- <a target="_parent" href="#" class="text-nt-blue hover:underline">Create your form for free with Form Builder</a> -->
@@ -167,6 +175,7 @@ export default {
       loading: false,
       submitted: false,
       simpanSementara: false,
+      submitSession: false,
       text: 'Isian akan kami simpan, dan tidak dapat diubah lagi!',
       themes: themes,
       passwordForm: new Form({
@@ -177,7 +186,8 @@ export default {
       submissionId: false,
       userId: '',
       urlAnswer: '',
-      submissionIdRef: ''
+      submissionIdRef: '',
+      trigRead: false
     }
   },
 
@@ -221,6 +231,10 @@ export default {
     } else {
       this.urlAnswer = 'answer'
       this.submissionIdRef = false
+    }
+    const checkread = this.$route.query.read
+    if (checkread) {
+      this.trigRead = true
     }
   },
 
@@ -286,6 +300,7 @@ export default {
           confirmButtonText: 'Ya, Simpan!'
         }).then((result) => {
           if (result.isConfirmed) {
+            this.submitSession = true
             if (this.creating) {
               this.submitted = true
               this.$emit('submitted', true)

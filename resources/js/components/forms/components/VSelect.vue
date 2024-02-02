@@ -14,6 +14,7 @@
         <button type="button" :dusk="dusk" aria-haspopup="listbox" aria-expanded="true" aria-labelledby="listbox-label"
                 class="cursor-pointer"
                 :style="inputStyle" :class="[theme.SelectInput.input,{'py-2':!multiple || loading,'py-1': multiple, 'ring-red-500 ring-2': hasError}]"
+                :disabled="trigRead"
                 @click="openDropdown"
         >
           <div :class="{'h-6':!multiple, 'min-h-8':multiple && !loading}">
@@ -31,7 +32,7 @@
               </div>
             </transition>
           </div>
-          <span class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+          <span v-if="!trigRead" class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
             <svg class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="none" stroke="currentColor">
               <path d="M7 7l3-3 3 3m0 6l-3 3-3-3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
@@ -112,7 +113,8 @@ export default {
   data () {
     return {
       isOpen: false,
-      searchTerm: ''
+      searchTerm: '',
+      trigRead: false
     }
   },
   computed: {
@@ -152,6 +154,12 @@ export default {
       if ((this.remote && val) || (val === '' && !this.value) || (val === '' && this.isOpen)) {
         return this.debouncedRemote(val)
       }
+    }
+  },
+  created () {
+    const checkread = this.$route.query.read
+    if (checkread) {
+      this.trigRead = true
     }
   },
   methods: {
