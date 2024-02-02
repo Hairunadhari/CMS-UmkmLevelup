@@ -192,11 +192,13 @@
                 </div>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="video">
-                <label class="form-check-label" for="video">Video (max: 2048 kb)</label>
-                <input type="file" style="display: none;" class="form-control" accept=".mp4, .webm, .mkv"
-                  id="input-video" name="video">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" >
+                <label class="form-check-label" for="flexRadioDefault2">Link Embedded Video</label>
+                <div id="input-link" style="display: none">
+                  <input type="text" class="form-control mb-2"  name="link_video" id="link-video">
+                </div>
               </div>
+
             </div>
           </div>
           <hr />
@@ -264,7 +266,7 @@
             // }
             // Gantilah window.location.href dengan URL yang sesuai
             window.location.href = "";
-            // console.log('te');
+            // console.log('tes');
             
         }
     });
@@ -307,16 +309,26 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
   $("#table").dataTable({});
 
 </script>
-@if (Session::has('error'))
-<script>
-  Swal.fire({
-    title: "Ada Kesalahan!",
-    text: "{{Session::get('error')}}",
-    icon: "error",
-  });
+    @if (Session::has('error'))
+    <script>
+      Swal.fire({
+        title: "Ada Kesalahan!",
+        text: "{{Session::get('error')}}",
+        icon: "error",
+      });
 
-</script>
-@endif
+    </script>
+    @endif
+    @if (Session::has('success'))
+    <script>
+      Swal.fire({
+        title: "Notifikasi!",
+        text: "{{Session::get('success')}}",
+        icon: "success",
+      });
+
+    </script>
+    @endif
 <script>
   $(document).ready(function () {
     $('.select2').select2({
