@@ -210,7 +210,7 @@ class StoreFormSubmissionJob implements ShouldQueue
 
         // Make sure we retrieve the file in tmp storage, move it to persistent
         $fileName = PublicFormController::TMP_FILE_UPLOAD_PATH.'/'.$fileNameParser->uuid;
-        if (!Storage::disk('local')->exists($fileName)) {
+        if (!Storage::disk('s3')->exists($fileName)) {
             // File not found, we skip
             return $value;
         }
@@ -223,7 +223,7 @@ class StoreFormSubmissionJob implements ShouldQueue
             'form_id' => $this->form->id,
             'form_slug' => $this->form->slug,
         ]);
-        Storage::disk('local')->move($fileName, $completeNewFilename);
+        Storage::disk('s3')->move($fileName, $completeNewFilename);
 
         return $fileNameParser->getMovedFileName();
     }
@@ -238,7 +238,7 @@ class StoreFormSubmissionJob implements ShouldQueue
         $newPath = Str::of(PublicFormController::FILE_UPLOAD_PATH)->replace('?', $this->form->id);
         $completeNewFilename = $newPath.'/'.$fileName;
 
-        Storage::disk('local')->put($completeNewFilename, base64_decode(explode(',', $value)[1]));
+        Storage::disk('s3')->put($completeNewFilename, base64_decode(explode(',', $value)[1]));
 
         return $fileName;
     }

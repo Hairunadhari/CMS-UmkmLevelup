@@ -8,7 +8,9 @@
         <span v-if="required" class="text-red-500 required-dot">*</span>
       </label>
     </slot>
-    <input :id="id?id:name" v-model="compVal" :disabled="disabled"
+    <input :id="id?id:name" v-model="compVal"
+           :disabled="disabled"
+           :readonly="trigRead"
            :type="nativeType"
            :style="inputStyle"
            :class="[theme.default.input,{ 'ring-red-500 ring-2': hasValidation && form.errors.has(name), 'cursor-not-allowed bg-gray-200':disabled }]"
@@ -42,10 +44,12 @@ export default {
     min: { type: Number, required: false, default: null },
     max: { type: Number, required: false, default: null },
     maxCharLimit: { type: Number, required: false, default: null },
-    showCharLimit: { type: Boolean, required: false, default: false },
+    showCharLimit: { type: Boolean, required: false, default: false }, 
   },
 
-  data: () => ({}),
+  data: () => ({
+    trigRead: false
+  }),
 
   computed: {
     compVal: {
@@ -67,14 +71,19 @@ export default {
         return this.content
       }
     },
-    charCount() {
+    charCount () {
       return (this.compVal) ? this.compVal.length : 0
     }
   },
 
   watch: {},
 
-  created () {},
+  created () {
+    const checkread = this.$route.query.read
+    if (checkread) {
+      this.trigRead = true
+    }
+  },
 
   methods: {
     onChange (event) {

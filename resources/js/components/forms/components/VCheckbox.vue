@@ -7,7 +7,7 @@
       type="checkbox"
       :class="sizeClasses"
       class="rounded border-gray-500 cursor-pointer"
-      :disabled="disabled"
+      :disabled="trigRead"
       @click="handleClick"
     >
     <label :for="id || name" class="text-gray-700 dark:text-gray-300 ml-2" :class="{'cursor-not-allowed':disabled}">
@@ -30,7 +30,8 @@ export default {
   },
 
   data: () => ({
-    internalValue: false
+    internalValue: false,
+    trigRead: false
   }),
 
   computed: {
@@ -67,6 +68,10 @@ export default {
 
     if ('checked' in this.$options.propsData) {
       this.internalValue = this.checked
+    }
+    const checkread = this.$route.query.read
+    if (checkread) {
+      this.trigRead = true
     }
   },
 
