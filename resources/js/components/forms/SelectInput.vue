@@ -16,7 +16,6 @@
               :theme="theme"
               :has-error="hasValidation && form.errors.has(name)"
               :allowCreation="allowCreation"
-
               @update-options="updateOptions"
     >
       <template #selected="{option}">
@@ -87,7 +86,7 @@ export default {
     }
   },
   computed: {
-    finalOptions(){
+    finalOptions () {
       return this.options.concat(this.additionalOptions)
     }
   },
@@ -100,7 +99,7 @@ export default {
       return null
     },
     updateOptions(newItem) {
-      if(newItem){
+      if (newItem) {
         this.additionalOptions.push(newItem)
       }
     }
