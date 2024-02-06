@@ -170,10 +170,11 @@
             <label for="file" class="form-label">Upload File Materi</label>
             <div class="form-group">
               <div class="form-check mb-1">
-                <label class="form-check-label" for="pdf">PDF (max: 50 mb)</label>
-                <div id="input-pdf">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
+                <label class="form-check-label" for="flexCheckChecked" >PDF (max: 50 mb)</label>
+                <div id="input-pdf" style="display: none">
                   <input type="file" class="form-control mb-2" name="file" accept=".pdf" aria-describedby="fileHelp"
-                    id="value-pdf">
+                    id="input-value-pdf">
                   <div class="progress progrespdf mb-3" style="display: none">
                     <div class="bar-pdf"></div>
                     <div class=" percent-pdf">0%</div>
@@ -181,10 +182,10 @@
                 </div>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
                 <label class="form-check-label" for="flexRadioDefault1">Video (max: 100 mb)</label>
-                <div id="input-video" >
-                  <input type="file" class="form-control mb-2" accept=".mp4, .webm, .mkv" name="video" id="value-video">
+                <div id="input-video" style="display: none">
+                  <input type="file" class="form-control mb-2" accept=".mp4, .webm, .mkv" name="video" id="input-value-video">
                   <div class="progress progresvideo mb-3" style="display: none">
                     <div class="bar"></div>
                     <div class="percent">0%</div>
@@ -195,7 +196,7 @@
                 <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" >
                 <label class="form-check-label" for="flexRadioDefault2">Link Embedded Video</label>
                 <div id="input-link" style="display: none">
-                  <input type="text" class="form-control mb-2"  name="link_video" id="link-video">
+                  <input type="text" class="form-control mb-2"  name="link_video" id="input-link-video">
                 </div>
               </div>
 
@@ -275,10 +276,27 @@
 
 
 
+document.getElementById('flexCheckChecked').addEventListener('click', function () {
+    if (this.checked) {
+      document.getElementById('input-pdf').style.display = 'block';
+      document.getElementById('input-value-pdf').required = true;
+    }else{
+      document.getElementById('input-pdf').style.display = 'none';
+      document.getElementById('input-value-pdf').required = false;
+      document.getElementById('input-value-pdf').value = '';
+
+    }
+  });
+
 document.getElementById('flexRadioDefault1').addEventListener('click', function () {
     if (this.checked) {
       document.getElementById('input-video').style.display = 'block';
       document.getElementById('input-link').style.display = 'none';
+      document.getElementById('input-value-video').required = true;
+      document.getElementById('input-link-video').required = false;
+      
+      // link embed
+      document.getElementById('input-link-video').value = '';
     }
   });
 
@@ -286,6 +304,10 @@ document.getElementById('flexRadioDefault1').addEventListener('click', function 
     if (this.checked) {
       document.getElementById('input-link').style.display = 'block';
       document.getElementById('input-video').style.display = 'none';
+      document.getElementById('input-link-video').required = true;
+      document.getElementById('input-value-video').required = false;
+      document.getElementById('input-value-video').value = '';
+
     }
   });
 
