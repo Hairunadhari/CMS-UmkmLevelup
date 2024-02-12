@@ -199,7 +199,7 @@ class LmsController extends Controller
         } catch (Throwable $th) {
             DB::rollback();
             // dd($th);
-            return redirect()->back()->with(['error' => 'Data Gagal Ditambahkan! ' + $th]);
+            return redirect()->back()->with(['error' => 'Data Gagal Ditambahkan! '.$th]);
             // throw $th;
         }
 
@@ -408,8 +408,8 @@ class LmsController extends Controller
         } catch (Throwable $th) {
             DB::rollback();
             //throw $th;
-            dd($th);
-            return redirect()->back()->with(['error'=>'Data Gagal DiHapus!']);
+            // dd($th);
+            return redirect()->back()->with(['error'=>'Data Gagal DiHapus!, '.$th]);
         }
 
         return redirect('/'.$data->nama.'/sub-materi/'.$data->id)->with(['success'=>'Data Berhasil DiHapus!']);

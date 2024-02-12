@@ -35,7 +35,7 @@
                 </a>
                 <div class="float-right">
                     <b>Tgl Regist</b> : 
-                    <span class="badge badge-xs badge-info" style="padding: 7px 12px;font-size:12px"><i class="fa fa-calendar"></i> {{ \Carbon\Carbon::parse($data->updated_at)->locale('id')->format('j F Y')}}</span>
+                    <span class="badge badge-xs badge-info" style="padding: 7px 12px;font-size:12px"><i class="fa fa-calendar"></i> {{ \Carbon\Carbon::parse($data->email_verified_at)->locale('id')->format('j F Y')}}</span>
                     <td></td>
 
                 </div>
@@ -73,7 +73,7 @@
                 </a>
                 <div class="float-right">
                     <b>Tgl Submit</b> : 
-                    <span class="badge badge-xs badge-warning" style="padding: 7px 12px;font-size:12px"><i class="fa fa-calendar"></i> {{$data->email_verified_at != null ? \Carbon\Carbon::parse($data->email_verified_at)->locale('id')->format('j F Y') : ''}}</span>
+                    <span class="badge badge-xs badge-warning" style="padding: 7px 12px;font-size:12px"><i class="fa fa-calendar"></i> {{$data->updated_at != null ? \Carbon\Carbon::parse($data->updated_at)->locale('id')->format('j F Y') : ''}}</span>
                     <td></td>
 
                 </div>
