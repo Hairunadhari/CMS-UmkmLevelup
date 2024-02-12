@@ -231,8 +231,8 @@
         },
         uploadProgress: function (event, position, total, percentComplete) {
             var percentVal = percentComplete + '%';
-            var pdfFile = $('#value-pdf')[0].files[0];
-            var videoFile = $('#value-video')[0].files[0];
+            var pdfFile = $('#input-value-pdf')[0].files[0];
+            var videoFile = $('#input-value-video')[0].files[0];
 
             if (pdfFile && !videoFile) {
                 // Jika hanya input PDF
