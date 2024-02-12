@@ -254,6 +254,19 @@ class LmsController extends Controller
     //         ->leftJoin('m_materi','user_progres_materis.materi_id','=','m_materi.id')
     //         ->groupBy('user_progres_materis.materi_id', 'm_materi.nama', 'users.name','users.id')
     //         ->get();
+    // $data = DB::table('user_progres_materis')
+    // ->select(
+    //     'user_progres_materis.materi_id', 
+    //     'm_materi.nama', 
+    //     'users.name', 
+    //     'users.id', 
+    //     DB::raw('COUNT(user_progres_materis.id) as jumlah_user'),
+    //     DB::raw('COUNT(user_progres_materis.sub_materi_id) as jumlah_sub_materi_user'))
+    //     ->leftJoin('users','user_progres_materis.user_id','=','users.id')
+    //     ->leftJoin('m_materi','user_progres_materis.materi_id','=','m_materi.id')
+    //     ->groupBy('user_progres_materis.materi_id', 'm_materi.nama', 'users.name','users.id')
+    //     ->where('status',1)
+    //     ->get();
     //    dd($data);
         if (request()->ajax()) {
             $data = DB::table('user_progres_materis')
@@ -281,7 +294,14 @@ class LmsController extends Controller
         ->select('nama')
         ->find($materiid);
         // dd($materi);
-        $all_sub_materi = DB::table('t_sub_materi')->where('id_materi',$materiid)->where('aktif',1)->get();
+        $all_sub_materi = DB::table('t_sub_materi')
+        ->select('t_sub_materi.id','t_sub_materi.nama','t_sub_materi_file.video_url')
+        ->leftJoin('t_sub_materi_file','t_sub_materi.id','=','t_sub_materi_file.id_sub_materi')
+        ->where('id_materi',$materiid)
+        ->where('t_sub_materi.aktif',1)
+        ->where('t_sub_materi_file.aktif',1)
+        ->get();
+
         $materi_progres_user = DB::table('user_progres_materis')
         ->select('user_progres_materis.*','t_sub_materi.nama')
         ->leftJoin('t_sub_materi','user_progres_materis.sub_materi_id','=','t_sub_materi.id')
@@ -292,6 +312,7 @@ class LmsController extends Controller
         foreach ($materi_progres_user as $item) {
             $sub_materi_yg_dikerjain[$item->sub_materi_id] = $item->progres;
         }
+        // dd($all_sub_materi);
 
         return view('detail-user-progres',compact('user','materi','all_sub_materi','sub_materi_yg_dikerjain'));
     }
