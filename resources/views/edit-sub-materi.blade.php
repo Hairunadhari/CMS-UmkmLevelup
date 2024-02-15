@@ -70,8 +70,8 @@
                   </div>
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                  <label class="form-check-label" for="flexRadioDefault1">Video (max: 100 mb)</label>
+                  <input class="form-check-input" type="checkbox" id="flexCheckDefault">
+                  <label class="form-check-label" for="flexCheckDefault">Video (max: 100 mb)</label>
                   <div id="input-video" style="display: none">
                     <input type="file" class="form-control mb-2" accept=".mp4, .webm, .mkv" name="video" id="input-value-video">
                     <div class="progress progresvideo mb-3" style="display: none">
@@ -81,7 +81,7 @@
                   </div>
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" >
+                  <input class="form-check-input" type="checkbox" id="flexRadioDefault2">
                   <label class="form-check-label" for="flexRadioDefault2">Link Embedded Video</label>
                   <div id="input-link" style="display: none">
                     <input type="text" class="form-control mb-2"  name="link_video" id="input-link-video">
@@ -170,25 +170,35 @@ document.getElementById('flexCheckChecked').addEventListener('click', function (
     }
   });
 
-document.getElementById('flexRadioDefault1').addEventListener('click', function () {
+  document.getElementById('flexCheckDefault').addEventListener('click', function () {
     if (this.checked) {
       document.getElementById('input-video').style.display = 'block';
-      document.getElementById('input-link').style.display = 'none';
       document.getElementById('input-value-video').required = true;
-      document.getElementById('input-link-video').required = false;
-      
+      document.getElementById('flexRadioDefault2').checked = false;
+
       // link embed
+      document.getElementById('input-link-video').required = false;
+      document.getElementById('input-link').style.display = 'none';
       document.getElementById('input-link-video').value = '';
+    }else{
+      document.getElementById('input-video').style.display = 'none';
+      document.getElementById('input-value-video').value = '';
+      
     }
   });
 
   document.getElementById('flexRadioDefault2').addEventListener('click', function () {
     if (this.checked) {
       document.getElementById('input-link').style.display = 'block';
-      document.getElementById('input-video').style.display = 'none';
       document.getElementById('input-link-video').required = true;
+      
+      document.getElementById('input-video').style.display = 'none';
       document.getElementById('input-value-video').required = false;
       document.getElementById('input-value-video').value = '';
+      document.getElementById('flexCheckDefault').checked = false;
+    }else{
+      document.getElementById('input-link').style.display = 'none';
+      document.getElementById('input-link-video').value = '';
 
     }
   });
