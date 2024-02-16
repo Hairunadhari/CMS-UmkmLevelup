@@ -694,7 +694,7 @@ class KuesionerController extends Controller
                   <td>".$item->nama_usaha."</td>
                   <td>".$item->name."</td>
                   <td>".($item->import == 0 ? 'App' : 'G-form')."</td>
-                  <td>".$item->final_level."</td>
+                  <td>".$item->level."</td>
                   <td>".Carbon::parse($item->created_at)->locale('id')->format('j F Y')."</td>
               </tr>";
             }
