@@ -353,7 +353,7 @@ class KuesionerController extends Controller
                 // Files
                 if ($value['type'] == 'files') {
                   foreach ($answer[$value['id']] as $ans) {
-                    $val .= $ans;
+                    $val .= "<a target='_blank' href='".url('/')."/api/forms/public/".$d['data']->form_id."/submissions/file/".$ans."''>".$ans."</a><br>";
                   }
                 }
               }else{
