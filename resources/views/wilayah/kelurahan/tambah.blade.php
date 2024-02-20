@@ -61,36 +61,38 @@
     @endif
 <script>
      $(document).ready(function () {
-            $('#id_provinsi').on('change', function () {
-                var provinsi = this.value;
-                $('#id_kabupaten').html('');
-                $('#id_kecamatan').html('');
-                $.ajax({
-                    url: "get-kabupaten-by-provinsi/"+provinsi,
-                    type: 'get',
-                    success: function (res) {
-                        $('#id_kabupaten').html('<option value="" selected disabled>-- Pilih Kabupaten --</option>');
-                        $.each(res, function (key, value) {
-                            $('#id_kabupaten').append('<option value="' + value.id_kabupaten + '">' + value.nama_kabupaten + '</option>');
-                        });
-                    }
-                });
-            });
-            $('#id_kabupaten').on('change', function () {
-                var kabupaten = this.value;
-                $('#id_kecamatan').html('');
-                $.ajax({
-                    url: "get-kecamatan-by-kabupaten/"+kabupaten,
-                    type: 'get',
-                    success: function (res) {
-                        $('#id_kecamatan').html('<option value="" selected disabled>-- Pilih Kecamatan --</option>');
-
-                        $.each(res, function (key, value) {
-                            $('#id_kecamatan').append('<option value="' + value.id_kecamatan + '">' + value.nama_kecamatan + '</option>');
-                        });
-                    }
-                });
+        $('#id_provinsi').on('change', function () {
+            var provinsi = this.value;
+            $('#id_kabupaten').html('');
+            $('#id_kecamatan').html('');
+            $.ajax({
+                url: "get-kabupaten-by-provinsi/"+provinsi,
+                type: 'get',
+                success: function (res) {
+                    console.log(res);
+                    $('#id_kabupaten').html('<option value="" selected disabled>-- Pilih Kabupaten --</option>');
+                    $.each(res, function (key, value) {
+                        $('#id_kabupaten').append('<option value="' + value.id_kabupaten + '">' + value.nama_kabupaten + '</option>');
+                    });
+                }
             });
         });
+        $('#id_kabupaten').on('change', function () {
+            var kabupaten = this.value;
+            $('#id_kecamatan').html('');
+            $.ajax({
+                url: "/get-kecamatan-by-kabupaten/"+kabupaten,
+                type: 'get',
+                success: function (res) {
+                    // console.log('data kecamatan',res);
+                    $('#id_kecamatan').html('<option value="" selected disabled>-- Pilih Kecamatan --</option>');
+
+                    $.each(res, function (key, value) {
+                        $('#id_kecamatan').append('<option value="' + value.id_kecamatan + '">' + value.nama_kecamatan + '</option>');
+                    });
+                }
+            });
+        });
+    });
 </script>
 @endsection

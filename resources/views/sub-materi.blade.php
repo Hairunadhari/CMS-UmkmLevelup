@@ -171,7 +171,7 @@
             <div class="form-group">
               <div class="form-check mb-1">
                 <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
-                <label class="form-check-label" for="flexCheckChecked" >PDF (max: 50 mb)</label>
+                <label class="form-check-label" for="flexCheckChecked">PDF (max: 50 mb)</label>
                 <div id="input-pdf" style="display: none">
                   <input type="file" class="form-control mb-2" name="file" accept=".pdf" aria-describedby="fileHelp"
                     id="input-value-pdf">
@@ -182,10 +182,11 @@
                 </div>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                <label class="form-check-label" for="flexRadioDefault1">Video (max: 100 mb)</label>
+                <input class="form-check-input" type="checkbox" id="flexCheckDefault">
+                <label class="form-check-label"  for="flexCheckDefault">Video (max: 100 mb)</label>
                 <div id="input-video" style="display: none">
-                  <input type="file" class="form-control mb-2" accept=".mp4, .webm, .mkv" name="video" id="input-value-video">
+                  <input type="file" class="form-control mb-2" accept=".mp4, .webm, .mkv" name="video"
+                    id="input-value-video">
                   <div class="progress progresvideo mb-3" style="display: none">
                     <div class="bar"></div>
                     <div class="percent">0%</div>
@@ -193,10 +194,10 @@
                 </div>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" >
+                <input class="form-check-input" type="checkbox"  id="flexRadioDefault2">
                 <label class="form-check-label" for="flexRadioDefault2">Link Embedded Video</label>
                 <div id="input-link" style="display: none">
-                  <input type="text" class="form-control mb-2"  name="link_video" id="input-link-video">
+                  <input type="text" class="form-control mb-2" name="link_video" id="input-link-video">
                 </div>
               </div>
 
@@ -213,7 +214,7 @@
 </form>
 
 <script>
- $(document).ready(function () {
+  $(document).ready(function () {
     var barPdf = $('.bar-pdf');
     var percentPdf = $('.percent-pdf');
     var barVideo = $('.bar');
@@ -221,66 +222,66 @@
     var submitButton = $('#submit-button');
 
     $('#tambahsubmateri').ajaxForm({
-        beforeSend: function () {
-            submitButton.prop('disabled', true);
-            var percentVal = '0%';
-            barPdf.width(percentVal);
-            percentPdf.html(percentVal);
-            barVideo.width(percentVal);
-            percentVideo.html(percentVal);
-        },
-        uploadProgress: function (event, position, total, percentComplete) {
-            var percentVal = percentComplete + '%';
-            var pdfFile = $('#input-value-pdf')[0].files[0];
-            var videoFile = $('#input-value-video')[0].files[0];
+      beforeSend: function () {
+        submitButton.prop('disabled', true);
+        var percentVal = '0%';
+        barPdf.width(percentVal);
+        percentPdf.html(percentVal);
+        barVideo.width(percentVal);
+        percentVideo.html(percentVal);
+      },
+      uploadProgress: function (event, position, total, percentComplete) {
+        var percentVal = percentComplete + '%';
+        var pdfFile = $('#input-value-pdf')[0].files[0];
+        var videoFile = $('#input-value-video')[0].files[0];
 
-            if (pdfFile && !videoFile) {
-                // Jika hanya input PDF
-                $('.progrespdf').show();
-                barPdf.width(percentVal);
-                percentPdf.html(percentVal);
-            } else if (!pdfFile && videoFile) {
-                // Jika hanya input video
-                $('.progresvideo').show();
+        if (pdfFile && !videoFile) {
+          // Jika hanya input PDF
+          $('.progrespdf').show();
+          barPdf.width(percentVal);
+          percentPdf.html(percentVal);
+        } else if (!pdfFile && videoFile) {
+          // Jika hanya input video
+          $('.progresvideo').show();
 
-                barVideo.width(percentVal);
-                percentVideo.html(percentVal);
-            } else if (pdfFile && videoFile) {
-                // Jika keduanya diisi
-                $('.progrespdf').show();
-                $('.progresvideo').show();
+          barVideo.width(percentVal);
+          percentVideo.html(percentVal);
+        } else if (pdfFile && videoFile) {
+          // Jika keduanya diisi
+          $('.progrespdf').show();
+          $('.progresvideo').show();
 
-                barPdf.width(percentVal);
-                percentPdf.html(percentVal);
-                barVideo.width(percentVal);
-                percentVideo.html(percentVal);
-            }
-        },
-        complete: function (xhr) {
-            submitButton.prop('disabled', false);
-            // Alert atau tindakan lainnya setelah pengunggahan berhasil
-            // var responseData = xhr.responseJSON;
-            // if (responseData.success) {
-            //     var name = responseData.name;
-            //     var id = responseData.id;
-            //     window.location.href = "";
-            // }
-            // Gantilah window.location.href dengan URL yang sesuai
-            window.location.href = "";
-            // console.log('tes');
-            
+          barPdf.width(percentVal);
+          percentPdf.html(percentVal);
+          barVideo.width(percentVal);
+          percentVideo.html(percentVal);
         }
+      },
+      complete: function (xhr) {
+        submitButton.prop('disabled', false);
+        // Alert atau tindakan lainnya setelah pengunggahan berhasil
+        // var responseData = xhr.responseJSON;
+        // if (responseData.success) {
+        //     var name = responseData.name;
+        //     var id = responseData.id;
+        //     window.location.href = "";
+        // }
+        // Gantilah window.location.href dengan URL yang sesuai
+        window.location.href = "";
+        // console.log('tes');
+
+      }
     });
-});
+  });
 
 
 
 
-document.getElementById('flexCheckChecked').addEventListener('click', function () {
+  document.getElementById('flexCheckChecked').addEventListener('click', function () {
     if (this.checked) {
       document.getElementById('input-pdf').style.display = 'block';
       document.getElementById('input-value-pdf').required = true;
-    }else{
+    } else {
       document.getElementById('input-pdf').style.display = 'none';
       document.getElementById('input-value-pdf').required = false;
       document.getElementById('input-value-pdf').value = '';
@@ -288,25 +289,35 @@ document.getElementById('flexCheckChecked').addEventListener('click', function (
     }
   });
 
-document.getElementById('flexRadioDefault1').addEventListener('click', function () {
+  document.getElementById('flexCheckDefault').addEventListener('click', function () {
     if (this.checked) {
       document.getElementById('input-video').style.display = 'block';
-      document.getElementById('input-link').style.display = 'none';
       document.getElementById('input-value-video').required = true;
-      document.getElementById('input-link-video').required = false;
-      
+      document.getElementById('flexRadioDefault2').checked = false;
+
       // link embed
+      document.getElementById('input-link-video').required = false;
+      document.getElementById('input-link').style.display = 'none';
       document.getElementById('input-link-video').value = '';
+    }else{
+      document.getElementById('input-video').style.display = 'none';
+      document.getElementById('input-value-video').value = '';
+      
     }
   });
 
   document.getElementById('flexRadioDefault2').addEventListener('click', function () {
     if (this.checked) {
       document.getElementById('input-link').style.display = 'block';
-      document.getElementById('input-video').style.display = 'none';
       document.getElementById('input-link-video').required = true;
+      
+      document.getElementById('input-video').style.display = 'none';
       document.getElementById('input-value-video').required = false;
       document.getElementById('input-value-video').value = '';
+      document.getElementById('flexCheckDefault').checked = false;
+    }else{
+      document.getElementById('input-link').style.display = 'none';
+      document.getElementById('input-link-video').value = '';
 
     }
   });
@@ -331,26 +342,26 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
   $("#table").dataTable({});
 
 </script>
-    @if (Session::has('error'))
-    <script>
-      Swal.fire({
-        title: "Ada Kesalahan!",
-        text: "{{Session::get('error')}}",
-        icon: "error",
-      });
+@if (Session::has('error'))
+<script>
+  Swal.fire({
+    title: "Ada Kesalahan!",
+    text: "{{Session::get('error')}}",
+    icon: "error",
+  });
 
-    </script>
-    @endif
-    @if (Session::has('success'))
-    <script>
-      Swal.fire({
-        title: "Notifikasi!",
-        text: "{{Session::get('success')}}",
-        icon: "success",
-      });
+</script>
+@endif
+@if (Session::has('success'))
+<script>
+  Swal.fire({
+    title: "Notifikasi!",
+    text: "{{Session::get('success')}}",
+    icon: "success",
+  });
 
-    </script>
-    @endif
+</script>
+@endif
 <script>
   $(document).ready(function () {
     $('.select2').select2({
