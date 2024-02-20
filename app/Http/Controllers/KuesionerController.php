@@ -243,6 +243,8 @@ class KuesionerController extends Controller
                 if ($value['type'] == 'checkbox') {
                   // Checkbox
                  $val = $answer[$value['id']] == true ? '<span class="badge badge-xs badge-success"><i class="fa fa-check"></i></span>' : '<span class="badge badge-xs badge-danger"><i class="fa fa-times"></i></span>';
+                }elseif($value['type'] == 'url'){
+                  $val = "<a target='_blank' href='".$answer[$value['id']]."'>".$answer[$value['id']]."</a>";
                 }else{
                   // Others
                   $val = $answer[$value['id']];
@@ -361,7 +363,10 @@ class KuesionerController extends Controller
                 if ($value['type'] == 'checkbox') {
                   // Checkbox
                  $val = $answer[$value['id']] == true ? '<span class="badge badge-xs badge-success"><i class="fa fa-check"></i></span>' : '<span class="badge badge-xs badge-danger"><i class="fa fa-times"></i></span>';
-                }else{
+                }elseif($value['type'] == 'url'){
+                  $val = "<a target='_blank' href='".$answer[$value['id']]."'>".$answer[$value['id']]."</a>";
+                }
+                else{
                   // Others
                   if ($answer[$value['id']] == null or $answer[$value['id']] == false or $answer[$value['id']] == '') {
                     $val = '';
