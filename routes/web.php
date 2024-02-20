@@ -127,7 +127,7 @@ Route::redirect('/', '/login');
     Route::get('/form-edit-kelurahan/{id}', [\App\Http\Controllers\WilayahController::class, 'form_edit_kelurahan']);
     Route::put('/update-kelurahan/{id}', [\App\Http\Controllers\WilayahController::class, 'update_kelurahan']);
     Route::put('/delete-kelurahan/{id}', [\App\Http\Controllers\WilayahController::class, 'delete_kelurahan']);
-
+    Route::get('/hashids/{id}', [\App\Http\Controllers\Auth\UserController::class, 'test']);
 
 
 
