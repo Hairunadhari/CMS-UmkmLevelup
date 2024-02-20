@@ -235,7 +235,7 @@ class KuesionerController extends Controller
               if (is_array($answer[$value['id']])) {
                 if ($value['type'] == 'files') {
                   foreach ($answer[$value['id']] as $ans) {
-                    $val .= $ans;
+                    $val .= "<a target='_blank' href='".url('/')."/api/forms/public/".$d['data']->form_id."/submissions/file/".$ans."''>".$ans."</a><br>";
                   }
                 }
               }else{
@@ -254,7 +254,10 @@ class KuesionerController extends Controller
               $d['data']->html .= '<table class="table table-bordered mx-4">';
               $initTable = 1;
             }
-            $d['data']->html .= '<tr><td style="width:65%; background: #fbfbfb; border: 1px solid #eee !important; font-weight:bold">'.$value['name'].'</td><td style="width:35%;">'.$val.'</td></tr>';
+
+              $d['data']->html .= '<tr><td style="width:65%; background: #fbfbfb; border: 1px solid #eee !important; font-weight:bold">'.$value['name'].'</td><td style="width:35%;">'.$val.'</td></tr>';
+
+
             if ($key == $len -1) {
               $d['data']->html .= '</table>';
             }
