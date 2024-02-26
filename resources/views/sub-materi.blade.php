@@ -260,17 +260,26 @@
       complete: function (xhr) {
         submitButton.prop('disabled', false);
         // Alert atau tindakan lainnya setelah pengunggahan berhasil
-        // var responseData = xhr.responseJSON;
-        // if (responseData.success) {
-        //     var name = responseData.name;
-        //     var id = responseData.id;
-        //     window.location.href = "";
-        // }
+        console.log(xhr.responseJSON);
+        if (xhr.responseJSON.success) {
+            window.location.href = "";
+            Swal.fire({
+              title: "Notifikasi!",
+              text: xhr.responseJSON.success,
+              icon: "success",
+            });
+        }else{
+          Swal.fire({
+            title: "Ada Kesalahan!",
+            text: xhr.responseJSON,
+            icon: "error",
+          });
+        }
         // Gantilah window.location.href dengan URL yang sesuai
-        window.location.href = "";
+        // window.location.href = "";
         // console.log('tes');
 
-      }
+      },
     });
   });
 

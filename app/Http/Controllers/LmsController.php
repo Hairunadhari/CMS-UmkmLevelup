@@ -106,7 +106,7 @@ class LmsController extends Controller
         }
         $validator = Validator::make($request->all(), [
             'video' => 'max:100000', // Tambahkan validasi untuk logo
-            'file' => 'max:50000', // Tambahkan validasi untuk logo
+            'file' => 'max:500000', // Tambahkan validasi untuk logo
         ],
         [
             'video'=>'Maksimal Ukuran Video 100 mb',
@@ -117,7 +117,7 @@ class LmsController extends Controller
             $messages = $validator->messages();
             $alertMessage = $messages->first();
           
-            return redirect()->back()->with(['error' => $alertMessage]);
+            return response()->json($alertMessage);
         }
 
         try {
