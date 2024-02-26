@@ -7,6 +7,7 @@ use App\Http\Resources\UserResource;
 // use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Vinkla\Hashids\Facades\Hashids;
 use DB;
 
 class UserController extends Controller
@@ -61,4 +62,9 @@ class UserController extends Controller
         ->get();
         return response()->json($users);
     }   
+
+    public function test($id) {
+        echo Hashids::encode($id);
+        
+    }
 }
