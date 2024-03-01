@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Tambah Materi')
+@section('title', 'List Sub Materi')
 
 @push('style')
 <style>
@@ -79,8 +79,20 @@
 </div>
 
 <div class="section-body">
-  <h2 class="section-title">Daftar Sub Materi : '{{$name}}' </h2>
-  <p class="section-lead">Sub materi yang diperlukan untuk kategori materi yang sebelumnya.</p>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="/list-materi">
+          List Kategori Materi 
+        </a>
+    </li>        
+      <li class="breadcrumb-item">
+        List Sub Materi '{{$name}}' 
+    </li>        
+    </ol>
+  </nav>
+  {{-- <h2 class="section-title"></h2> --}}
+  <p class="section-leadx">Sub materi yang diperlukan untuk kategori materi yang sebelumnya.</p>
   {{-- <h1>tes{{ env("APP_CHILD") }}</h1> --}}
 
   <div class="card">

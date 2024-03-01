@@ -10,6 +10,13 @@
           class="text">+Tambah Provinsi</span></a>
     </div>
     <div class="section-body">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            List Provinsi
+        </li>        
+        </ol>
+      </nav>
       <div class="card">
         <div class="card-body"><strong class="text-dark">List Provinsi </strong>
           <hr />

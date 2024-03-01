@@ -28,8 +28,14 @@ href="https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css">
       </div>
 
       <div class="section-body">
-        <h2 class="section-title">List Kuesioner - Verified</h2>
-        <p class="section-lead">List daftar responden yang sudah mengisi kuesioner dengan status verified.</p>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item">
+                List Kuesioner - Verified
+            </li>        
+            </ol>
+          </nav>
+        <p class="section-leadx">List daftar responden yang sudah mengisi kuesioner dengan status verified.</p>
         <div class="card">
             {{-- <div class="card-header"> --}}
                 {{-- <h4>Set Level</h4> --}}

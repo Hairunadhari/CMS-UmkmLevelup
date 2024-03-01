@@ -25,8 +25,14 @@
           </div>
 
             <div class="section-body">
-                    <h2 class="section-title">List Setting Level</h2>
-                    <p class="section-lead">List daftar setting level.</p>
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item">
+                    List Setting Level
+                </li>        
+                </ol>
+              </nav>
+                    <p class="section-leadx">List daftar setting level.</p>
                 <div class="card">
                     {{-- <div class="card-header"> --}}
                         {{-- <h4>Set Level</h4> --}}

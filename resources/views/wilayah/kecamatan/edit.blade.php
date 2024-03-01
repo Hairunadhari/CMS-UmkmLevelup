@@ -3,8 +3,23 @@
 @section('main')
 <div class="main-content">
   <section class="section">
+    <div class="section-header">
+      <h1 style="width:87%">Edit Kecamatan</h1>
+    </div>
+  <div class="section-body">
+      <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="/kecamatan">
 
-    <div class="section-body">
+                  List Kecamatan
+              </a>
+          </li>   
+          <li  class="breadcrumb-item">
+              Edit 
+          </li>        
+          </ol>
+        </nav>
       <div class="card">
         <div class="card-header">
           <h5>Form Edit kecamatan</h5>

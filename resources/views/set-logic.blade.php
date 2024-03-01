@@ -24,8 +24,20 @@
       </div>
     </div>
     <div class="section-body">
-      <h2 class="section-title">Logic Level "{{$data->name}}"</h2>
-      <p class="section-lead">List Logic untuk mendapatkan level dari input serta parameter output yang ditargetkan.</p>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="/set-level">
+
+              List Setting Level
+            </a>
+        </li>   
+          <li class="breadcrumb-item">
+              Logic Level "{{$data->name}}"
+        </li>   
+        </ol>
+      </nav>
+      <p class="section-leadx">List Logic untuk mendapatkan level dari input serta parameter output yang ditargetkan.</p>
       <div class="card">
           {{-- <div class="card-header"> --}}
               {{-- <h4>Set Level</h4> --}}

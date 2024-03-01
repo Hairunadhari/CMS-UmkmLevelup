@@ -24,8 +24,17 @@
         </div>
       </div>
       <div class="section-body">
-        <h2 class="section-title">List Kuesioner </h2> 
-        <p class="section-lead">List Kuesioner yang aktif.</p>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item {{ request()->routeIs('/kuesioner-all') ? 'active' : '' }}">
+                @if(request()->routeIs('/kuesioner-all'))
+                    List Kuesioner
+                @endif
+            </li>            
+            </ol>
+          </nav>
+        {{-- <h2 class="section-title">List Kuesioner </h2>  --}}
+        <p class="section-leadx">List Kuesioner yang aktif.</p>
         <div class="row-fluid">
             @forelse ($listKuesioner as $item)
                 <div class="card col-md-4">

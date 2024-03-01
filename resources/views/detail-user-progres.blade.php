@@ -24,6 +24,19 @@
       <h1 style="width:87%">Detail Progres User</h1>
     </div>
     <div class="section-body">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="/user-progres">
+              List Progres User 
+            </a>
+        </li>        
+          <li class="breadcrumb-item">
+              Detail Progres User '{{$user->name}}' 
+        </li>        
+           
+        </ol>
+      </nav>
       <div class="card">
         <div class="card-body">
           @if ($materi == null)

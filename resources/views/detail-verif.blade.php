@@ -26,8 +26,18 @@
       </div>
 
       <div class="section-body">
-        <h2 class="section-title">Data Kuesioner </h2> 
-        <p class="section-lead">Hasil data responden.</p>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item">
+                    <a href="/kuesioner-verif">List Kuesioner - Verified</a>
+            </li>
+            
+              <li class="breadcrumb-item">Detail</a></li>
+              {{-- <li class="breadcrumb-item " aria-current="page">Data</li> --}}
+            </ol>
+          </nav>
+        {{-- <h2 class="section-title">Data Kuesioner </h2>  --}}
+        <p class="section-leadx">Hasil data responden.</p>
         <div class="card">
             <div class="card-body">
                 <a data-toggle="collapse" href="#collapseProfil" style="text-decoration:none; color: #000" role="button" s aria-expanded="false" aria-controls="collapseProfil">

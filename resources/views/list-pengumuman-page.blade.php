@@ -28,8 +28,14 @@ href="https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css">
         </div>
       </div>
       <div class="section-body">
-        <h2 class="section-title">Daftar Pengumuman </h2> 
-        <p class="section-lead">Fitur Pengumuman untuk memberitahukan sebuah event atau sesuatu kepada pelaku UMKM yang terdaftar di dalam sistem.</p>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              List Pengumuman
+          </li>        
+          </ol>
+        </nav>
+        <p class="section-leadx">Fitur Pengumuman untuk memberitahukan sebuah event atau sesuatu kepada pelaku UMKM yang terdaftar di dalam sistem.</p>
         <div class="card">
           <div class="card-body">
             <strong class="text-dark">List Pengumuman </strong>

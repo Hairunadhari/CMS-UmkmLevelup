@@ -25,8 +25,14 @@
         <h1 style="width:87%">Materi Chatting</h1>
       </div>
       <div class="section-body">
-        <h2 class="section-title">Daftar Materi Chatting</h2> 
-        <p class="section-lead">Isi Chat dari setiap user yang mengikuti materi.</p>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              List Materi Chatting
+          </li>        
+          </ol>
+        </nav>
+        <p class="section-leadx">Isi Chat dari setiap user yang mengikuti materi.</p>
         <div class="card">
           <div class="card-body">
             <strong class="text-dark">List Materi </strong>

@@ -317,14 +317,23 @@ class LmsController extends Controller
         return view('detail-user-progres',compact('user','materi','all_sub_materi','sub_materi_yg_dikerjain'));
     }
     public function detail_sub_materi($id){
-        $a = DB::table('t_sub_materi')->find($id);
+        $a = DB::table('t_sub_materi')
+        ->select('t_sub_materi.*','m_materi.nama as nama_materi')
+        ->leftJoin('m_materi','t_sub_materi.id_materi','=','m_materi.id')
+        ->where('t_sub_materi.id',$id)
+        ->first();
+        // dd($a);
         $data = DB::table('t_sub_materi_file')
         ->where('id_sub_materi',$id)
         ->first();
         return view('detail-sub-materi',compact('data','a'));
     }
     public function edit_sub_materi($id){
-        $a = DB::table('t_sub_materi')->find($id);
+        $a = DB::table('t_sub_materi')
+        ->select('t_sub_materi.*','m_materi.nama as nama_materi')
+        ->leftJoin('m_materi','t_sub_materi.id_materi','=','m_materi.id')
+        ->where('t_sub_materi.id',$id)
+        ->first();
         $data = DB::table('t_sub_materi_file')
         ->where('id_sub_materi',$id)
         ->first();
@@ -470,8 +479,11 @@ class LmsController extends Controller
 
     public function sub_materi_chatting_by_id($id){
         $name = DB::table('t_sub_materi')
-        ->select('*')
-        ->where('id',$id)->first();
+        ->select('t_sub_materi.*','m_materi.nama as nama_materi')
+        ->leftJoin('m_materi','t_sub_materi.id_materi','=','m_materi.id')
+        ->where('t_sub_materi.id',$id)
+        ->first();
+        
         $chats = DB::table('materi_chats')
         ->select('materi_chats.*','users.name','users.id')
         ->leftJoin('users','materi_chats.user_id','=','users.id')

@@ -26,8 +26,18 @@
       </div>
 
       <div class="section-body">
-        <h2 class="section-title">Verifikasi </h2> 
-        <p class="section-lead">Memverifikasi final level dengan hasil data responden.</p>
+        {{-- <h2 class="section-title">Verifikasi </h2>  --}}
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/kuesioner-unverif">List Kuesioner - Unverified</a></li>
+              <li class="breadcrumb-item {{ request()->routeIs('verif-page/{id}/{level}') ? 'active' : '' }}">
+                @if(request()->routeIs('verif-page/{id}/{level}'))
+                    Verifikasi
+                @endif
+            </li>
+            </ol>
+          </nav>
+        <p class="section-leadx">Memverifikasi final level dengan hasil data responden.</p>
         <div class="card">
             <div class="card-body">
                 <a data-toggle="collapse" href="#collapseProfil" style="text-decoration:none; color: #000" role="button" s aria-expanded="false" aria-controls="collapseProfil">

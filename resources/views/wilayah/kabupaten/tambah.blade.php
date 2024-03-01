@@ -1,10 +1,25 @@
 @extends('layouts.app')
-@section('title', 'Form Input Kabupaten')
+@section('title', 'Form Input Kabupaten & Kota')
 @section('main')
 <div class="main-content">
   <section class="section">
-    
+    <div class="section-header">
+        <h1 style="width:87%">Input Kabupaten & Kota</h1>
+      </div>
     <div class="section-body">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item">
+                <a href="/kabupaten">
+  
+                    List Kabupaten & Kota
+                </a>
+            </li>   
+            <li  class="breadcrumb-item">
+                Input 
+            </li>        
+            </ol>
+          </nav>
         <div class="card">
             <div class="card-header">
                 <h5>Form Input Kabupaten</h5>
