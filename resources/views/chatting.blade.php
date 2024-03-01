@@ -196,8 +196,24 @@
       <input type="hidden" id="name_user" value="{{session('name')}}">
     </div>
     <div class="section-body">
-      <h2 class="section-title">Daftar Chat Sub Materi '{{$name->nama}}'</h2>
-      <p class="section-lead">Isi Chat dari setiap user yang mengikuti materi.</p>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="/materi-chatting">
+              List Materi Chatting
+            </a>
+        </li>        
+          <li class="breadcrumb-item">
+            <a href="/materi-chatting/{{$name->id_materi}}/materi/{{$name->nama_materi}}">
+              List Sub Materi Chatting '{{$name->nama_materi}}'
+            </a>
+        </li>        
+          <li class="breadcrumb-item">
+            Chat Sub Materi '{{$name->nama}}'
+        </li>        
+        </ol>
+      </nav>
+      <p class="section-leadx">Isi Chat dari setiap user yang mengikuti materi.</p>
       <div class="card">
         <div class="card-body">
           <strong class="text-dark">List Chatting</strong>

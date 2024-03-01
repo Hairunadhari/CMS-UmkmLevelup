@@ -25,8 +25,14 @@
         <h1 style="width:87%">List Progres User</h1>
       </div>
       <div class="section-body">
-        <h2 class="section-title">Daftar Progres User </h2> 
-        <p class="section-lead">Progres User yg sudah mengikuti materi.</p>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              List Progres User
+          </li>        
+          </ol>
+        </nav>
+        <p class="section-leadx">Progres User yg sudah mengikuti materi.</p>
         <div class="card">
           <div class="card-body">
             <strong class="text-dark">List Progres User </strong>

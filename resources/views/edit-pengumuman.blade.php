@@ -10,6 +10,19 @@
     </div>
 
     <div class="section-body">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="/list-pengumuman">
+              List Pengumuman 
+            </a>
+        </li>        
+          <li class="breadcrumb-item">
+            Edit Pengumuman '{{$pengumumanById->judul_notifikasi}}' 
+        </li>        
+           
+        </ol>
+      </nav>
       <div class="card">
         <div class="card-header">
           <h4 style="color: black">Edit Pengumuman '{{$pengumumanById->judul_notifikasi}}'</h4>

@@ -28,8 +28,14 @@
         </div>
       </div>
       <div class="section-body">
-        <h2 class="section-title">Daftar Kategori Materi </h2> 
-        <p class="section-lead">Kategori Materi yang ditampilkan untuk semua UMKM yang terdaftar di sistem.</p>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              List Kategori Materi
+          </li>        
+          </ol>
+        </nav>
+        <p class="section-leadx">Kategori Materi yang ditampilkan untuk semua UMKM yang terdaftar di sistem.</p>
         <div class="card">
           <div class="card-body">
             <strong class="text-dark">List Kategori Materi </strong>

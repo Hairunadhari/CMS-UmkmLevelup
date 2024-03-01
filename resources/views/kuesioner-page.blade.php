@@ -34,8 +34,17 @@
         </div>
       </div>
       <div class="section-body">
-        <h2 class="section-title">Kuesioner Data </h2> 
-        <p class="section-lead">Kuesioner data yang sudah di isi oleh responden.</p>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              @if(request()->routeIs('/kuesioner/{id}'))
+                   Kuesioner Data
+              @endif
+          </li>            
+          </ol>
+        </nav>
+        {{-- <h2 class="section-title">Kuesioner Data </h2>  --}}
+        <p class="section-leadx">Kuesioner data yang sudah di isi oleh responden.</p>
         <div class="card">
           <div class="card-body">
             <strong class="text-dark">Semua Data Kuesioner Responden </strong>
@@ -44,7 +53,7 @@
               <div class="col-12">
                 <div class="table-responsive" style="max-height:400px; overflow:auto">
                     <table class="table table-striped table-bordered table-sm" >
-                    <thead>
+                    {{-- <thead>
                         <tr>
                         {!! $data['head'] !!}
                         </tr>
@@ -56,7 +65,7 @@
                             
                         @endforelse
                     </tbody>
-                    </table>
+                    </table> --}}
                 </div>
               </div>
             </div>

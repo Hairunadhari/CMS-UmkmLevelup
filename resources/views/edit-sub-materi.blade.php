@@ -34,6 +34,24 @@
     </div>
 
     <div class="section-body">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="/list-materi">
+              List Kategori Materi 
+            </a>
+        </li>        
+          <li class="breadcrumb-item">
+            <a href="/{{$a->nama_materi}}/sub-materi/{{$a->id_materi}}">
+                List Sub Materi '{{$a->nama_materi}}' 
+            </a>
+        </li>        
+        </li>        
+          <li class="breadcrumb-item">
+            Edit Sub Materi '{{$a->nama}}' 
+        </li>        
+        </ol>
+      </nav>
       <div class="card">
         <div class="card-header">
           <h4 style="color: black">Edit Sub Materi '{{$a->nama}}'</h4>

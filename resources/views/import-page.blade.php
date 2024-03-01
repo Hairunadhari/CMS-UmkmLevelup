@@ -24,8 +24,14 @@
         </div>
       </div>
       <div class="section-body">
-        <h2 class="section-title">Import Data </h2> 
-        <p class="section-lead">Fitur Import data khusus untuk file excel dengan format header yang sudah ditentukan.</p>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              Import Data
+          </li>   
+          </ol>
+        </nav>
+        <p class="section-leadx">Fitur Import data khusus untuk file excel dengan format header yang sudah ditentukan.</p>
         <div class="card">
             <div class="card-body text-center">
                 <form class="form-inline justify-content-center" id="formLevel" action="{{url('import')}}" method="POST" enctype="multipart/form-data">

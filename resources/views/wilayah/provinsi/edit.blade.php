@@ -3,11 +3,26 @@
 @section('main')
 <div class="main-content">
   <section class="section">
-    
+    <div class="section-header">
+        <h1 style="width:87%">Edit Provinsi</h1>
+      </div>
     <div class="section-body">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item">
+                <a href="/provinsi">
+
+                    List Provinsi
+                </a>
+            </li>   
+            <li  class="breadcrumb-item">
+                Edit 
+            </li>        
+            </ol>
+          </nav>
         <div class="card">
             <div class="card-header">
-                <h5>Form Input Provinsi</h5>
+                <h5>Form Edit Provinsi</h5>
             </div>
             <div class="card-body">
                 <form action="{{url('/update-provinsi',$data->id_provinsi)}}" method="post" enctype="multipart/form-data">
