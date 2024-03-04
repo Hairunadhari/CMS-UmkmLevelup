@@ -229,7 +229,7 @@
                   </div>
                 </header>
 
-                <main class="msger-chat">
+                <main class="msger-chat" id="chats">
                     @foreach ($chats as $chat)
                     @if ($chat->user_id == session('id_user'))
                         
@@ -289,10 +289,9 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
 <!-- Page Specific JS File -->
 <script src="{{ asset('js/page/modules-datatables.js') }}"></script>
 <script>
-      // Fungsi untuk melakukan reload halaman setiap 5 detik
       setInterval(function() {
-        location.reload();
-    }, 5000); // 5000 milidetik = 5 detik
+    $('#chats').load(location.href + ' #chats');
+}, 5000);
 
   const csrfToken = $('meta[name="csrf-token"]').attr('content');
   const msgerForm = get(".msger-inputarea");
