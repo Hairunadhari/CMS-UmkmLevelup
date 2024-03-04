@@ -289,6 +289,11 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
 <!-- Page Specific JS File -->
 <script src="{{ asset('js/page/modules-datatables.js') }}"></script>
 <script>
+      // Fungsi untuk melakukan reload halaman setiap 5 detik
+      setInterval(function() {
+        location.reload();
+    }, 5000); // 5000 milidetik = 5 detik
+
   const csrfToken = $('meta[name="csrf-token"]').attr('content');
   const msgerForm = get(".msger-inputarea");
   let msgerInput = get(".msger-input");
