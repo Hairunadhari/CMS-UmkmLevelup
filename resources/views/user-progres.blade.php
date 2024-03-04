@@ -87,6 +87,8 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
             ordering: false,
             searching: true,
             serverSide: true,
+        stateSave: true,
+
             ajax: '{{ url()->current() }}',
             columns: [{
                     render: function (data, type, row, meta) {

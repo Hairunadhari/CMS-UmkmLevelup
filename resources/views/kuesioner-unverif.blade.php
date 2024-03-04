@@ -157,7 +157,10 @@
 <!-- Page Specific JS File -->
 <script src="{{ asset('js/page/modules-datatables.js') }}"></script>
 <script>
-  $("#table").dataTable({});
+
+  $("#table").dataTable({
+    stateSave: true,
+  });
 
     $( document ).on( "click", ".doVerif", function() {
       // alert('test');
