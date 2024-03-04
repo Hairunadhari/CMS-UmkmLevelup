@@ -101,6 +101,8 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
       ordering: false,
       searching: true,
       serverSide: true,
+      stateSave: true,
+
       ajax: '{{ url()->current() }}',
       columns: [{
           render: function (data, type, row, meta) {
@@ -121,10 +123,11 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
           render: function (data, row) {
             if (data.status_pdf == 1) {
               var a =
-                `<span><a class="btn btn-danger" href="/regenerate-pdf/${data.id}"><i class="fas fa-file-pdf"></i></a></span>`
+                `<span class="btn btn-danger" id="id-management"><input hidden  value="${data.encryptId}"></input><i class="fas fa-file-pdf"></i></span>`
+                // `<span><a class="btn btn-danger" href="/regenerate-pdf/${data.id}" onclick="refreshPage()"><i class="fas fa-file-pdf"></i></a></span>`
             } else {
               var a =
-                `<span><a class="btn btn-primary" target="_blank" href="/pdf/${data.nama_pemilik}-${data.id}.pdf"><i class="far fa-eye"></i></a></span>`
+                `<span><a class="btn  btn-primary" target="_blank" href="/pdf/${data.nama_pemilik}-${data.id}.pdf"><i class="far fa-eye"></i></a></span>`
             }
             return a;
           },
@@ -132,6 +135,29 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
 
       ],
     });
+    
+
+    $(document).on('click', '#id-management', function () {
+      let value = $(this).find('input').val();
+      if (confirm(
+          "Apakah anda ingin menggenerate data ke pdf? "
+          )) {
+
+        $.ajax({
+          url: "/regenerate-pdf/"+value,
+          method: "get",
+          success: function (data) {
+            table.draw();
+            var newWindow = window.open(data, '_blank'); // Buka tautan dalam tab atau jendela baru
+        newWindow.focus(); // Fokuskan tab atau jendela baru
+          },
+          error: function (data) {
+            console.log(data);
+          }
+        });
+      }
+    });
+
     $(document).on('click', '#generatezip', function () {
       if (confirm(
           "Apakah anda ingin menggenerate data ke pdf? jika ya maka 50 data akan di generate pdf dan akan memakan waktu yg lama"

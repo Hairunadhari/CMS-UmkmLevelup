@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use App\Models\ManagementSertifikat;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Database\Query\Builder;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -401,15 +402,19 @@ class KuesionerController extends Controller
 
     public function doVerif(Request $request)
     {
-        // dd($request);
         $affected = DB::table('users')
-        ->where('id', $request->id_user)
-        ->update(['final_level' => $request->level]);
-
+                    ->where('id', $request->id_user)
+                    ->update(['final_level' => $request->level]);
+    
         if ($affected) {
-            return redirect('kuesioner-unverif');
+            // Hitung nomor halaman paginate
+            $pageNumber = ceil($request->id_user / 10); // Anda perlu menyesuaikan jumlah item per halaman
+    
+            // Redirect ke halaman paginate yang sesuai
+            return redirect('kuesioner-unverif?page=' . $pageNumber);
         }
     }
+    
 
     public function all()
     {
@@ -862,6 +867,9 @@ class KuesionerController extends Controller
         ->select('*')
         ->get();
 
+        foreach ($data as $key) {
+          $key->encryptId = Crypt::encrypt($key->id);
+        }
 
         return DataTables::of($data)->make(true);
       }
@@ -922,9 +930,10 @@ class KuesionerController extends Controller
       
     }
 
-    public function generate_ulang_pdf($id){
+    public function generate_ulang_pdf($encryptId){
       try {
           DB::beginTransaction();
+          $id = Crypt::decrypt($encryptId);
           $d = DB::table('management_sertifikats')
           ->select('*')
           ->where('id',$id)
@@ -943,7 +952,7 @@ class KuesionerController extends Controller
           DB::rollback();
           dd($th);
       }
-      return $pdf->download('Sertifikat-UMKM-Level-UP.pdf');
+      return ('/pdf/'.$filename);
     }
 
     public function zipdownload(Request $request){
