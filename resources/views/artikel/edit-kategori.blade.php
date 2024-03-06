@@ -29,7 +29,7 @@
                     @method('put')
                         <div class="form-group">
                             <label>Kategori</label>
-                            <input type="text" class="form-control" value="{{$data->judul}}" name="kategori" required>
+                            <input type="text" class="form-control" value="{{$data->kategori}}" name="kategori" required>
                         </div>
                     <div class="card-footer text-right">
                         <button type="submit" class="btn btn-primary">Save</button>
