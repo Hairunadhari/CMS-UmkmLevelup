@@ -56,6 +56,7 @@
             ordering: false,
             searching: true,
             serverSide: true,
+            stateSave: true,
             ajax: '{{ url()->current() }}',
             columns: [{
                 render: function (data, type, row, meta) {

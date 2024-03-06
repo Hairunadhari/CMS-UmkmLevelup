@@ -42,7 +42,7 @@ href="https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css">
             {{-- </div> --}}
             <div class="card-body">
               <div class="table-responsive">
-                <table class="table table-striped table-hover dt-responsive nowrap" id="example" style="width: 110%">
+                <table class="table table-striped table-hover dt-responsive nowrap" id="table" style="width: 110%">
                     <thead class="thead-light">
                         <tr>
                             <th>No</th>
@@ -134,7 +134,9 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
 <!-- Page Specific JS File -->
 <script src="{{ asset('js/page/modules-datatables.js') }}"></script>
 <script>
-  $("#table").dataTable({});
+  $("#table").dataTable({
+    stateSave:true,
+  });
 
     $( document ).on( "click", ".doVerif", function() {
       // alert('test');
