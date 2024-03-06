@@ -36,7 +36,11 @@ class ArtikelController extends Controller
             DB::rollback();
             dd($th);
         }
-        return redirect('/kategori-artikel')->with('success','Data Berhasil DiTambah!');
+        return redirect('/kategori-artikel')->with('alert',[
+            'title' =>'Notifikasi!',
+            'text' => 'Data Berhasil DiTambah!',
+            'icon' =>'success',
+        ]);
     }
 
     public function edit($encryptId){
@@ -58,7 +62,11 @@ class ArtikelController extends Controller
             //throw $th;
             dd($th);
         }
-        return redirect('/kategori-artikel')->with('success','Data Berhasil DiUpdate!');
+        return redirect('/kategori-artikel')->with('alert',[
+            'title' =>'Notifikasi!',
+            'text' => 'Data Berhasil DiUpdate!',
+            'icon' =>'success',
+        ]);
     }
 
     public function delete($encryptId){
@@ -75,7 +83,11 @@ class ArtikelController extends Controller
             //throw $th;
             dd($th);
         }
-        return redirect('/kategori-artikel')->with('success','Data Berhasil DiHapus!');
+        return redirect('/kategori-artikel')->with('alert',[
+            'title' =>'Notifikasi',
+            'text' => 'Data Berhasil DiHapus!',
+            'icon' =>'success',
+        ]);
     }
 
     public function materi_artikel(){
@@ -218,7 +230,11 @@ class ArtikelController extends Controller
             //throw $th;
             dd($th);
         }
-        return redirect('/materi-artikel')->with('success','Data Berhasil DiUpdate!');
+        return redirect('/materi-artikel')->with('alert',[
+            'title' =>'Notifikasi!',
+            'text' => 'Data Berhasil DiUpdate!',
+            'icon' =>'success',
+        ]);
     }
 
     public function materi_delete($encryptId){
@@ -239,7 +255,11 @@ class ArtikelController extends Controller
             //throw $th;
             dd($th);
         }
-        return redirect('/materi-artikel')->with('success','Data Berhasil DiHapus!');
+        return redirect('/materi-artikel')->with('alert',[
+            'title' =>'Notifikasi!',
+            'text' => 'Data Berhasil DiHapus!',
+            'icon' =>'success',
+        ]);
     }
 
   
