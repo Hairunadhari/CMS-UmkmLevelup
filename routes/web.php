@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ArtikelController;
 // use App\Http\Controllers\SuperLoginController;
 // use App\Http\Controllers\LogoutController;
 // use App\Http\Controllers\SetLevelController;
@@ -128,6 +129,24 @@ Route::redirect('/', '/login');
     Route::put('/update-kelurahan/{id}', [\App\Http\Controllers\WilayahController::class, 'update_kelurahan']);
     Route::put('/delete-kelurahan/{id}', [\App\Http\Controllers\WilayahController::class, 'delete_kelurahan']);
     Route::get('/hashids/{id}', [\App\Http\Controllers\Auth\UserController::class, 'test']);
+    
+    // management artikel
+    Route::get('/kategori-artikel', [ArtikelController::class, 'kategori_artikel']);
+    Route::post('/submit-kategori', [ArtikelController::class, 'submit']);
+    Route::get('/edit-kategori/{id}', [ArtikelController::class, 'edit']);
+    Route::put('/update-kategori/{id}', [ArtikelController::class, 'update']);
+    Route::put('/delete-kategori/{id}', [ArtikelController::class, 'delete']);
+
+    Route::get('/materi-artikel', [ArtikelController::class, 'materi_artikel']);
+    Route::post('/submit-materi', [ArtikelController::class, 'submit_materi']);
+    Route::get('/edit-materi/{id}', [ArtikelController::class, 'edit_materi']);
+    Route::put('/update-materi/{id}', [ArtikelController::class, 'update_materi']);
+
+ 
+Route::get('/abc', function () {
+    return view('a');
+});
+    
 
 
 

@@ -70,6 +70,16 @@
                 </li>
 
 
+                <li class="menu-header">Management Artikel</li>
+                <li class="{{ Request::is('kategori-artikel') ? 'active' : '' }}">
+                    <a class="nav-link"
+                        href="{{url('kategori-artikel')}}"><i class="fa-solid fa-table-cells-large"></i> <span>Kategori</span></a>
+                </li>
+                <li class="{{ Request::is('marteri-artikel') ? 'active' : '' }}">
+                    <a class="nav-link"
+                        href="{{url('materi-artikel')}}"><i class="fas fa-list"></i> <span>List</span></a>
+                </li>
+
                 <li class="menu-header">Management Wilayah</li>
                 <li class="{{ Request::is('provinsi') ? 'active' : '' }}">
                     <a class="nav-link"

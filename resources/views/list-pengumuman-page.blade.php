@@ -134,7 +134,9 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
 <!-- Page Specific JS File -->
 <script src="{{ asset('js/page/modules-datatables.js') }}"></script>
 <script>
-    $("#table").dataTable({});
+    $("#table").dataTable({
+      stateSave: true,
+    });
 </script>
 <!-- Page Specific JS File -->
 @endpush

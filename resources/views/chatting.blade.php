@@ -298,7 +298,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
   let msgerInput = get(".msger-input");
   const msgerChat = get(".msger-chat");
   let id_user = $('#id_user').val();
-  let sub_materi_id = $('#sub_materi_id').val();
+  let sub_materi_id = $('#sub_materi_id').val();  
 
   // Icons made by Freepik from www.flaticon.com
   const BOT_IMG = "https://image.flaticon.com/icons/svg/327/327779.svg";
