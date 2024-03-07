@@ -142,6 +142,8 @@ Route::redirect('/', '/login');
     Route::get('/edit-materi/{id}', [ArtikelController::class, 'edit_materi']);
     Route::put('/update-materi/{id}', [ArtikelController::class, 'update_materi']);
 
+    Route::put('/delete-materi/{id}', [\App\Http\Controllers\LmsController::class, 'delete_materi']);
+
  
 Route::get('/abc', function () {
     return view('a');

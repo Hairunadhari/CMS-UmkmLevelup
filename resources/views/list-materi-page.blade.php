@@ -42,7 +42,7 @@
             <hr />
             <div class="row">
               <div class="col-12">
-                <table class="table table-striped table-hovered">
+                <table class="table table-striped table-hovered" id="table">
                   <thead>
                     <tr>
                       <th>No</th>
@@ -66,8 +66,13 @@
                         @endif
                         <td class="text-center">{{\Carbon\Carbon::parse($item->created_at)->locale('id')->format('j F Y')}}</td>
                         <td class="text-center">
+                          <form action="/delete-materi/{{$item->id}}" method="POST" onsubmit="return confirm('Apakah anda yakin akan menghapus data ini ?');">
                           <a href="{{url($item->nama.'/sub-materi/'.$item->id)}}" class="btn btn-sm btn-danger"><i class="fa fa-th-list"></i> Sub Materi</a>
                           {!! ($item->aktif == 2) ? '<a href="'.url("approve-materi").'/'.$item->id.'" class="btn btn-sm btn-primary"><i class="fa fa-arrow-right"></i> Publish</a>' : ''!!}
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                            <input type="hidden" name="_method" value="PUT">
+                            <button class="btn btn-sm btn-dark" type="submit"><i class="far fa-trash-alt"></i> Hapus</button>
+                            </form>
                         </td>
                       </tr>
                     @empty
@@ -146,7 +151,20 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
 <!-- Page Specific JS File -->
 <script src="{{ asset('js/page/modules-datatables.js') }}"></script>
 <script>
-    $("#table").dataTable({});
+    $("#table").dataTable({
+      stateSave: true
+    });
 </script>
+
+@if (Session::has('alert'))
+<script>
+  Swal.fire({
+    title: "{{Session::get('alert')['title']}}",
+    text: "{{Session::get('alert')['text']}}",
+    icon: "{{Session::get('alert')['icon']}}",
+  });
+
+</script>
+@endif
 <!-- Page Specific JS File -->
 @endpush
