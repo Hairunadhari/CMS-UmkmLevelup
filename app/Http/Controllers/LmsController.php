@@ -564,5 +564,49 @@ class LmsController extends Controller
     }
 
   
+    public function delete_materi($id){
+        try {
+            DB::beginTransaction();
+            $m = DB::table('m_materi')
+            ->select('id')
+            ->where('id',$id)
+            ->update([
+                'aktif'=>0
+            ]);
+            
+            DB::table('t_sub_materi')
+            ->select('id','id_materi')
+            ->where('id_materi',$id)
+            ->update([
+                'aktif'=>0
+            ]);
 
+             $sub = DB::table('t_sub_materi')
+            ->select('id','id_materi')
+            ->where('id_materi',$id)
+            ->get();
+
+            $subIds = $sub->pluck('id')->toArray();
+            
+            $subfile = DB::table('t_sub_materi_file')
+            ->select('id_sub_materi_file','id_sub_materi')
+            ->whereIn('id_sub_materi',$subIds)
+            ->update([
+                'aktif'=>0
+            ]);
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollback();
+            dd($th);
+            //throw $th;
+        }
+
+        return redirect('list-materi')->with('alert',[
+            'title'=>'Notifikasi!',
+            'text'=>'Data Berhasil DiHapus!',
+            'icon'=>'success',
+        ]);
+
+        
+    }
 }
