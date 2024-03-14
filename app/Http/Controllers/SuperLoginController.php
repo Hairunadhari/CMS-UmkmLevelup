@@ -75,7 +75,7 @@ public function submitLogin(Request $request)
             }
         }
     } catch (\Throwable $th) {
-        dd($th);
+        // dd($th);
         $request->session()->flash('alert', [
             'type' => 'error',
             'message' => 'Silahkan periksa kembali email dan password Anda.',
