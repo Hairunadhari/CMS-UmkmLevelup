@@ -61,7 +61,7 @@ public function submitLogin(Request $request)
                     }
                 } elseif ($this->guard()->user()->id_role == 4 || $this->guard()->user()->id_role == 3) {
                     if (!$previousUrl) {
-                        return redirect()->route('kuesioner-unverif');
+                        return redirect()->route('/kuesioner-unverif');
                     } else {
                         return redirect($previousUrl);
                     }
