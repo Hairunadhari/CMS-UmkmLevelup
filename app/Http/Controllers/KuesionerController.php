@@ -739,7 +739,18 @@ class KuesionerController extends Controller
       ->leftJoin('profil_user','form_submissions.id_user', '=', 'profil_user.id_user')
       ->leftJoin('forms','form_submissions.form_id', '=', 'forms.id')
       ->leftJoin('m_level','m_level.id', '=', 'users.final_level')
-      ->select('form_submissions.*', 'users.name', 'users.id as id_user', 'users.final_level', 'profil_user.nama_usaha', 'profil_user.nama_usaha', 'forms.title', 'm_level.level','profil_user.id_kabupaten')
+      ->leftJoin('m_kecamatan', function($join) {
+        $join->on('profil_user.id_kecamatan', '=', 'm_kecamatan.id_kecamatan');
+      })
+      ->leftJoin('m_kabupaten', function($join) {
+        $join->on('profil_user.id_kabupaten', '=', 'm_kabupaten.id_kabupaten');
+      })
+      ->leftJoin('m_kelurahan', function($join) {
+        $join->on('profil_user.id_keluarahan', '=', 'm_kelurahan.id_kelurahan');
+      })
+      ->select('form_submissions.*', 'users.name', 'users.id as id_user', 'users.final_level', 'profil_user.nama_usaha', 'profil_user.nama_usaha', 'forms.title', 'm_level.level','profil_user.id_kabupaten','m_kelurahan.nama_kelurahan',
+      'm_kecamatan.nama_kecamatan',
+      'm_kabupaten.nama_kabupaten',)
       ->where('users.aktif', 1)
       ->where('users.final_level', '!=', 0)
       ->whereNull('forms.deleted_at');
@@ -763,6 +774,7 @@ class KuesionerController extends Controller
         <th class="text-center" scope="col">Nama Bisnis</th>
         <th class="text-center" scope="col">Nama</th>
         <th class="text-center" scope="col">Use?</th>
+        <th class="text-center" scope="col">Wilayah</th>
         <th class="text-center" scope="col">Level Final</th>
         <th class="text-center" scope="col">Tgl Buat</th>
       </tr>';
@@ -774,6 +786,7 @@ class KuesionerController extends Controller
                   <td>".$item->nama_usaha."</td>
                   <td>".$item->name."</td>
                   <td>".($item->import == 0 ? 'App' : 'G-form')."</td>
+                  <td>".$item->nama_kabupaten.', '.$item->nama_kecamatan.', '.$item->nama_kelurahan."</td>
                   <td>".$item->level."</td>
                   <td>".Carbon::parse($item->created_at)->locale('id')->format('j F Y')."</td>
               </tr>";
