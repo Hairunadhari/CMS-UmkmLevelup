@@ -93,7 +93,7 @@
           <div class="row">
             <div class="col-6">
               <div class="mb-3">
-                <label for="title" class="form-label">Tanggal Berakhir <span class="text-danger text-bold">*</span></label>
+                <label for="title" class="form-label">Tanggal Mulai <span class="text-danger text-bold">*</span></label>
                 <input type="date" class="form-control" id="title" name="start" aria-describedby="titleHelp"
                   required>
               </div>

@@ -32,24 +32,50 @@ class KuesionerController extends Controller
     
     public function unVerif()
     {
-        $d['data'] = DB::table('form_submissions')
-          ->leftJoin('users', function($join) {
-            $join->on('form_submissions.id_user', '=', 'users.id');
-          })
-          ->leftJoin('profil_user', function($join) {
-            $join->on('form_submissions.id_user', '=', 'profil_user.id_user');
-          })
-          ->leftJoin('forms', function($join) {
-            $join->on('form_submissions.form_id', '=', 'forms.id');
-          })
-        ->select('form_submissions.*', 'form_submissions.id as id_submit', 'users.name', 'users.final_level', 'profil_user.nama_usaha', 'profil_user.nama_usaha', 'forms.title')
+      if (request()->ajax()) {
+        $id_kab = request('id_kab');
+        $id_kec = request('id_kec');
+        $id_kel = request('id_kel');
+
+        $query = DB::table('form_submissions')
+        ->leftJoin('profil_user','form_submissions.id_user', '=', 'profil_user.id_user')
+        ->leftJoin('forms', function($join) {
+          $join->on('form_submissions.form_id', '=', 'forms.id');
+        })
+        ->leftJoin('users', function($join) {
+          $join->on('form_submissions.id_user', '=', 'users.id');
+        })
+        ->leftJoin('m_kecamatan', function($join) {
+          $join->on('profil_user.id_kecamatan', '=', 'm_kecamatan.id_kecamatan');
+        })
+        ->leftJoin('m_kabupaten', function($join) {
+          $join->on('profil_user.id_kabupaten', '=', 'm_kabupaten.id_kabupaten');
+        })
+        ->leftJoin('m_kelurahan', function($join) {
+          $join->on('profil_user.id_keluarahan', '=', 'm_kelurahan.id_kelurahan');
+        })
+        ->select('form_submissions.*', 'form_submissions.id as id_submit', 'users.name', 'users.final_level', 'profil_user.nama_usaha', 'profil_user.nama_usaha', 'forms.title','profil_user.id_kabupaten','profil_user.id_kecamatan','profil_user.id_keluarahan','m_kelurahan.nama_kelurahan',
+        'm_kecamatan.nama_kecamatan',
+        'm_kabupaten.nama_kabupaten')
         ->where('users.aktif', 1)
         ->where(function(Builder $query) {
             $query->where('users.final_level', 0)
                   ->orWhereNull('users.final_level');
         })
-        ->whereNull('forms.deleted_at')
-        ->get();
+        ->whereNull('forms.deleted_at');
+        if ($id_kab) {
+            $query->where('profil_user.id_kabupaten', $id_kab);
+        }
+        
+        if ($id_kec) {
+            $query->where('profil_user.id_kecamatan', $id_kec);
+        }
+        
+        if ($id_kel) {
+            $query->where('profil_user.id_keluarahan', $id_kel);
+        }
+
+        $d['data'] = $query->get();
 
         if (count($d['data']) > 0) {
             $form_id = $d['data'][0]->form_id;
@@ -108,6 +134,13 @@ class KuesionerController extends Controller
             $value->id_level = implode(', ', $arr_level);  
             $value->level = $level;  
         }
+        return DataTables::of($d['data'])->make(true);
+      }
+
+        $d['kabupaten'] = DB::table('m_kabupaten')
+        ->select('id_kabupaten','nama_kabupaten')
+        ->where('aktif',1)
+        ->get();
         return view('kuesioner-unverif', $d);
     }
 
@@ -124,10 +157,21 @@ class KuesionerController extends Controller
                 ->leftJoin('profil_user','form_submissions.id_user', '=', 'profil_user.id_user')
                 ->leftJoin('forms','form_submissions.form_id', '=', 'forms.id')
                 ->leftJoin('m_level','m_level.id', '=', 'users.final_level')
-                ->select('form_submissions.*', 'users.name', 'users.id as id_user', 'users.final_level', 'profil_user.nama_usaha', 'profil_user.nama_usaha', 'forms.title', 'm_level.level','profil_user.id_kabupaten','profil_user.id_kecamatan','profil_user.id_keluarahan')
+                ->select('form_submissions.*', 'users.name', 'users.id as id_user', 'users.final_level', 'profil_user.nama_usaha', 'profil_user.nama_usaha', 'forms.title', 'm_level.level','profil_user.id_kabupaten','profil_user.id_kecamatan','profil_user.id_keluarahan','m_kelurahan.nama_kelurahan',
+                'm_kecamatan.nama_kecamatan',
+                'm_kabupaten.nama_kabupaten',)
                 ->where('users.aktif', 1)
                 ->where('users.final_level', '!=', 0)
-                ->whereNull('forms.deleted_at');
+                ->whereNull('forms.deleted_at')
+                ->leftJoin('m_kecamatan', function($join) {
+                  $join->on('profil_user.id_kecamatan', '=', 'm_kecamatan.id_kecamatan');
+                })
+                ->leftJoin('m_kabupaten', function($join) {
+                  $join->on('profil_user.id_kabupaten', '=', 'm_kabupaten.id_kabupaten');
+                })
+                ->leftJoin('m_kelurahan', function($join) {
+                  $join->on('profil_user.id_keluarahan', '=', 'm_kelurahan.id_kelurahan');
+                });
 
             if ($id_kab) {
                 $query->where('profil_user.id_kabupaten', $id_kab);
@@ -326,7 +370,6 @@ class KuesionerController extends Controller
         ->where('form_submissions.id', $id)
         ->whereNull('forms.deleted_at')
         ->first();
-
         $form = json_decode($d['data']->properties, true);
         $answer = json_decode($d['data']->data, true);
         // dd($answer);
@@ -549,14 +592,14 @@ class KuesionerController extends Controller
       return redirect('kuesioner-verif');
     }
 
-    public function exportKuesionerUnverif() {
+    public function exportKuesionerUnverif(Request $request) {
       $filename = "export_kuesioner_unverif_".date('Y-m-d').".xls";		 
       header("Content-Type: application/vnd.ms-excel");
       header("Content-Disposition: attachment; filename=\"$filename\"");
       header('Cache-Control: max-age=0');
       // dd($filename);
 
-      $data = DB::table('form_submissions')
+      $query = DB::table('form_submissions')
           ->leftJoin('users', function($join) {
             $join->on('form_submissions.id_user', '=', 'users.id');
           })
@@ -566,14 +609,36 @@ class KuesionerController extends Controller
           ->leftJoin('forms', function($join) {
             $join->on('form_submissions.form_id', '=', 'forms.id');
           })
-        ->select('form_submissions.*', 'form_submissions.id as id_submit', 'users.name', 'users.final_level', 'profil_user.nama_usaha', 'profil_user.nama_usaha', 'forms.title')
+          ->leftJoin('m_kecamatan', function($join) {
+            $join->on('profil_user.id_kecamatan', '=', 'm_kecamatan.id_kecamatan');
+          })
+          ->leftJoin('m_kabupaten', function($join) {
+            $join->on('profil_user.id_kabupaten', '=', 'm_kabupaten.id_kabupaten');
+          })
+          ->leftJoin('m_kelurahan', function($join) {
+            $join->on('profil_user.id_keluarahan', '=', 'm_kelurahan.id_kelurahan');
+          })
+        ->select('form_submissions.*', 'form_submissions.id as id_submit', 'users.name', 'users.final_level', 'profil_user.nama_usaha', 'profil_user.nama_usaha', 'forms.title', 'm_kelurahan.nama_kelurahan',
+        'm_kecamatan.nama_kecamatan',
+        'm_kabupaten.nama_kabupaten',)
         ->where('users.aktif', 1)
         ->where(function(Builder $query) {
             $query->where('users.final_level', 0)
                   ->orWhereNull('users.final_level');
         })
-        ->whereNull('forms.deleted_at')
-        ->get();
+        ->whereNull('forms.deleted_at');
+
+        if ($request->id_kab != null) {
+          $query->where('profil_user.id_kabupaten',$request->id_kab);
+        }
+        if($request->id_kec != null){
+          $query->where('profil_user.id_kecamatan',$request->id_kec);
+        }
+        if($request->id_kel != null){
+          $query->where('profil_user.id_keluarahan',$request->id_kel);
+        } 
+  
+        $data = $query->get();
 
         if (count($data) > 0) {
             $form_id = $data[0]->form_id;
@@ -637,6 +702,7 @@ class KuesionerController extends Controller
         <th class="text-center" scope="col">Nama</th>
         <th class="text-center" scope="col">Submit?</th>
         <th class="text-center" scope="col">Use?</th>
+        <th class="text-center" scope="col">Wilayah</th>
         <th class="text-center" scope="col">Id Lvl</th>
         <th class="text-center" scope="col">Level</th>
         <th class="text-center" scope="col">Tgl Buat</th>
@@ -650,6 +716,7 @@ class KuesionerController extends Controller
                   <td>".$item->name."</td>
                   <td>".($item->savedSession == 1 ? 'X' : 'V')."</td>
                   <td>".($item->import == 0 ? 'App' : 'G-form')."</td>
+                  <td>".$item->nama_kabupaten.', '.$item->nama_kecamatan.', '.$item->nama_kelurahan."</td>
                   <td>".$item->id_level."</td>
                   <td>".$item->level."</td>
                   <td>".Carbon::parse($item->created_at)->locale('id')->format('j F Y')."</td>

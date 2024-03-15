@@ -82,6 +82,7 @@
                   <th class="text-center" scope="col">Nama</th>
                   <th class="text-center" scope="col" style="width: 20%">Nama Bisnis</th>
                   <th class="text-center" scope="col">Use?</th>
+                  <th class="text-center" scope="col">Wilayah</th>
                   <th class="text-center" scope="col">Level Final</th>
                   <th class="text-center" scope="col">Aksi</th>
                 </tr>
@@ -216,6 +217,12 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
               }
             },
             {
+              data: null,
+              render: function (data,row) {
+                return `<span>${data.nama_kabupaten}</span>, <br><span>${data.nama_kecamatan}</span>, <br ><span>${data.nama_kelurahan}</span>`;
+              }
+            },
+            {
               data: 'level'
             },
             { 
@@ -236,6 +243,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
     // filter kabupaten
     $('#kabupatens').on('change', function () {
       var kabupatens_id = this.value;
+      console.log('idkab',kabupatens_id);
       $('#kecamatans').html('<option value="" selected disabled>-- Pilih Kecamatan --</option>');
       $('#kelurahans').html('<option value="" selected disabled>-- Pilih Kecamatan --</option>');
       $('#table-verif').html('');
@@ -249,7 +257,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
         method: 'get',
 
         success: function (res) {
-          console.log(res);
+          // console.log(res);
           $.each(res.kecamatan, function (key, value) {
             $('#kecamatans').append('<option value="' + value.id_kecamatan + '">' + value
               .nama_kecamatan + '</option>');
