@@ -45,7 +45,7 @@
           <div class="d-flex mt-3">
             <div class="form-group">
               <select class="form-control select2" id="kabupatens">
-                <option selected disabled>-- Pilih Kabupaten --</option>
+                <option selected disabled value="">-- Pilih Kabupaten --</option>
                 @foreach ($kabupaten as $kab)
                 <option value="{{$kab->id_kabupaten}}">{{$kab->nama_kabupaten}}</option>
                 @endforeach
@@ -60,6 +60,9 @@
               <select class="form-control select2" id="kelurahans">
                 <option selected disabled>-- Pilih Kelurahan --</option>
               </select>
+            </div>
+            <div class="form-group">
+              <div class="btn btn-danger mt-1 " id="reset-filter" style="margin-left: 1rem;">Reset Filter</div>
             </div>
           </div>
           </div>
@@ -223,9 +226,9 @@
               data: 'level', 
             },
             {
-              data: 'savedSession', 
+              data: null, 
               render: function(data) {
-                if (data == 0) {
+                if (data.savedSession == 0) {
                   var use = `<a type="button" target="_blank"
                         href="verif-page/${data.id}/${encodeURIComponent(btoa(data.level))}"
                         class="btn btn-sm btn-primary"><i class="fa fa-sign-in"></i> Verif</a>`
@@ -301,6 +304,17 @@
         $('#id_kelurahan').val(kelurahans_id);
         table.draw();
       });
+
+      $('#reset-filter').on('click', function () {
+        $('#kabupatens').val('').trigger('change'); // Mengatur pilihan kembali ke yang pertama
+        $('#kecamatans').html('<option value="" selected disabled>-- Pilih Kecamatan --</option>');
+        $('#kelurahans').html('<option value="" selected disabled>-- Pilih Kelurahan --</option>');
+    $('#id_kabupaten').val('');
+    $('#id_kecamatan').val('');
+    $('#id_kelurahan').val('');
+    table.draw();
+});
+
   });
 
 
