@@ -173,7 +173,7 @@ class ArtikelController extends Controller
             'gambar' => 'max:5000', // Tambahkan validasi untuk logo
         ],
         [
-            'gambar'=>'Maksimal Ukuran Gambar Artikel 2mb ',
+            'gambar'=>'Maksimal Ukuran Gambar Artikel 5mb ',
         ]
         );
         if($validator->fails()){
