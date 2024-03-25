@@ -122,7 +122,7 @@
             <input type="text" class="form-control" id="title" name="lokasi" aria-describedby="titleHelp" required>
           </div>
           <div class="mb-3">
-            <label for="title" class="form-label">Gambar Artikel <small>max : 2mb</small><span class="text-danger text-bold">*</span></label>
+            <label for="title" class="form-label">Gambar Artikel <small>max : 5mb</small><span class="text-danger text-bold">*</span></label>
             <input type="file" class="form-control" accept=".jpg, .jpeg, .png" id="title" name="gambar" aria-describedby="titleHelp" required>
           </div>
         </div>
