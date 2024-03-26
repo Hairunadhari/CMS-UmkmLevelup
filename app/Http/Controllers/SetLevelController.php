@@ -11,15 +11,18 @@ use Session;
 
 class SetLevelController extends Controller
 {
-    use AuthenticatesUsers;
-
-
-    public function __construct(Redirector $redirect)
+    
+    public function __construct()
     {
-        // if (!$this->guard()->check() == false) {
-        //     $redirect->to('/login')->send();
-        // }
-    }
+       // Lakukan pengecekan apakah pengguna sudah login
+       $this->middleware(function ($request, $next) {
+        if (session('id_user') == null) {
+            // Jika pengguna tidak login, alihkan ke halaman login
+            return redirect('/');
+        }
+
+        return $next($request);
+    });}
 
     public function index()
     {

@@ -108,7 +108,10 @@
               </div>
             </div>
             <div class="text-center">
-              <button type="submit" id="submit-button" class="btn btn-primary">Simpan</button>
+              <div class="buttons">
+                <button type="submit" id="submit-button" class="btn btn-primary btn-progres">Simpan</button>
+                <a href="#" class="btn disabled btn-primary btn-progress" id="buttonprogres" style="display: none">Progress</a>
+              </div>
             </div>
           </form>
         </div>
@@ -123,10 +126,12 @@
     var barVideo = $('.bar');
     var percentVideo = $('.percent');
     var submitButton = $('#submit-button');
+    var buttonprogres = $('#buttonprogres');
 
     $('#editsubmateri').ajaxForm({
         beforeSend: function () {
-            submitButton.prop('disabled', true);
+            submitButton.hide();
+            buttonprogres.show();
             var percentVal = '0%';
             barPdf.width(percentVal);
             percentPdf.html(percentVal);

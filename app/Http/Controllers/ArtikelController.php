@@ -14,6 +14,18 @@ use Yajra\DataTables\Facades\DataTables;
 
 class ArtikelController extends Controller
 {
+    public function __construct()
+    {
+       // Lakukan pengecekan apakah pengguna sudah login
+       $this->middleware(function ($request, $next) {
+        if (session('id_user') == null) {
+            // Jika pengguna tidak login, alihkan ke halaman login
+            return redirect('/');
+        }
+
+        return $next($request);
+    });
+    }
     public function kategori_artikel(){
         if (request()->ajax()) {
             $data = Artikel::where('status',1)->get();

@@ -20,15 +20,18 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 class KuesionerController extends Controller
 {
 
-    use AuthenticatesUsers;
+  public function __construct()
+  {
+      // Lakukan pengecekan apakah pengguna sudah login
+      $this->middleware(function ($request, $next) {
+        if (session('id_user') == null) {
+            // Jika pengguna tidak login, alihkan ke halaman login
+            return redirect('/');
+        }
 
-
-    public function __construct(Redirector $redirect)
-    {
-        // if (!$this->guard()->check() == false) {
-        //     $redirect->to('/login')->send();
-        // }
-    }
+        return $next($request);
+    });
+  }
     
     public function unVerif()
     {

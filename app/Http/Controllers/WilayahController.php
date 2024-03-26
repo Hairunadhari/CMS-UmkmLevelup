@@ -5,10 +5,22 @@ namespace App\Http\Controllers;
 use DB;
 use Validator;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 use Yajra\DataTables\Facades\DataTables;
 
 class WilayahController extends Controller
 {
+    public function __construct()
+    {
+       // Lakukan pengecekan apakah pengguna sudah login
+       $this->middleware(function ($request, $next) {
+        if (session('id_user') == null) {
+            // Jika pengguna tidak login, alihkan ke halaman login
+            return redirect('/');
+        }
+
+        return $next($request);
+    });}
     public function list_provinsi(){
         if (request()->ajax()) {
             $data = DB::table('m_provinsi')

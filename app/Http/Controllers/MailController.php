@@ -5,11 +5,24 @@ namespace App\Http\Controllers;
 use PDF;
 use App\Mail\SendPDFtoMail;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
 class MailController extends Controller
 {
+  public function __construct()
+  {
+     // Lakukan pengecekan apakah pengguna sudah login
+     $this->middleware(function ($request, $next) {
+      if (session('id_user') == null) {
+          // Jika pengguna tidak login, alihkan ke halaman login
+          return redirect('/');
+      }
+
+      return $next($request);
+  });
+  }
     public function send($id){
         $data = DB::table('form_submissions')
         ->leftJoin('users','form_submissions.id_user','=','users.id')
