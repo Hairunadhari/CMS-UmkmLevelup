@@ -74,6 +74,7 @@
                     <th class="text-center" scope="col">#</th>
                     <th class="text-center" scope="col">Nama Bisnis</th>
                     <th class="text-center" scope="col">Nama</th>
+                    <th class="text-center" scope="col">No Telp</th>
                     <th class="text-center" scope="col">Submit?</th>
                     <th class="text-center" scope="col">Use?</th>
                     <th class="text-center" scope="col">Wilayah</th>
@@ -189,6 +190,9 @@
             },
             {
               data: 'name', 
+            },
+            {
+              data: 'no_telp', 
             },
             {
               data: 'savedSession', 
