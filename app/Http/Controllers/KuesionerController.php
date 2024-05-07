@@ -49,7 +49,7 @@ class KuesionerController extends Controller
           $join->on('form_submissions.id_user', '=', 'users.id');
         })
         ->leftJoin('m_kecamatan', function($join) {
-          $join->on('profil_user.id_kecamatan', '=', 'm_kecamatan.id_kecamatan');
+          $join->on('profil _user.id_kecamatan', '=', 'm_kecamatan.id_kecamatan');
         })
         ->leftJoin('m_kabupaten', function($join) {
           $join->on('profil_user.id_kabupaten', '=', 'm_kabupaten.id_kabupaten');
@@ -1094,6 +1094,20 @@ class KuesionerController extends Controller
         }
         return asset($FileName); // Kembalikan nama file ZIP
      
+  }
+
+  public function user(){
+    if (request()->ajax()) {
+      $data = DB::table('users')
+      ->select('users.*')
+      ->leftJoin('form_submissions','form_submissions.id_user', '=', 'users.id')
+      ->where('users.aktif', 1)
+      ->where('form_submissions.id_user', 0)
+      ->orWhereNull('form_submissions.id_user')
+      ->get();
+      return DataTables::of($data)->make(true);
+    }
+      return view('user');
   }
   
 

@@ -34,6 +34,14 @@
                 <a class="nav-link"
                     href="{{ url('management-sertifikat') }}"><i class="fas fa-file"></i> <span>Management Sertifikat</span></a>
             </li>
+            <li class="{{ Request::is('auto-verified-user') ? 'active' : '' }}">
+                <a class="nav-link"
+                    href="{{ url('auto-verified-user') }}"><i class="fas fa-user"></i> <span>Resend Otp</span></a>
+            </li>
+            {{-- <li class="{{ Request::is('user') ? 'active' : '' }}">
+                <a class="nav-link"
+                    href="{{ url('user') }}"><i class="fas fa-user"></i> <span>User</span></a>
+            </li> --}}
             @endif
 
             @if (Session::get('id_role') == 5)

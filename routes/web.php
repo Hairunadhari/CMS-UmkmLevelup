@@ -143,6 +143,8 @@ Route::redirect('/', '/login');
     Route::put('/update-materi/{id}', [ArtikelController::class, 'update_materi']);
 
     Route::put('/delete-materi/{id}', [\App\Http\Controllers\LmsController::class, 'delete_materi']);
+    Route::get('/user', [\App\Http\Controllers\KuesionerController::class, 'user']);
+    Route::get('/auto-verified-user', [\App\Http\Controllers\KuesionerController::class, 'auto_verified_user']);
 
  
 Route::get('/abc', function () {
