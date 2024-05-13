@@ -49,7 +49,7 @@ class KuesionerController extends Controller
           $join->on('form_submissions.id_user', '=', 'users.id');
         })
         ->leftJoin('m_kecamatan', function($join) {
-          $join->on('profil _user.id_kecamatan', '=', 'm_kecamatan.id_kecamatan');
+          $join->on('profil_user.id_kecamatan', '=', 'm_kecamatan.id_kecamatan');
         })
         ->leftJoin('m_kabupaten', function($join) {
           $join->on('profil_user.id_kabupaten', '=', 'm_kabupaten.id_kabupaten');
