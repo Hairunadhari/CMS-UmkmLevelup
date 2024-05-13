@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ArtikelController;
+use App\Http\Controllers\ManagementUserController;
 // use App\Http\Controllers\SuperLoginController;
 // use App\Http\Controllers\LogoutController;
 // use App\Http\Controllers\SetLevelController;
@@ -144,7 +145,10 @@ Route::redirect('/', '/login');
 
     Route::put('/delete-materi/{id}', [\App\Http\Controllers\LmsController::class, 'delete_materi']);
     Route::get('/user', [\App\Http\Controllers\KuesionerController::class, 'user']);
-    Route::get('/auto-verified-user', [\App\Http\Controllers\KuesionerController::class, 'auto_verified_user']);
+    Route::get('/management-user', [ManagementUserController::class, 'management_user']);
+    Route::get('/password/{id}', [ManagementUserController::class, 'password']);
+    Route::put('/update-password/{id}', [ManagementUserController::class, 'update_password']);
+    Route::put('/verified-email/{id}', [ManagementUserController::class, 'verified_email']);
 
  
 Route::get('/abc', function () {

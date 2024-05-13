@@ -34,9 +34,10 @@
                 <a class="nav-link"
                     href="{{ url('management-sertifikat') }}"><i class="fas fa-file"></i> <span>Management Sertifikat</span></a>
             </li>
-            <li class="{{ Request::is('auto-verified-user') ? 'active' : '' }}">
+            <li class="menu-header">Management User</li>
+            <li class="{{ Request::is('management-user') ? 'active' : '' }}">
                 <a class="nav-link"
-                    href="{{ url('auto-verified-user') }}"><i class="fas fa-user"></i> <span>Resend Otp</span></a>
+                    href="{{ url('management-user') }}"><i class="fas fa-user"></i> <span>List</span></a>
             </li>
             {{-- <li class="{{ Request::is('user') ? 'active' : '' }}">
                 <a class="nav-link"
