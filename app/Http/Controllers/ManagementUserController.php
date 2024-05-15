@@ -47,7 +47,7 @@ class ManagementUserController extends Controller
           if ($id_kel) {
             $query->where('profil_user.id_keluarahan', $id_kel);
           }
-          $query->orderBy('users.id', 'desc');
+          $query->orderBy('users.id', 'asc');
           $data = $query->get();
         
 
