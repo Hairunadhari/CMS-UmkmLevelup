@@ -81,7 +81,7 @@
                     <th>Email</th>
                     <th>No Wa</th>
                     <th>Wilayah</th>
-                    <th>Created</th>
+                    {{-- <th>Created</th> --}}
                     <th>Email Verif</th>
                     {{-- <th>Isi Kuesioner</th> --}}
                     <th>Aksi</th>
@@ -168,18 +168,18 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
             return a;
           }
         },
-        {
-          data: 'created_at',
-          render: function (data) {
-            if (data == null) {
-              a = `<span>-</span>`
-            } else {
-              a = `<span>${data}</span>`
+        // {
+        //   data: 'created_at',
+        //   render: function (data) {
+        //     if (data == null) {
+        //       a = `<span>-</span>`
+        //     } else {
+        //       a = `<span>${data}</span>`
               
-            }
-            return a;
-          }
-        },
+        //     }
+        //     return a;
+        //   }
+        // },
         {
           data: 'email_verified_at',
           render: function (data) {
