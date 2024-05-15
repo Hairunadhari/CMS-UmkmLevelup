@@ -14,20 +14,53 @@ class ManagementUserController extends Controller
 {
   
     public function management_user(){
+     
         if (request()->ajax()) {
-          $data = DB::table('users')
-          ->select('id', 'name', 'no_wa', 'email', 'email_verified_at', 'created_at')
-          ->where('id', '>', 10) // Tambahkan klausa where di sini
-          ->orderBy('id', 'desc')
-          ->get();
-
+          $id_kab = request('id_kab');
+          $id_kec = request('id_kec');
+          $id_kel = request('id_kel');
+          
+          $query = DB::table('users')
+          ->select('users.id', 'users.name', 'users.no_wa', 'users.email', 'users.email_verified_at', 'users.created_at','form_submissions.id as idsub','profil_user.id_kecamatan','profil_user.id_keluarahan','m_kelurahan.nama_kelurahan',
+          'm_kecamatan.nama_kecamatan', 
+          'm_kabupaten.nama_kabupaten')
+          ->leftJoin('form_submissions','users.id','=','form_submissions.id_user')
+          ->leftJoin('profil_user','users.id', '=', 'profil_user.id_user')
+          ->leftJoin('m_kecamatan', function($join) {
+            $join->on('profil_user.id_kecamatan', '=', 'm_kecamatan.id_kecamatan');
+          })
+          ->leftJoin('m_kabupaten', function($join) {
+            $join->on('profil_user.id_kabupaten', '=', 'm_kabupaten.id_kabupaten');
+          })
+          ->leftJoin('m_kelurahan', function($join) {
+            $join->on('profil_user.id_keluarahan', '=', 'm_kelurahan.id_kelurahan');
+          })
+          ->where('users.aktif',1);
+          if ($id_kab) {
+            $query->where('profil_user.id_kabupaten', $id_kab);
+          }
+          
+          if ($id_kec) {
+              $query->where('profil_user.id_kecamatan', $id_kec);
+          }
+          
+          if ($id_kel) {
+            $query->where('profil_user.id_keluarahan', $id_kel);
+          }
+          $query->orderBy('users.id', 'desc');
+          $data = $query->get();
+        
 
           foreach ($data as $key) {
             $key->encryptId = Crypt::encrypt($key->id);
           }
           return DataTables::of($data)->make(true);
         }
-          return view('management-user');
+        $d['kabupaten'] = DB::table('m_kabupaten')
+        ->select('id_kabupaten','nama_kabupaten')
+        ->where('aktif',1)
+        ->get();
+          return view('management-user',$d);
       }
 
       public function password($encryptId){
@@ -102,5 +135,80 @@ class ManagementUserController extends Controller
           'text'=>'Email terverifikasi.',
           'icon'=>'success'
         ]);
+      }
+
+      public function exportUser(Request $request) {
+        $filename = "export_user".date('Y-m-d').".xls";		 
+        header("Content-Type: application/vnd.ms-excel");
+        header("Content-Disposition: attachment; filename=\"$filename\"");
+        header('Cache-Control: max-age=0');
+        // dd($filename);
+  
+        $query = DB::table('users')
+        ->select('users.id', 'users.name', 'users.no_wa', 'users.email', 'users.email_verified_at', 'users.created_at','form_submissions.id as idsub','profil_user.id_kecamatan','profil_user.id_keluarahan','m_kelurahan.nama_kelurahan',
+        'm_kecamatan.nama_kecamatan','m_kabupaten.nama_kabupaten','users.final_level','users.profil','profil_user.nama_usaha','profil_user.email_usaha','profil_user.nik','profil_user.nib')
+        ->leftJoin('form_submissions','users.id','=','form_submissions.id_user')
+        ->leftJoin('profil_user','users.id', '=', 'profil_user.id_user')
+        ->leftJoin('m_kecamatan', function($join) {
+          $join->on('profil_user.id_kecamatan', '=', 'm_kecamatan.id_kecamatan');
+        })
+        ->leftJoin('m_kabupaten', function($join) {
+          $join->on('profil_user.id_kabupaten', '=', 'm_kabupaten.id_kabupaten');
+        })
+        ->leftJoin('m_kelurahan', function($join) {
+          $join->on('profil_user.id_keluarahan', '=', 'm_kelurahan.id_kelurahan');
+        })
+        ->where('users.aktif',1);
+        if ($request->id_kab != null) {
+          $query->where('profil_user.id_kabupaten', $request->id_kab);
+        }
+        
+        if ($request->id_kec != null) {
+            $query->where('profil_user.id_kecamatan', $request->id_kec);
+        }
+        
+        if ($request->id_kel != null) {
+          $query->where('profil_user.id_keluarahan', $request->id_kel);
+        }
+        $data = $query->get();
+  
+        // $heading = false;
+        $dataHtml = '<table border="1">
+        <tr>
+          <th class="text-center" scope="col">#</th>
+          <th class="text-center" scope="col">Nama Bisnis</th>
+          <th class="text-center" scope="col">Email Bisnis</th>
+          <th class="text-center" scope="col">Nik</th>
+          <th class="text-center" scope="col">Nib</th>
+          <th class="text-center" scope="col">Email</th>
+          <th class="text-center" scope="col">No Wa</th>
+          <th class="text-center" scope="col">Created</th>
+          <th class="text-center" scope="col">Email Verified</th>
+          <th class="text-center" scope="col">Isi Kuesioner</th>
+          <th class="text-center" scope="col">Simpan Sementara</th>
+          <th class="text-center" scope="col">Isi Profil</th>
+          <th class="text-center" scope="col">Wilayah</th>
+        </tr>';
+            if(!empty($data))
+            $no = 1;
+              foreach($data as $key => $item) {
+                $dataHtml .= "<tr>
+                    <td>".$no++."</td>
+                    <td>".$item->nama_usaha."</td>
+                    <td>".$item->email_usaha."</td>
+                    <td>".($item->nik == null ? '-' : $item->nik)."</td>
+                    <td>".$item->nib."</td>
+                    <td>".$item->email."</td>
+                    <td>".$item->no_wa."</td>
+                    <td>".($item->created_at == null ? '-' : $item->created_at)."</td>
+                    <td>".($item->email_verified_at == null ? '-' : $item->email_verified_at)."</td>
+                    <td>".($item->idsub == null ? 'belum' : 'sudah')."</td>
+                    <td>".($item->final_level == null ? 'Tidak' : 'Ya')."</td>
+                    <td>".($item->profil == null ? 'belum' : 'sudah')."</td>
+                    <td>".$item->nama_kabupaten.', '.$item->nama_kecamatan.', '.$item->nama_kelurahan."</td>
+                </tr>";
+              }
+            $dataHtml .= '</table>';
+            echo $dataHtml;
       }
 }

@@ -149,6 +149,7 @@ Route::redirect('/', '/login');
     Route::get('/password/{id}', [ManagementUserController::class, 'password']);
     Route::put('/update-password/{id}', [ManagementUserController::class, 'update_password']);
     Route::put('/verified-email/{id}', [ManagementUserController::class, 'verified_email']);
+    Route::post('/export-user', [ManagementUserController::class, 'exportUser']);
 
  
 Route::get('/abc', function () {
