@@ -47,7 +47,7 @@ class KuesionerController extends Controller
         })
         ->leftJoin('users', function($join) {
           $join->on('form_submissions.id_user', '=', 'users.id');
-        })
+         })
         ->leftJoin('m_kecamatan', function($join) {
           $join->on('profil_user.id_kecamatan', '=', 'm_kecamatan.id_kecamatan');
         })
@@ -58,7 +58,7 @@ class KuesionerController extends Controller
           $join->on('profil_user.id_keluarahan', '=', 'm_kelurahan.id_kelurahan');
         })
         ->select('form_submissions.*', 'form_submissions.id as id_submit', 'users.name', 'users.final_level', 'profil_user.nama_usaha', 'profil_user.nama_usaha', 'forms.title','profil_user.id_kabupaten','profil_user.id_kecamatan','profil_user.id_keluarahan','m_kelurahan.nama_kelurahan',
-        'm_kecamatan.nama_kecamatan',
+        'm_kecamatan.nama_kecamatan', 
         'm_kabupaten.nama_kabupaten','profil_user.no_telp')
         ->where('users.aktif', 1)
         ->where(function(Builder $query) {

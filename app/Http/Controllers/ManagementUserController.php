@@ -16,9 +16,11 @@ class ManagementUserController extends Controller
     public function management_user(){
         if (request()->ajax()) {
           $data = DB::table('users')
-          ->select('id','name','no_wa','email','email_verified_at','created_at')
-          ->orderBy('id','desc')
+          ->select('id', 'name', 'no_wa', 'email', 'email_verified_at', 'created_at')
+          ->where('id', '>', 10) // Tambahkan klausa where di sini
+          ->orderBy('id', 'desc')
           ->get();
+
 
           foreach ($data as $key) {
             $key->encryptId = Crypt::encrypt($key->id);
