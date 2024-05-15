@@ -160,7 +160,12 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
         {
           data: null,
           render: function (data, row) {
-            return `<span>${data.nama_kabupaten}</span>, <br><span>${data.nama_kecamatan}</span>, <br ><span>${data.nama_kelurahan}</span>`;
+            if (data.nama_kabupaten == null && data.nama_kecamatan == null && data.nama_kelurahan == null) {
+              a = `<span>-</span>`
+            } else {
+              a= `<span>${data.nama_kabupaten}</span>, <br><span>${data.nama_kecamatan}</span>, <br ><span>${data.nama_kelurahan}</span>`
+            }
+            return a;
           }
         },
         {
