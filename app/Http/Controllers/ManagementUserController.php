@@ -25,7 +25,7 @@ class ManagementUserController extends Controller
           'm_kecamatan.nama_kecamatan', 
           'm_kabupaten.nama_kabupaten')
           ->leftJoin('form_submissions','users.id','=','form_submissions.id_user')
-          // ->leftJoin('profil_user','users.id', '=', 'profil_user.id_user')
+          ->leftJoin('profil_user','users.id', '=', 'profil_user.id_user')
           ->leftJoin('m_kecamatan', function($join) {
             $join->on('profil_user.id_kecamatan', '=', 'm_kecamatan.id_kecamatan');
           })
