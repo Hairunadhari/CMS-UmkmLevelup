@@ -47,7 +47,7 @@ class ManagementUserController extends Controller
           if ($id_kel) {
             $query->where('profil_user.id_keluarahan', $id_kel);
           }
-          $query->where('users.id','<',11000);
+          // $query->where('users.id','<',11000);
           $data = $query->orderBy('users.created_at', 'desc')->get();
         
 
