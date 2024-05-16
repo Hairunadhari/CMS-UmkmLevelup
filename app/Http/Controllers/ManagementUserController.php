@@ -21,9 +21,9 @@ class ManagementUserController extends Controller
           $id_kel = request('id_kel');
           
           $query = DB::table('users')
-          ->select('users.id', 'users.name', 'users.no_wa', 'users.email', 'users.email_verified_at', 'users.created_at','form_submissions.id as idsub','profil_user.id_kecamatan','profil_user.id_keluarahan','m_kelurahan.nama_kelurahan',
+          ->select('users.id', 'users.name', 'users.no_wa', 'users.email', 'users.email_verified_at', 'users.created_at','form_submissions.id as idFormSubmission','profil_user.id_kecamatan','profil_user.id_keluarahan','m_kelurahan.nama_kelurahan',
           'm_kecamatan.nama_kecamatan', 
-          'm_kabupaten.nama_kabupaten')
+          'm_kabupaten.nama_kabupaten','profil_user.id as profId','users.final_level')
           ->leftJoin('form_submissions','users.id','=','form_submissions.id_user')
           ->leftJoin('profil_user','users.id', '=', 'profil_user.id_user')
           ->leftJoin('m_kecamatan', function($join) {
@@ -47,6 +47,7 @@ class ManagementUserController extends Controller
           if ($id_kel) {
             $query->where('profil_user.id_keluarahan', $id_kel);
           }
+          $query->where('users.id','<',11000);
           $data = $query->orderBy('users.created_at', 'desc')->get();
         
 
@@ -204,7 +205,7 @@ class ManagementUserController extends Controller
                     <td>".($item->created_at == null ? '-' : $item->created_at)."</td>
                     <td>".($item->email_verified_at == null ? '-' : $item->email_verified_at)."</td>
                     <td>".($item->idsub == null ? 'belum' : 'sudah')."</td>
-                    <td>".($item->final_level == null ? 'Tidak' : 'Ya')."</td>
+                    <td>".($item->final_level == 0 ? 'Tidak' : 'Ya')."</td>
                     <td>".($item->profil == null ? 'belum' : 'sudah')."</td>
                     <td>".$item->nama_kabupaten."</td>
                     <td>".$item->nama_kecamatan."</td>

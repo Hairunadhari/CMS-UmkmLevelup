@@ -36,7 +36,7 @@
             </li>
             <li class="{{ Request::is('management-user') ? 'active' : '' }}">
                 <a class="nav-link"
-                    href="{{ url('management-user') }}"><i class="fas fa-user"></i> <span>All User</span></a>
+                    href="{{ url('management-user') }}"><i class="fas fa-user"></i> <span>Master Data User</span></a>
             </li>
             {{-- <li class="menu-header">Management User</li> --}}
             {{-- <li class="{{ Request::is('user') ? 'active' : '' }}">

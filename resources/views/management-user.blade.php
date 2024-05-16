@@ -81,7 +81,7 @@
                     <th>Email</th>
                     <th>No Wa</th>
                     <th>Wilayah</th>
-                    {{-- <th>Created</th> --}}
+                    <th>Status</th>
                     <th>Email Verif</th>
                     {{-- <th>Isi Kuesioner</th> --}}
                     <th>Aksi</th>
@@ -168,18 +168,50 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
             return a;
           }
         },
-        // {
-        //   data: 'created_at',
-        //   render: function (data) {
-        //     if (data == null) {
-        //       a = `<span>-</span>`
-        //     } else {
-        //       a = `<span>${data}</span>`
-              
-        //     }
-        //     return a;
-        //   }
-        // },
+       {
+          data: null,
+            render: function (data) {
+                  let output = ''; // Initialize the output variable
+                  if (data.email_verified_at != null) {
+                      output +=
+                          `<div>Verif Otp : <span class="badge badge-sm badge-success mb-1"><i
+                          class="fa fa-check"></i></span></div>`;
+                  } else {
+                      output +=
+                          `<div>Verif Otp: <span class="badge badge-danger mb-1">X</span></div>`;
+                  }
+
+                  if (data.profId != null) {
+                      output +=
+                          `<div>Isi Profil: <span class="badge badge-success mb-1"><i
+                          class="fa fa-check"></i></span></div>`;
+                  } else{
+                      output +=
+                          `<div>Isi Profil : <span class="badge badge-danger mb-1">X</span></div>`;
+                  }
+
+                  if (data.idFormSubmission != null) {
+                      output +=
+                          `<div>Isi Kuesioner : <span class="badge badge-success mb-1"><i
+                          class="fa fa-check"></i></span></div>`;
+                  } else{
+                      output +=
+                          `<div>Isi Kuesioner : <span class="badge badge-danger mb-1">X</span></div>`;
+                  }
+
+                  if (data.final_level != 0) {
+                      output +=
+                          `<div>Simpan Sementara: <span class="badge badge-success mb-1"><i
+                          class="fa fa-check"></i></span></div>`;
+                  } else{
+                      output +=
+                          `<div>Simpan Sementara: <span class="badge badge-danger mb-1">X</span></div>`;
+                  }
+                  // Return the final output
+                  return output;
+            
+          }
+       },
         {
           data: 'email_verified_at',
           render: function (data) {
