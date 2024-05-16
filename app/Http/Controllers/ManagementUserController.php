@@ -186,7 +186,9 @@ class ManagementUserController extends Controller
           <th class="text-center" scope="col">Isi Kuesioner</th>
           <th class="text-center" scope="col">Simpan Sementara</th>
           <th class="text-center" scope="col">Isi Profil</th>
-          <th class="text-center" scope="col">Wilayah</th>
+          <th class="text-center" scope="col">Kabupaten</th>
+          <th class="text-center" scope="col">Kecamatan</th>
+          <th class="text-center" scope="col">Kelurahan</th>
         </tr>';
             if(!empty($data))
             $no = 1;
@@ -204,7 +206,9 @@ class ManagementUserController extends Controller
                     <td>".($item->idsub == null ? 'belum' : 'sudah')."</td>
                     <td>".($item->final_level == null ? 'Tidak' : 'Ya')."</td>
                     <td>".($item->profil == null ? 'belum' : 'sudah')."</td>
-                    <td>".$item->nama_kabupaten.', '.$item->nama_kecamatan.', '.$item->nama_kelurahan."</td>
+                    <td>".$item->nama_kabupaten."</td>
+                    <td>".$item->nama_kecamatan."</td>
+                    <td>".$item->nama_kelurahan."</td>
                 </tr>";
               }
             $dataHtml .= '</table>';
