@@ -39,6 +39,7 @@ class KuesionerController extends Controller
         $id_kab = request('id_kab');
         $id_kec = request('id_kec');
         $id_kel = request('id_kel');
+        $date = request('date');
 
         $query = DB::table('form_submissions')
         ->leftJoin('profil_user','form_submissions.id_user', '=', 'profil_user.id_user')
@@ -59,8 +60,9 @@ class KuesionerController extends Controller
         })
         ->select('form_submissions.*', 'form_submissions.id as id_submit', 'users.name', 'users.final_level', 'profil_user.nama_usaha', 'profil_user.nama_usaha', 'forms.title','profil_user.id_kabupaten','profil_user.id_kecamatan','profil_user.id_keluarahan','m_kelurahan.nama_kelurahan',
         'm_kecamatan.nama_kecamatan', 
-        'm_kabupaten.nama_kabupaten','profil_user.no_telp')
+        'm_kabupaten.nama_kabupaten','profil_user.no_telp','profil_user.id as profId')
         ->where('users.aktif', 1)
+        ->where('form_submissions.savedSession','!=', 1)
         ->where(function(Builder $query) {
             $query->where('users.final_level', 0)
                   ->orWhereNull('users.final_level');
@@ -76,6 +78,9 @@ class KuesionerController extends Controller
         
         if ($id_kel) {
             $query->where('profil_user.id_keluarahan', $id_kel);
+        }
+        if ($date != null) {
+            $query->whereDate('form_submissions.created_at', $date);
         }
 
         $d['data'] = $query->get();
@@ -623,7 +628,7 @@ class KuesionerController extends Controller
           })
         ->select('form_submissions.*', 'form_submissions.id as id_submit', 'users.name', 'users.final_level', 'profil_user.nama_usaha', 'profil_user.nama_usaha', 'forms.title', 'm_kelurahan.nama_kelurahan',
         'm_kecamatan.nama_kecamatan',
-        'm_kabupaten.nama_kabupaten',)
+        'm_kabupaten.nama_kabupaten','profil_user.id as profId')
         ->where('users.aktif', 1)
         ->where(function(Builder $query) {
             $query->where('users.final_level', 0)
@@ -639,6 +644,9 @@ class KuesionerController extends Controller
         }
         if($request->id_kel != null){
           $query->where('profil_user.id_keluarahan',$request->id_kel);
+        } 
+        if($request->date != null){
+          $query->whereDate('form_submissions.created_at',$request->date);
         } 
   
         $data = $query->get();
@@ -703,7 +711,8 @@ class KuesionerController extends Controller
         <th class="text-center" scope="col">#</th>
         <th class="text-center" scope="col">Nama Bisnis</th>
         <th class="text-center" scope="col">Nama</th>
-        <th class="text-center" scope="col">Submit?</th>
+        <th class="text-center" scope="col">Isi Profil</th>
+        <th class="text-center" scope="col">Isi Kuesioner</th>
         <th class="text-center" scope="col">Use?</th>
         <th class="text-center" scope="col">Wilayah</th>
         <th class="text-center" scope="col">Id Lvl</th>
@@ -717,7 +726,8 @@ class KuesionerController extends Controller
                   <td>".$no++."</td>
                   <td>".$item->nama_usaha."</td>
                   <td>".$item->name."</td>
-                  <td>".($item->savedSession == 1 ? 'X' : 'V')."</td>
+                  <td>".($item->profId == null ? 'X' : 'V')."</td>
+                  <td>V</td>
                   <td>".($item->import == 0 ? 'App' : 'G-form')."</td>
                   <td>".$item->nama_kabupaten.', '.$item->nama_kecamatan.', '.$item->nama_kelurahan."</td>
                   <td>".$item->id_level."</td>

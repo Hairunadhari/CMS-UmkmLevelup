@@ -19,6 +19,7 @@ class ManagementUserController extends Controller
           $id_kab = request('id_kab');
           $id_kec = request('id_kec');
           $id_kel = request('id_kel');
+          $date = request('date');
           
           $query = DB::table('users')
           ->select('users.id', 'users.name', 'users.no_wa', 'users.email', 'users.email_verified_at', 'users.created_at','form_submissions.id as idFormSubmission','profil_user.id_kecamatan','profil_user.id_keluarahan','m_kelurahan.nama_kelurahan',
@@ -47,7 +48,11 @@ class ManagementUserController extends Controller
           if ($id_kel) {
             $query->where('profil_user.id_keluarahan', $id_kel);
           }
-          // $query->where('users.id','<',11000);
+          if ($date != null) {
+              $query->whereDate('users.created_at', $date);
+          }
+
+          $query->where('users.id','>',11000);
           $data = $query->orderBy('users.created_at', 'desc')->get();
         
 
@@ -169,6 +174,9 @@ class ManagementUserController extends Controller
         
         if ($request->id_kel != null) {
           $query->where('profil_user.id_keluarahan', $request->id_kel);
+        }
+        if ($request->date != null) {
+          $query->whereDate('users.created_at', $request->date);
         }
         $data = $query->get();
   

@@ -22,6 +22,10 @@
                 <a class="nav-link"
                     href="{{ url('kuesioner-all') }}"><i class="fas fa-list"></i> <span>List Kuesioner</span></a>
             </li>
+            <li class="{{ Request::is('management-user') ? 'active' : '' }}">
+                <a class="nav-link"
+                    href="{{ url('management-user') }}"><i class="fas fa-user"></i> <span>Master Data User</span></a>
+            </li>
             <li class="{{ Request::is('kuesioner-unverif') ? 'active' : '' }}">
                 <a class="nav-link"
                     href="{{ url('kuesioner-unverif') }}"><i class="fas fa-user-xmark"></i> <span>List - Unverified</span></a>
@@ -33,10 +37,6 @@
             <li class="{{ Request::is('management-sertifikat') ? 'active' : '' }}">
                 <a class="nav-link"
                     href="{{ url('management-sertifikat') }}"><i class="fas fa-file"></i> <span>Management Sertifikat</span></a>
-            </li>
-            <li class="{{ Request::is('management-user') ? 'active' : '' }}">
-                <a class="nav-link"
-                    href="{{ url('management-user') }}"><i class="fas fa-user"></i> <span>Master Data User</span></a>
             </li>
             {{-- <li class="menu-header">Management User</li> --}}
             {{-- <li class="{{ Request::is('user') ? 'active' : '' }}">

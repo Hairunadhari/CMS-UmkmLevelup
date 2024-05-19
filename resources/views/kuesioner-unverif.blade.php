@@ -20,6 +20,7 @@
           <input type="hidden" id="id_kabupaten" name="id_kab">
           <input type="hidden" id="id_kecamatan" name="id_kec">
           <input type="hidden" id="id_kelurahan" name="id_kel">
+          <input type="date" hidden id="date" name="date">
           <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-download"></i> Export
             Excel</button>
         </form>
@@ -62,6 +63,9 @@
               </select>
             </div>
             <div class="form-group">
+              <input type="date" id="dateTime" class="form-control mt-1 ml-1">
+            </div>
+            <div class="form-group">
               <div class="btn btn-danger mt-1 " id="reset-filter" style="margin-left: 1rem;">Reset Filter</div>
             </div>
           </div>
@@ -75,7 +79,7 @@
                   <th class="text-center" scope="col">Nama Bisnis</th>
                   <th class="text-center" scope="col">Nama</th>
                   <th class="text-center" scope="col">No Telp</th>
-                  <th class="text-center" scope="col">Submit?</th>
+                  <th class="text-center" scope="col">Status</th>
                   <th class="text-center" scope="col">Use?</th>
                   <th class="text-center" scope="col">Wilayah</th>
                   <th class="text-center" scope="col">Level</th>
@@ -177,6 +181,7 @@
           data.id_kab = $('#id_kabupaten').val(),
             data.id_kec = $('#id_kecamatan').val(),
             data.id_kel = $('#id_kelurahan').val()
+            data.date = $('#date').val()
         }
       },
       columns: [{
@@ -191,19 +196,38 @@
         {
           data: 'no_telp',
         },
+        // {
+        //   data: 'savedSession',
+        //   render: function (data) {
+        //     if (data == 1) {
+        //       var use = `<span class="badge badge-warning badge-sm">tes<i
+        //                   class="fa fa-times"></i></span>`
+        //     } else {
+        //       var use = `<span class="badge badge-success badge-sm"><i
+        //                   class="fa fa-check"></i></span>`
+        //     }
+        //     return use;
+        //   }
+        // },
         {
-          data: 'savedSession',
-          render: function (data) {
-            if (data == 1) {
-              var use = `<span class="badge badge-warning badge-sm"><i
-                          class="fa fa-times"></i></span>`
-            } else {
-              var use = `<span class="badge badge-success badge-sm"><i
-                          class="fa fa-check"></i></span>`
-            }
-            return use;
+          data: null,
+            render: function (data) {
+              let output = ''; // Initialize the output variable
+
+              output += `<div class="btn-group-vertical" role="group" aria-label="Basic example">`;
+              if (data.profId != null) {
+                  output += `<button type="button" class="btn btn-outline-info">Isi Profil: <i class="fa fa-check text-success"></i></button>`;
+              } else {
+                  output += `<button type="button" class="btn btn-outline-info">Isi Profil: <span class="text-danger">X</span></button>`;
+              }
+              output += `<button type="button" class="btn btn-outline-info">Isi Kuesioner: <i class="fa fa-check text-success"></i></button>`;
+              output += `</div>`; // Close the btn-group-vertical
+
+                  // Return the final output
+                  return output;
+            
           }
-        },
+       },
         {
           data: 'import',
           render: function (data) {
@@ -305,14 +329,22 @@
       $('#id_kelurahan').val(kelurahans_id);
       table.draw();
     });
+    
+    $('#dateTime').on('change', function () {
+      var date = this.value;
+      $('#date').val(date);
+      table.draw();
+    });
 
     $('#reset-filter').on('click', function () {
       $('#kabupatens').val('').trigger('change'); // Mengatur pilihan kembali ke yang pertama
+      $('#dateTime').val('').trigger('change'); // Mengatur pilihan kembali ke yang pertama
       $('#kecamatans').html('<option value="" selected disabled>-- Pilih Kecamatan --</option>');
       $('#kelurahans').html('<option value="" selected disabled>-- Pilih Kelurahan --</option>');
       $('#id_kabupaten').val('');
       $('#id_kecamatan').val('');
       $('#id_kelurahan').val('');
+      $('#date').val('');
       table.draw();
     });
 

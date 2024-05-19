@@ -29,6 +29,7 @@
           <input type="hidden" id="id_kabupaten" name="id_kab">
           <input type="hidden" id="id_kecamatan" name="id_kec">
           <input type="hidden" id="id_kelurahan" name="id_kel">
+          <input type="date" hidden id="date" name="date">
           <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-download"></i> Export
             Excel</button>
         </form>
@@ -62,6 +63,9 @@
               <select class="form-control select2" id="kelurahans">
                 <option selected disabled>-- Pilih Kelurahan --</option>
               </select>
+            </div>
+            <div class="form-group">
+              <input type="date" id="dateTime" class="form-control mt-1 ml-1">
             </div>
             <div class="form-group">
               <div class="btn btn-danger mt-1 " id="reset-filter" style="margin-left: 1rem;">Reset Filter</div>
@@ -131,7 +135,8 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
         data: function (data) {
           data.id_kab = $('#id_kabupaten').val(),
             data.id_kec = $('#id_kecamatan').val(),
-            data.id_kel = $('#id_kelurahan').val()
+            data.id_kel = $('#id_kelurahan').val(),
+            data.date = $('#date').val()
         }
       },
       columns: [{
@@ -171,42 +176,37 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
        {
           data: null,
             render: function (data) {
-                  let output = ''; // Initialize the output variable
-                  if (data.email_verified_at != null) {
-                      output +=
-                          `<div>Verif Otp : <span class="badge badge-sm badge-success mb-1"><i
-                          class="fa fa-check"></i></span></div>`;
-                  } else {
-                      output +=
-                          `<div>Verif Otp: <span class="badge badge-danger mb-1">X</span></div>`;
-                  }
+              let output = ''; // Initialize the output variable
 
-                  if (data.profId != null) {
-                      output +=
-                          `<div>Isi Profil: <span class="badge badge-success mb-1"><i
-                          class="fa fa-check"></i></span></div>`;
-                  } else{
-                      output +=
-                          `<div>Isi Profil : <span class="badge badge-danger mb-1">X</span></div>`;
-                  }
+              output += `<div class="btn-group-vertical" role="group" aria-label="Basic example">`;
 
-                  if (data.idFormSubmission != null) {
-                      output +=
-                          `<div>Isi Kuesioner : <span class="badge badge-success mb-1"><i
-                          class="fa fa-check"></i></span></div>`;
-                  } else{
-                      output +=
-                          `<div>Isi Kuesioner : <span class="badge badge-danger mb-1">X</span></div>`;
-                  }
+                if (data.email_verified_at != null) {
+                    output += `<button type="button" class="btn btn-outline-info">Verif Otp: <i class="fa fa-check text-success"></i></button>`;
+                } else {
+                    output += `<button type="button" class="btn btn-outline-info">Verif Otp: <span class="text-danger">X</span></button>`;
+                }
 
-                  if (data.final_level != 0) {
-                      output +=
-                          `<div>Simpan Sementara: <span class="badge badge-success mb-1"><i
-                          class="fa fa-check"></i></span></div>`;
-                  } else{
-                      output +=
-                          `<div>Simpan Sementara: <span class="badge badge-danger mb-1">X</span></div>`;
-                  }
+
+              if (data.profId != null) {
+                  output += `<button type="button" class="btn btn-outline-info">Isi Profil: <i class="fa fa-check text-success"></i></button>`;
+              } else {
+                  output += `<button type="button" class="btn btn-outline-info">Isi Profil: <span class="text-danger">X</span></button>`;
+              }
+
+              if (data.idFormSubmission != null) {
+                  output += `<button type="button" class="btn btn-outline-info">Isi Kuesioner: <i class="fa fa-check text-success"></i></button>`;
+              } else {
+                  output += `<button type="button" class="btn btn-outline-info">Isi Kuesioner: <span class="text-danger">X</span></button>`;
+              }
+
+              if (data.final_level != 0) {
+                  output += `<button type="button" class="btn btn-outline-info">Simpan Sementara: <i class="fa fa-check text-success"></i></button>`;
+              } else {
+                  output += `<button type="button" class="btn btn-outline-info">Simpan Sementara: <span class="text-danger">X</span></button>`;
+              }
+
+              output += `</div>`; // Close the btn-group-vertical
+
                   // Return the final output
                   return output;
             
@@ -321,8 +321,15 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
       table.draw();
     });
 
+    $('#dateTime').on('change', function () {
+      var date = this.value;
+      $('#date').val(date);
+      table.draw();
+    });
+
     $('#reset-filter').on('click', function () {
       $('#kabupatens').val('').trigger('change'); // Mengatur pilihan kembali ke yang pertama
+      $('#dateTime').val('').trigger('change');
       $('#kecamatans').html('<option value="" selected disabled>-- Pilih Kecamatan --</option>');
       $('#kelurahans').html('<option value="" selected disabled>-- Pilih Kelurahan --</option>');
       $('#id_kabupaten').val('');
