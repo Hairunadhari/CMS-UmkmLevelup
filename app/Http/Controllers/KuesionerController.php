@@ -626,9 +626,9 @@ class KuesionerController extends Controller
           ->leftJoin('m_kelurahan', function($join) {
             $join->on('profil_user.id_keluarahan', '=', 'm_kelurahan.id_kelurahan');
           })
-        ->select('form_submissions.*', 'form_submissions.id as id_submit', 'users.name', 'users.final_level', 'profil_user.nama_usaha', 'profil_user.nama_usaha', 'forms.title', 'm_kelurahan.nama_kelurahan',
+        ->select('form_submissions.*', 'form_submissions.id as id_submit', 'users.name', 'users.final_level', 'profil_user.nama_usaha','forms.title', 'm_kelurahan.nama_kelurahan',
         'm_kecamatan.nama_kecamatan',
-        'm_kabupaten.nama_kabupaten','profil_user.id as profId')
+        'm_kabupaten.nama_kabupaten','profil_user.id as profId','profil_user.nama_pemilik','profil_user.alamat_lengkap','profil_user.email_usaha','profil_user.no_telp','profil_user.jenis_kelamin','profil_user.nik','profil_user.nib')
         ->where('users.aktif', 1)
         ->where(function(Builder $query) {
             $query->where('users.final_level', 0)
@@ -709,12 +709,20 @@ class KuesionerController extends Controller
       $dataHtml = '<table border="1">
       <tr>
         <th class="text-center" scope="col">#</th>
-        <th class="text-center" scope="col">Nama Bisnis</th>
-        <th class="text-center" scope="col">Nama</th>
+        <th class="text-center" scope="col">Nama Usaha</th>
+        <th class="text-center" scope="col">Nama Pemilik</th>
+        <th class="text-center" scope="col">Alamat Lengkap</th>
+        <th class="text-center" scope="col">Email Usaha</th>
+        <th class="text-center" scope="col">No Telephone</th>
+        <th class="text-center" scope="col">Jenis Kelamin</th>
+        <th class="text-center" scope="col">Nik</th>
+        <th class="text-center" scope="col">Nib</th>
         <th class="text-center" scope="col">Isi Profil</th>
         <th class="text-center" scope="col">Isi Kuesioner</th>
         <th class="text-center" scope="col">Use?</th>
-        <th class="text-center" scope="col">Wilayah</th>
+        <th class="text-center" scope="col">Kabupaten</th>
+        <th class="text-center" scope="col">Kecamatan</th>
+        <th class="text-center" scope="col">Kelurahan</th>
         <th class="text-center" scope="col">Id Lvl</th>
         <th class="text-center" scope="col">Level</th>
         <th class="text-center" scope="col">Tgl Buat</th>
@@ -725,11 +733,19 @@ class KuesionerController extends Controller
               $dataHtml .= "<tr>
                   <td>".$no++."</td>
                   <td>".$item->nama_usaha."</td>
-                  <td>".$item->name."</td>
+                  <td>".$item->nama_pemilik."</td>
+                  <td>".$item->alamat_lengkap."</td>
+                  <td>".$item->email_usaha."</td>
+                  <td>".$item->no_telp."</td>
+                  <td>".$item->jenis_kelamin."</td>
+                  <td>".$item->nik."</td>
+                  <td>".$item->nib."</td>
                   <td>".($item->profId == null ? 'X' : 'V')."</td>
                   <td>V</td>
                   <td>".($item->import == 0 ? 'App' : 'G-form')."</td>
-                  <td>".$item->nama_kabupaten.', '.$item->nama_kecamatan.', '.$item->nama_kelurahan."</td>
+                  <td>".$item->nama_kabupaten."</td>
+                  <td>".$item->nama_kecamatan."</td>
+                  <td>".$item->nama_kelurahan."</td>
                   <td>".$item->id_level."</td>
                   <td>".$item->level."</td>
                   <td>".Carbon::parse($item->created_at)->locale('id')->format('j F Y')."</td>
