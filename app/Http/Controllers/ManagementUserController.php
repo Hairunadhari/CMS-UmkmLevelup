@@ -52,7 +52,7 @@ class ManagementUserController extends Controller
               $query->whereDate('users.created_at', $date);
           }
 
-          $query->where('users.id','>',11000);
+          // $query->where('users.id','>',11000);
           $data = $query->orderBy('users.created_at', 'desc')->get();
         
 
