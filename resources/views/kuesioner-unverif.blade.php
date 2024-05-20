@@ -200,7 +200,7 @@
         //   data: 'savedSession',
         //   render: function (data) {
         //     if (data == 1) {
-        //       var use = `<span class="badge badge-warning badge-sm">tes<i
+        //       var use = `<span class="badge badge-warning badge-sm"><i
         //                   class="fa fa-times"></i></span>`
         //     } else {
         //       var use = `<span class="badge badge-success badge-sm"><i
@@ -221,6 +221,7 @@
                   output += `<button type="button" class="btn btn-outline-info">Isi Profil: <span class="text-danger">X</span></button>`;
               }
               output += `<button type="button" class="btn btn-outline-info">Isi Kuesioner: <i class="fa fa-check text-success"></i></button>`;
+              
               output += `</div>`; // Close the btn-group-vertical
 
                   // Return the final output

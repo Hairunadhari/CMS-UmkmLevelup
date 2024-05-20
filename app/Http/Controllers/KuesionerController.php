@@ -62,7 +62,8 @@ class KuesionerController extends Controller
         'm_kecamatan.nama_kecamatan', 
         'm_kabupaten.nama_kabupaten','profil_user.no_telp','profil_user.id as profId')
         ->where('users.aktif', 1)
-        ->where('form_submissions.savedSession','!=', 1)
+        // where yg status sudah siap verif ?
+        // ->where('form_submissions.savedSession','!=', 1)
         ->where(function(Builder $query) {
             $query->where('users.final_level', 0)
                   ->orWhereNull('users.final_level');
@@ -605,7 +606,6 @@ class KuesionerController extends Controller
       header("Content-Type: application/vnd.ms-excel");
       header("Content-Disposition: attachment; filename=\"$filename\"");
       header('Cache-Control: max-age=0');
-      // dd($filename);
 
       $query = DB::table('form_submissions')
           ->leftJoin('users', function($join) {
@@ -628,7 +628,7 @@ class KuesionerController extends Controller
           })
         ->select('form_submissions.*', 'form_submissions.id as id_submit', 'users.name', 'users.final_level', 'profil_user.nama_usaha','forms.title', 'm_kelurahan.nama_kelurahan',
         'm_kecamatan.nama_kecamatan',
-        'm_kabupaten.nama_kabupaten','profil_user.id as profId','profil_user.nama_pemilik','profil_user.alamat_lengkap','profil_user.email_usaha','profil_user.no_telp','profil_user.jenis_kelamin','profil_user.nik','profil_user.nib')
+        'm_kabupaten.nama_kabupaten','profil_user.id as profId','profil_user.nama_pemilik','profil_user.alamat_lengkap','profil_user.email_usaha','profil_user.no_telp','profil_user.jenis_kelamin','profil_user.nik','profil_user.nib','forms.properties as jsonforms')
         ->where('users.aktif', 1)
         ->where(function(Builder $query) {
             $query->where('users.final_level', 0)
@@ -658,12 +658,14 @@ class KuesionerController extends Controller
             $logic = '';
             $level = '';
         }
+        
         foreach ($data as $value) {
             if ($logic != null or $logic != '') {
                 $arr_level = [];
                 $data_submission = json_decode($value->data, true);
                 foreach ($logic as $data_logic) {
-                    $arr_logic = json_decode($data_logic->logic, true);
+                  $arr_logic = json_decode($data_logic->logic, true);
+                  // $arr_logic = json_decode($logic, true);
                     $expectedLevel = $data_logic->id_level;
                     foreach ($arr_logic as $formula) {
                         if ($formula['parameter'] == 'false') {
@@ -702,7 +704,33 @@ class KuesionerController extends Controller
             }
             $value->id_level = implode(', ', $arr_level);  
             $value->level = $level;  
+            $decodeFormid = json_decode($value->jsonforms);  
+            $value->formId = $decodeFormid[1]->{"id"};
+            $decodeDataSubmissions = json_decode($value->data);
+            $value->decodeData = $decodeDataSubmissions;
+
+            if ($decodeDataSubmissions->{"cc8e0137-5a07-4873-bc54-77e53c7a0b91"} == true) {
+              $value->jenis_usaha = $decodeFormid[2]->{"name"};
+            }else if ($decodeDataSubmissions->{"7c991113-f761-40c1-9673-3a9164d46852"} == true) {
+              $value->jenis_usaha = $decodeFormid[4]->{"name"};
+            }else if ($decodeDataSubmissions->{"0d78540f-14c4-4878-9576-77f2a6e3c532"} == true) {
+              $value->jenis_usaha = $decodeFormid[6]->{"name"};
+            }
+            else if ($decodeDataSubmissions->{"da8ee909-8bff-49d9-9514-361713220b18"} == true) {
+              $value->jenis_usaha = $decodeFormid[8]->{"name"};
+            }
+            else if ($decodeDataSubmissions->{"cec6436e-431e-4f82-a3bb-11a6af141484"} == true) {
+              $value->jenis_usaha = $decodeFormid[10]->{"name"};
+            }else{
+              $value->jenis_usaha = '-';
+
+            }
+            
         }
+        // dd($data);
+
+
+
 
       // $heading = false;
       $dataHtml = '<table border="1">
@@ -712,6 +740,7 @@ class KuesionerController extends Controller
         <th class="text-center" scope="col">Nama Pemilik</th>
         <th class="text-center" scope="col">Alamat Lengkap</th>
         <th class="text-center" scope="col">Email Usaha</th>
+        <th class="text-center" scope="col">Jenis Usaha</th>
         <th class="text-center" scope="col">No Telephone</th>
         <th class="text-center" scope="col">Jenis Kelamin</th>
         <th class="text-center" scope="col">Nik</th>
@@ -735,6 +764,7 @@ class KuesionerController extends Controller
                   <td>".$item->nama_pemilik."</td>
                   <td>".$item->alamat_lengkap."</td>
                   <td>".$item->email_usaha."</td>
+                  <td>".$item->jenis_usaha."</td>
                   <td>".$item->no_telp."</td>
                   <td>".$item->jenis_kelamin."</td>
                   <td>".$item->nik."</td>

@@ -52,7 +52,7 @@ class ManagementUserController extends Controller
               $query->whereDate('users.created_at', $date);
           }
 
-          // $query->where('users.id','>',11000);
+          $query->where('users.id','>',11000);
           $data = $query->orderBy('users.created_at', 'desc')->get();
         
 
@@ -151,20 +151,20 @@ class ManagementUserController extends Controller
   
         $query = DB::table('users')
         ->select('users.id', 'users.name', 'users.no_wa', 'users.email', 'users.email_verified_at', 'users.created_at','form_submissions.id as idsub','profil_user.id_kecamatan','profil_user.id_keluarahan','m_kelurahan.nama_kelurahan',
-        'm_kecamatan.nama_kecamatan','m_kabupaten.nama_kabupaten','users.final_level','users.profil','profil_user.nama_usaha','profil_user.email_usaha','profil_user.nik','profil_user.nib','profil_user.alamat_lengkap','profil_user.no_telp','profil_user.jenis_kelamin','profil_user.nama_pemilik','form.title')
+        'm_kecamatan.nama_kecamatan','m_kabupaten.nama_kabupaten','users.final_level','users.profil','profil_user.nama_usaha','profil_user.email_usaha','profil_user.nik','profil_user.nib','form_submissions.form_id','form_submissions.data','forms.properties as jsonforms','profil_user.alamat_lengkap','profil_user.jenis_kelamin')
         ->leftJoin('form_submissions','users.id','=','form_submissions.id_user')
         ->leftJoin('profil_user','users.id', '=', 'profil_user.id_user')
         ->leftJoin('m_kecamatan', function($join) {
           $join->on('profil_user.id_kecamatan', '=', 'm_kecamatan.id_kecamatan');
+        })
+        ->leftJoin('forms', function($join) {
+          $join->on('form_submissions.form_id', '=', 'forms.id');
         })
         ->leftJoin('m_kabupaten', function($join) {
           $join->on('profil_user.id_kabupaten', '=', 'm_kabupaten.id_kabupaten');
         })
         ->leftJoin('m_kelurahan', function($join) {
           $join->on('profil_user.id_keluarahan', '=', 'm_kelurahan.id_kelurahan');
-        })
-        ->leftJoin('forms', function($join) {
-          $join->on('form_submissions.form_id', '=', 'forms.id');
         })
         ->where('users.aktif',1);
         if ($request->id_kab != null) {
@@ -182,7 +182,7 @@ class ManagementUserController extends Controller
           $query->whereDate('users.created_at', $request->date);
         }
         $data = $query->get();
-
+  
         if (count($data) > 0) {
           $form_id = $data[0]->form_id;
           $logic = DB::table('m_logic_level')->where('id_form', $form_id)->where('aktif', 1)->get();
@@ -190,62 +190,92 @@ class ManagementUserController extends Controller
           $logic = '';
           $level = '';
       }
-      dd($data[0]->form_id);
-      
+      // dd($data);
       foreach ($data as $value) {
-          if ($logic != null or $logic != '') {
+        if ($logic != null or $logic != '') {
               $arr_level = [];
+              if ($value->data != null) {
               $data_submission = json_decode($value->data, true);
               foreach ($logic as $data_logic) {
-                  $arr_logic = json_decode($data_logic->logic, true);
-                  $expectedLevel = $data_logic->id_level;
-                  foreach ($arr_logic as $formula) {
-                      if ($formula['parameter'] == 'false') {
-                          if($data_submission[$formula['input_id']] == null || $data_submission[$formula['input_id']] == ''){
-                              $arr_level[] = $expectedLevel;
-                          }else{}
-                      }elseif ($formula['parameter'] == 'true') {
-                          if($data_submission[$formula['input_id']] != null || $data_submission[$formula['input_id']] != ''){
-                            if(array_key_exists("val-param", $formula)){
-                              if ($data_submission[$formula['input_id']] == $formula['val-param']) {
-                                $arr_level[] = $expectedLevel;
-                              }
-                            }else{
+                $arr_logic = json_decode($data_logic->logic, true);
+                $expectedLevel = $data_logic->id_level;
+                foreach ($arr_logic as $formula) {
+                  // dd($data_submission);
+                  if ($formula['parameter'] == 'false') {
+                    if($data_submission[$formula['input_id']] == null || $data_submission[$formula['input_id']] == ''){
+                      $arr_level[] = $expectedLevel;
+                    }else{}
+                  }elseif ($formula['parameter'] == 'true') {
+                      // dd($formula);
+                        if($data_submission[$formula['input_id']] != null || $data_submission[$formula['input_id']] != ''){
+                          if(array_key_exists("val-param", $formula)){
+                            if ($data_submission[$formula['input_id']] == $formula['val-param']) {
                               $arr_level[] = $expectedLevel;
                             }
-                          }else{}
-                      }else{
-                      }
+                          }else{
+                            $arr_level[] = $expectedLevel;
+                          }
+                        }else{}
+                    }else{
+                    }
                   }
               }
               $arr_level = array_unique($arr_level);
               sort($arr_level);
               if (in_array(1, $arr_level) && in_array(2, $arr_level) && in_array(3, $arr_level) && in_array(4, $arr_level) ) {
-                  $level = 'Leader';
+                $level = 'Leader';
               }elseif (in_array(1, $arr_level) && in_array(2, $arr_level) && in_array(3, $arr_level)) {
-                  $level = 'Adopter';
+                $level = 'Adopter';
               }
               elseif (in_array(1, $arr_level) && in_array(2, $arr_level)) {
-                  $level = 'Observer';
+                $level = 'Observer';
               }
               elseif (in_array(1, $arr_level)) {
-                  $level = 'Beginner';
+                $level = 'Beginner';
               }else{
-                  $level = 'Novice'; 
+                $level = 'Novice'; 
               }
-          }
-          $value->id_level = implode(', ', $arr_level);  
-          $value->level = $level;  
+              $value->id_level = implode(', ', $arr_level);  
+              $value->level = $level;  
+              $decodeFormid = json_decode($value->jsonforms);  
+              $value->formId = $decodeFormid[1]->{"id"};
+              $decodeDataSubmissions = json_decode($value->data);
+              $value->decodeData = $decodeDataSubmissions;
+  
+              if ($decodeDataSubmissions->{"cc8e0137-5a07-4873-bc54-77e53c7a0b91"} == true) {
+                $value->jenis_usaha = $decodeFormid[2]->{"name"};
+              }else if ($decodeDataSubmissions->{"7c991113-f761-40c1-9673-3a9164d46852"} == true) {
+                $value->jenis_usaha = $decodeFormid[4]->{"name"};
+              }else if ($decodeDataSubmissions->{"0d78540f-14c4-4878-9576-77f2a6e3c532"} == true) {
+                $value->jenis_usaha = $decodeFormid[6]->{"name"};
+              }
+              else if ($decodeDataSubmissions->{"da8ee909-8bff-49d9-9514-361713220b18"} == true) {
+                $value->jenis_usaha = $decodeFormid[8]->{"name"};
+              }
+              else if ($decodeDataSubmissions->{"cec6436e-431e-4f82-a3bb-11a6af141484"} == true) {
+                $value->jenis_usaha = $decodeFormid[10]->{"name"};
+              }else{
+                $value->jenis_usaha = '-';
+  
+              }
+            }else {
+              $value->id_level = '-';  
+              $value->level = '-';  
+              $value->jenis_usaha = '-';  
+              # code...
+            }
+            }
       }
-        // $heading = false;
+
+      // dd($data);
+      // $heading = false;
         $dataHtml = '<table border="1">
         <tr>
-          <th class="text-center" scope="col">#</th>
-          <th class="text-center" scope="col">Nama Usaha</th>
-          <th class="text-center" scope="col">Nama Pemilik</th>
-          <th class="text-center" scope="col">Alamat Lengkap</th>
+        <th class="text-center" scope="col">#</th>
+        <th class="text-center" scope="col">Nama Usaha</th>
           <th class="text-center" scope="col">Email Usaha</th>
-          <th class="text-center" scope="col">No Telephone</th>
+          <th class="text-center" scope="col">Jenis Usaha</th>
+          <th class="text-center" scope="col">Alamat Lengkap</th>
           <th class="text-center" scope="col">Jenis Kelamin</th>
           <th class="text-center" scope="col">Nik</th>
           <th class="text-center" scope="col">Nib</th>
@@ -259,7 +289,7 @@ class ManagementUserController extends Controller
           <th class="text-center" scope="col">Kabupaten</th>
           <th class="text-center" scope="col">Kecamatan</th>
           <th class="text-center" scope="col">Kelurahan</th>
-          <th class="text-center" scope="col">Id Lvl</th>
+          <th class="text-center" scope="col">Id Level</th>
           <th class="text-center" scope="col">Level</th>
         </tr>';
             if(!empty($data))
@@ -268,10 +298,9 @@ class ManagementUserController extends Controller
                 $dataHtml .= "<tr>
                     <td>".$no++."</td>
                     <td>".$item->nama_usaha."</td>
-                    <td>".$item->nama_pemilik."</td>
-                    <td>".$item->alamat_lengkap."</td>
                     <td>".$item->email_usaha."</td>
-                    <td>".$item->no_telp."</td>
+                    <td>".$item->jenis_usaha."</td>
+                    <td>".$item->alamat_lengkap."</td>
                     <td>".$item->jenis_kelamin."</td>
                     <td>".($item->nik == null ? '-' : $item->nik)."</td>
                     <td>".$item->nib."</td>
