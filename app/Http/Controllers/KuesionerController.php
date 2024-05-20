@@ -69,15 +69,15 @@ class KuesionerController extends Controller
                   ->orWhereNull('users.final_level');
         })
         ->whereNull('forms.deleted_at');
-        if ($id_kab) {
+        if ($id_kab != null) {
             $query->where('profil_user.id_kabupaten', $id_kab);
         }
         
-        if ($id_kec) {
+        if ($id_kec != null) {
             $query->where('profil_user.id_kecamatan', $id_kec);
         }
         
-        if ($id_kel) {
+        if ($id_kel != null) {
             $query->where('profil_user.id_keluarahan', $id_kel);
         }
         if ($date != null) {

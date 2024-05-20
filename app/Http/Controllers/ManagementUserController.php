@@ -37,15 +37,15 @@ class ManagementUserController extends Controller
             $join->on('profil_user.id_keluarahan', '=', 'm_kelurahan.id_kelurahan');
           })
           ->where('users.aktif',1);
-          if ($id_kab) {
+          if ($id_kab != null) {
             $query->where('profil_user.id_kabupaten', $id_kab);
           }
           
-          if ($id_kec) {
+          if ($id_kec != null) {
               $query->where('profil_user.id_kecamatan', $id_kec);
           }
           
-          if ($id_kel) {
+          if ($id_kel != null) {
             $query->where('profil_user.id_keluarahan', $id_kel);
           }
           if ($date != null) {
