@@ -658,7 +658,6 @@ class KuesionerController extends Controller
             $logic = '';
             $level = '';
         }
-        
         foreach ($data as $value) {
             if ($logic != null or $logic != '') {
                 $arr_level = [];
