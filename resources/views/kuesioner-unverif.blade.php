@@ -254,13 +254,13 @@
         {
           data: null,
           render: function (data) {
-            if (data.savedSession == 0) {
+            // if (data.savedSession == 0) {
               var use = `<a type="button" target="_blank"
                         href="verif-page/${data.id}/${encodeURIComponent(btoa(data.level))}"
                         class="btn btn-sm btn-primary"><i class="fa fa-sign-in"></i> Verif</a>`
-            } else {
-              var use = ``
-            }
+            // } else {
+            //   var use = ``
+            // }
             return use;
           }
         },
