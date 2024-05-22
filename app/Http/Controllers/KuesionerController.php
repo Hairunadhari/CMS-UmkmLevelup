@@ -231,7 +231,7 @@ class KuesionerController extends Controller
           ->leftJoin('m_kelurahan', function($join) {
             $join->on('profil_user.id_keluarahan', '=', 'm_kelurahan.id_kelurahan');
           })
-        ->select(
+        ->select('form_submissions.*',
         'form_submissions.id as id_submit',
         'form_submissions.updated_at',
         'form_submissions.data',
@@ -463,8 +463,9 @@ class KuesionerController extends Controller
         //     $pageNumber = ceil($request->id_user / 10); // Anda perlu menyesuaikan jumlah item per halaman
     
         //     // Redirect ke halaman paginate yang sesuai
+        //     return redirect('kuesioner-unverif?page=' . $pageNumber);
         // }
-            return redirect('kuesioner-unverif');
+        return redirect('kuesioner-unverif');
     }
     
 
