@@ -231,7 +231,7 @@ class KuesionerController extends Controller
           ->leftJoin('m_kelurahan', function($join) {
             $join->on('profil_user.id_keluarahan', '=', 'm_kelurahan.id_kelurahan');
           })
-        ->select('form_submissions.*',
+        ->select(
         'form_submissions.id as id_submit',
         'form_submissions.updated_at',
         'form_submissions.data',
@@ -458,13 +458,13 @@ class KuesionerController extends Controller
                     ->where('id', $request->id_user)
                     ->update(['final_level' => $request->level]);
     
-        if ($affected) {
-            // Hitung nomor halaman paginate
-            $pageNumber = ceil($request->id_user / 10); // Anda perlu menyesuaikan jumlah item per halaman
+        // if ($affected) {
+        //     // Hitung nomor halaman paginate
+        //     $pageNumber = ceil($request->id_user / 10); // Anda perlu menyesuaikan jumlah item per halaman
     
-            // Redirect ke halaman paginate yang sesuai
-            return redirect('kuesioner-unverif?page=' . $pageNumber);
-        }
+        //     // Redirect ke halaman paginate yang sesuai
+        // }
+            return redirect('kuesioner-unverif');
     }
     
 
