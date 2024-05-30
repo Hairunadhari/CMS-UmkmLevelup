@@ -733,15 +733,16 @@ class KuesionerController extends Controller
             $value->qna = [];
             $index = 0; // Inisialisasi variabel indeks
             foreach ($value->pertanyaan as $p) {
-                if ($p->type == 'nf-text' ) {
-                    if ($index !== 9 ) { // Cek apakah indeks bukan 9 (array ke-10)
-                        $value->qna[] = [
-                            'name' => $p->content,
-                        ];
-                    }
-                    $index++; // Tingkatkan indeks
-                }
-                if ($p->type == 'text' || $p->type == 'select' || $p->type == 'url' || $p->type == 'checkbox') {
+                // if ($p->type == 'nf-text' ) {
+                //     if ($index !== 9 ) { // Cek apakah indeks bukan 9 (array ke-10)
+                //         $value->qna[] = [
+                //             'name' => $p->content,
+                //         ];
+                //     }
+                //     $index++; // Tingkatkan indeks
+                // }
+                if ($p->type == 'text' || $p->type == 'url') {
+                // if ($p->type == 'text' || $p->type == 'select' || $p->type == 'url' || $p->type == 'checkbox') {
                     $matched = false; // Flag untuk melacak apakah jawaban ditemukan
                     foreach ($value->jawaban as $j => $jVal) {
                         if ($p->id == $j) {
@@ -801,23 +802,16 @@ class KuesionerController extends Controller
         <th class="text-center" scope="col">Kelurahan</th>
         <th class="text-center" scope="col">Id Lvl</th>
         <th class="text-center" scope="col">Level</th>
-        <th class="text-center" scope="col">Data Kuesioner</th>
-        <th class="text-center" scope="col">Tgl Buat</th>
-      </tr>';
+        <th class="text-center" scope="col">Tgl Buat</th>';
+      // Loop melalui array dan tambahkan header dinamis
+        foreach ($data[0]->qna as $key ) {
+          $dataHtml .= '<th class="text-center" scope="col">' . htmlspecialchars($key['name']) . '</th>';
+        }
+      // Tutup baris header
+      $dataHtml .= '</tr>';
           if(!empty($data))
           $no = 1;
             foreach($data as $key => $item) {
-              $qnaString = '';
-              if (is_array($item->qna)) {
-                  foreach ($item->qna as $qna) {
-                    if (isset($qna['jawaban'])) {
-                      $qnaString .= "<strong>{$qna['name']}</strong>: {$qna['jawaban']}<br>";
-                    }else{
-                      $qnaString .= "<strong>{$qna['name']}</strong><br>";
-
-                    }
-                  }
-              }
               $dataHtml .= "<tr>
                   <td>".$no++."</td>
                   <td>".$item->nama_usaha."</td>
@@ -837,9 +831,13 @@ class KuesionerController extends Controller
                   <td>".$item->nama_kelurahan."</td>
                   <td>".$item->id_level."</td>
                   <td>".$item->level."</td>
-                  <td>".$qnaString."</td>
-                  <td>".Carbon::parse($item->created_at)->locale('id')->format('j F Y')."</td>
-              </tr>";
+                  <td>".Carbon::parse($item->created_at)->locale('id')->format('j F Y')."</td>";
+                  if (is_array($item->qna)) {
+                      foreach ($item->qna as $qna) {
+                        $dataHtml .=  "<td>".htmlspecialchars($qna['jawaban'])."</td>";
+                      }
+                  }
+              $dataHtml .= "</tr>";
             }
           $dataHtml .= '</table>';
           echo $dataHtml;
