@@ -869,7 +869,7 @@ class KuesionerController extends Controller
       })
       ->select('form_submissions.*', 'users.name', 'users.id as id_user', 'users.final_level', 'profil_user.nama_usaha', 'profil_user.nama_usaha', 'forms.title', 'm_level.level','profil_user.id_kabupaten','m_kelurahan.nama_kelurahan',
       'm_kecamatan.nama_kecamatan',
-      'm_kabupaten.nama_kabupaten',)
+      'm_kabupaten.nama_kabupaten','forms.properties as jsonforms')
       ->where('users.aktif', 1)
       ->where('users.final_level', '!=', 0)
       ->whereNull('forms.deleted_at');
@@ -884,16 +884,44 @@ class KuesionerController extends Controller
       } 
 
       $data = $query->get();
-    
+      
+      foreach ($data as $value) {
+       
+        $decodeFormid = json_decode($value->jsonforms);  
+        $value->formId = $decodeFormid[1]->{"id"};
+        $decodeDataSubmissions = json_decode($value->data);
+        $value->decodeData = $decodeDataSubmissions;
+
+        if ($decodeDataSubmissions->{"cc8e0137-5a07-4873-bc54-77e53c7a0b91"} == true) {
+          $value->jenis_usaha = $decodeFormid[2]->{"name"};
+        }else if ($decodeDataSubmissions->{"7c991113-f761-40c1-9673-3a9164d46852"} == true) {
+          $value->jenis_usaha = $decodeFormid[4]->{"name"};
+        }else if ($decodeDataSubmissions->{"0d78540f-14c4-4878-9576-77f2a6e3c532"} == true) {
+          $value->jenis_usaha = $decodeFormid[6]->{"name"};
+        }
+        else if ($decodeDataSubmissions->{"da8ee909-8bff-49d9-9514-361713220b18"} == true) {
+          $value->jenis_usaha = $decodeFormid[8]->{"name"};
+        }
+        else if ($decodeDataSubmissions->{"cec6436e-431e-4f82-a3bb-11a6af141484"} == true) {
+          $value->jenis_usaha = $decodeFormid[10]->{"name"};
+        }else{
+          $value->jenis_usaha = '-';
+
+        }
+       
+    }
 
       // $heading = false;
       $dataHtml = '<table border="1">
       <tr>
         <th class="text-center" scope="col">#</th>
-        <th class="text-center" scope="col">Nama Bisnis</th>
+        <th class="text-center" scope="col">Nama Usaha</th>
+        <th class="text-center" scope="col">Jenis Usaha</th>
         <th class="text-center" scope="col">Nama</th>
         <th class="text-center" scope="col">Use?</th>
-        <th class="text-center" scope="col">Wilayah</th>
+        <th class="text-center" scope="col">Kabupaten</th>
+        <th class="text-center" scope="col">Kecamatan</th>
+        <th class="text-center" scope="col">Kelurahan</th>
         <th class="text-center" scope="col">Level Final</th>
         <th class="text-center" scope="col">Tgl Buat</th>
       </tr>';
@@ -903,9 +931,12 @@ class KuesionerController extends Controller
               $dataHtml .= "<tr>
                   <td>".$no++."</td>
                   <td>".$item->nama_usaha."</td>
+                  <td>".$item->jenis_usaha."</td>
                   <td>".$item->name."</td>
                   <td>".($item->import == 0 ? 'App' : 'G-form')."</td>
-                  <td>".$item->nama_kabupaten.', '.$item->nama_kecamatan.', '.$item->nama_kelurahan."</td>
+                  <td>".$item->nama_kabupaten."</td>
+                  <td>".$item->nama_kecamatan."</td>
+                  <td>".$item->nama_kelurahan."</td>
                   <td>".$item->level."</td>
                   <td>".Carbon::parse($item->created_at)->locale('id')->format('j F Y')."</td>
               </tr>";
