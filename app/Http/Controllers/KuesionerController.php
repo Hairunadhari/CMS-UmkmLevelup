@@ -865,9 +865,8 @@ class KuesionerController extends Controller
       ->leftJoin('m_kelurahan', function($join) {
         $join->on('profil_user.id_keluarahan', '=', 'm_kelurahan.id_kelurahan');
       })
-      ->select('form_submissions.*', 'users.name', 'users.id as id_user', 'users.final_level', 'profil_user.nama_usaha', 'profil_user.nama_usaha', 'forms.title', 'm_level.level','profil_user.id_kabupaten','m_kelurahan.nama_kelurahan',
-      'm_kecamatan.nama_kecamatan',
-      'm_kabupaten.nama_kabupaten','forms.properties as jsonforms')
+      ->select('form_submissions.*', 'users.name', 'users.id as id_user', 'users.final_level', 'profil_user.nama_usaha', 'forms.title', 'm_level.level','profil_user.id_kabupaten','m_kelurahan.nama_kelurahan',
+      'm_kecamatan.nama_kecamatan','m_kabupaten.nama_kabupaten','forms.properties as jsonforms','profil_user.alamat_lengkap','profil_user.email_usaha','profil_user.no_telp')
       ->where('users.aktif', 1)
       ->where('users.final_level', '!=', 0)
       ->whereNull('forms.deleted_at');
@@ -914,12 +913,15 @@ class KuesionerController extends Controller
       <tr>
         <th class="text-center" scope="col">#</th>
         <th class="text-center" scope="col">Nama Usaha</th>
+        <th class="text-center" scope="col">Email Usaha</th>
+        <th class="text-center" scope="col">No Telephone</th>
         <th class="text-center" scope="col">Jenis Usaha</th>
         <th class="text-center" scope="col">Nama</th>
         <th class="text-center" scope="col">Use?</th>
         <th class="text-center" scope="col">Kabupaten</th>
         <th class="text-center" scope="col">Kecamatan</th>
         <th class="text-center" scope="col">Kelurahan</th>
+        <th class="text-center" scope="col">Alamat</th>
         <th class="text-center" scope="col">Level Final</th>
         <th class="text-center" scope="col">Tgl Buat</th>
       </tr>';
@@ -929,12 +931,15 @@ class KuesionerController extends Controller
               $dataHtml .= "<tr>
                   <td>".$no++."</td>
                   <td>".$item->nama_usaha."</td>
+                  <td>".$item->email_usaha."</td>
+                  <td>".$item->no_telp."</td>
                   <td>".$item->jenis_usaha."</td>
                   <td>".$item->name."</td>
                   <td>".($item->import == 0 ? 'App' : 'G-form')."</td>
                   <td>".$item->nama_kabupaten."</td>
                   <td>".$item->nama_kecamatan."</td>
                   <td>".$item->nama_kelurahan."</td>
+                  <td>".$item->alamat_lengkap."</td>
                   <td>".$item->level."</td>
                   <td>".Carbon::parse($item->created_at)->locale('id')->format('j F Y')."</td>
               </tr>";
