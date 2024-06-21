@@ -71,6 +71,9 @@
                 <option selected disabled>-- Pilih Kelurahan --</option>
               </select>
             </div>
+            <div class="form-group">
+              <div class="btn btn-danger mt-1 " id="reset-filter" style="margin-left: 1rem;">Reset Filter</div>
+            </div>
           </div>
         </div>
         <div class="card-body">
@@ -321,6 +324,18 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css
       }
     })
   });
+
+  $('#reset-filter').on('click', function () {
+      $('#kabupatens').val('').trigger('change'); // Mengatur pilihan kembali ke yang pertama
+      // $('#dateTime').val('').trigger('change'); // Mengatur pilihan kembali ke yang pertama
+      $('#kecamatans').html('<option value="" selected disabled>-- Pilih Kecamatan --</option>');
+      $('#kelurahans').html('<option value="" selected disabled>-- Pilih Kelurahan --</option>');
+      $('#id_kabupaten').val('');
+      $('#id_kecamatan').val('');
+      $('#id_kelurahan').val('');
+      // $('#date').val('');
+      table.draw();
+    });
 
   // $(document).on("click", "#export-excel", function (e) {
   //   e.preventDefault();
