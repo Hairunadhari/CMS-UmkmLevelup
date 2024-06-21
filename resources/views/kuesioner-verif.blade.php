@@ -55,7 +55,7 @@
           <div class="d-flex mt-3">
             <div class="form-group">
               <select class="form-control select2" id="kabupatens">
-                <option selected disabled>-- Pilih Kabupaten --</option>
+                <option selected disabled value="">-- Pilih Kabupaten --</option>
                 @foreach ($kabupaten as $kab)
                 <option value="{{$kab->id_kabupaten}}">{{$kab->nama_kabupaten}}</option>
                 @endforeach
