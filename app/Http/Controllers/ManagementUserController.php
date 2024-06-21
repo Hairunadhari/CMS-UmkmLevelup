@@ -22,7 +22,7 @@ class ManagementUserController extends Controller
           $date = request('date');
           
           $query = DB::table('users')
-          ->select('users.id', 'users.name', 'users.no_wa', 'users.email', 'users.email_verified_at', 'users.created_at','form_submissions.id as idFormSubmission','profil_user.id_kecamatan','profil_user.id_keluarahan','m_kelurahan.nama_kelurahan',
+          ->select('users.id', 'users.name', 'users.no_wa', 'users.email', 'users.email_verified_at','form_submissions.id as idFormSubmission','m_kelurahan.nama_kelurahan',
           'm_kecamatan.nama_kecamatan', 
           'm_kabupaten.nama_kabupaten','profil_user.id as profId','users.final_level')
           ->leftJoin('form_submissions','users.id','=','form_submissions.id_user')
