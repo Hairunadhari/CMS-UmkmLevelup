@@ -52,7 +52,7 @@ class ManagementUserController extends Controller
               $query->whereDate('users.created_at', $date);
           }
 
-          // $query->where('users.id','>',11000);
+          // $query->where('users.id','>',9000);
           $data = $query->orderBy('users.created_at', 'desc')->get();
         
 
@@ -151,7 +151,7 @@ class ManagementUserController extends Controller
   
         $query = DB::table('users')
         ->select('users.id', 'users.name', 'users.no_wa', 'users.email', 'users.email_verified_at', 'users.created_at','form_submissions.id as idsub','profil_user.id_kecamatan','profil_user.id_keluarahan','m_kelurahan.nama_kelurahan',
-        'm_kecamatan.nama_kecamatan','m_kabupaten.nama_kabupaten','users.final_level','users.profil','profil_user.nama_usaha','profil_user.email_usaha','profil_user.nik','profil_user.nib','form_submissions.form_id','form_submissions.data','forms.properties as jsonforms','profil_user.alamat_lengkap','profil_user.jenis_kelamin')
+        'm_kecamatan.nama_kecamatan','m_kabupaten.nama_kabupaten','users.final_level','users.profil','profil_user.nama_usaha','profil_user.email_usaha','profil_user.nik','profil_user.nib','form_submissions.form_id','form_submissions.data','forms.properties as jsonforms','profil_user.alamat_lengkap','profil_user.jenis_kelamin','profil_user.nama_pemilik')
         ->leftJoin('form_submissions','users.id','=','form_submissions.id_user')
         ->leftJoin('profil_user','users.id', '=', 'profil_user.id_user')
         ->leftJoin('m_kecamatan', function($join) {
@@ -272,6 +272,7 @@ class ManagementUserController extends Controller
         $dataHtml = '<table border="1">
         <tr>
         <th class="text-center" scope="col">#</th>
+        <th class="text-center" scope="col">Nama Pemilik</th>
         <th class="text-center" scope="col">Nama Usaha</th>
           <th class="text-center" scope="col">Email Usaha</th>
           <th class="text-center" scope="col">Jenis Usaha</th>
@@ -297,6 +298,7 @@ class ManagementUserController extends Controller
               foreach($data as $key => $item) {
                 $dataHtml .= "<tr>
                     <td>".$no++."</td>
+                    <td>".$item->nama_pemilik."</td>
                     <td>".$item->nama_usaha."</td>
                     <td>".$item->email_usaha."</td>
                     <td>".$item->jenis_usaha."</td>
